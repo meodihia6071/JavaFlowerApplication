@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -36,7 +37,7 @@
                         <Label text="Email" textFill="#8a6363">
                             <font><Font name="System Bold" size="14.0" /></font>
                         </Label>
-                        <TextField fx:id="txtEmail" editable="false" style="-fx-background-color: #FADADD; -fx-text-fill: #8a6363;" text="flowershop@gmail.com" />
+                        <TextField fx:id="txtEmail" style="-fx-background-color: #FADADD; -fx-text-fill: #8a6363;" />
                     </children>
                 </VBox>
 
@@ -45,7 +46,7 @@
                         <Label text="Name" textFill="#8a6363">
                             <font><Font name="System Bold" size="14.0" /></font>
                         </Label>
-                        <TextField fx:id="txtName" editable="false" style="-fx-background-color: #FADADD; -fx-text-fill: #8a6363;" text="Thu Lời" />
+                        <TextField fx:id="txtName" style="-fx-background-color: #FADADD; -fx-text-fill: #8a6363;" />
                     </children>
                 </VBox>
 
@@ -54,7 +55,7 @@
                         <Label text="Role" textFill="#8a6363">
                             <font><Font name="System Bold" size="14.0" /></font>
                         </Label>
-                        <TextField fx:id="txtRole" editable="false" style="-fx-background-color: #FADADD; -fx-text-fill: #8a6363;" text="Nhân viên partime" />
+                        <TextField fx:id="txtRole" editable="false" style="-fx-background-color: #FADADD; -fx-text-fill: #8a6363;" />
                     </children>
                 </VBox>
 
@@ -63,7 +64,21 @@
                         <Label text="Password" textFill="#8a6363">
                             <font><Font name="System Bold" size="14.0" /></font>
                         </Label>
-                        <PasswordField fx:id="txtPassword" style="-fx-background-color: #FADADD; -fx-text-fill: #8a6363;" text="123456" />
+                        <HBox alignment="CENTER_LEFT" spacing="5.0">
+                            <children>
+                                <StackPane HBox.hgrow="ALWAYS">
+                                    <children>
+                                        <PasswordField fx:id="txtPassword" style="-fx-background-color: #FADADD; -fx-text-fill: #8a6363;" />
+                                        <TextField fx:id="txtPasswordVisible" managed="false" style="-fx-background-color: #FADADD; -fx-text-fill: #8a6363;" visible="false" />
+                                    </children>
+                                </StackPane>
+                                <Button fx:id="btnTogglePassword" mnemonicParsing="false" onAction="#togglePasswordVisibility" style="-fx-background-color: #FF99B8; -fx-text-fill: white; -fx-background-radius: 5;" text="Hiện">
+                                    <font>
+                                        <Font name="System Bold" size="12.0" />
+                                    </font>
+                                </Button>
+                            </children>
+                        </HBox>
                     </children>
                 </VBox>
 

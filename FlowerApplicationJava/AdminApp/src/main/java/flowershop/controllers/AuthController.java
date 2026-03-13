@@ -3,6 +3,7 @@ package flowershop.controllers;
 import flowershop.dao.UserDAO;
 import flowershop.models.User;
 import flowershop.services.SceneManager;
+import flowershop.services.SessionManager; // Đã thêm import Session
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -33,6 +34,11 @@ public class AuthController {
         User loggedInUser = userDAO.login(username, password);
 
         if (loggedInUser != null) {
+            // ==================================================
+            // LƯU TÀI KHOẢN VÀO SESSION Ở ĐÂY CHO DASHBOARD DÙNG
+            SessionManager.setCurrentUser(loggedInUser);
+            // ==================================================
+
             String role = loggedInUser.getRole();
 
             if ("admin".equals(role) || "staff".equals(role)) {
@@ -56,22 +62,11 @@ public class AuthController {
         }
     }
 
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Đăng nhập thất bại");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
     @FXML
     void handleSignup(ActionEvent event) {
-        // Tạm thời hiển thị thông báo để chống cháy
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo");
-        alert.setHeaderText("Đăng ký tài khoản");
-        alert.setContentText("Chức năng đăng ký đang được hoàn thiện.");
-        alert.showAndWait();
+        showAlert("Chức năng đăng ký đang được hoàn thiện!");
     }
+
     @FXML
     void goToLogin(MouseEvent event) {
         try {
@@ -81,9 +76,16 @@ public class AuthController {
         }
     }
 
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Thông báo");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     // =========================================================
-    // ĐÂY CHÍNH LÀ HÀM LOGOUT MÀ CÁC FILE KHÁC ĐANG TÌM KIẾM
-    // BẮT BUỘC PHẢI CÓ CHỮ "static" ĐỂ GỌI ĐƯỢC TỪ FILE KHÁC
+    // HÀM LOGOUT DÙNG CHUNG CHO CẢ APP
     // =========================================================
     public static void logout() {
         try {

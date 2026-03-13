@@ -11,8 +11,8 @@ public class App extends Application {
         SceneManager.setStage(stage);
         SceneManager.switchScene("/fxml/login.fxml", "Flower Shop");
 
-        stage.setMinWidth(1100);
-        stage.setMinHeight(920);
+        stage.setMinWidth(1300);
+        stage.setMinHeight(1000);
         stage.setMaximized(true);
         stage.show();
     }

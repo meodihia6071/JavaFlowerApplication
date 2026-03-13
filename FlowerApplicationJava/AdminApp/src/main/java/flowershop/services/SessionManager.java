@@ -29,4 +29,5 @@ public class SessionManager {
         currentUser = null;
         currentCustomer = null;
     }
+
 }
