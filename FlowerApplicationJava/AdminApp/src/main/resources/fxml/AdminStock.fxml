@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+
+<?import javafx.scene.control.*?>
+
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+
+<HBox prefHeight="650.0" prefWidth="1000.0"
+      style="-fx-background-color:#F8F8F8;"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="flowershop.controllers.AdminStockController">
+
+    <children>
+
+        <!-- SIDEBAR -->
+        <VBox prefWidth="220" style="-fx-background-color:#F6E1E5;">
+            <children>
+
+                <Label text="Flower shop" textFill="#613b41">
+                    <font>
+                        <Font name="System Bold" size="26.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" left="20.0" top="30.0" />
+                    </VBox.margin>
+                </Label>
+
+                <Region prefHeight="1.0" style="-fx-background-color: #613b41;">
+                    <VBox.margin>
+                        <Insets bottom="20.0" left="20.0" right="20.0" />
+                    </VBox.margin>
+                </Region>
+
+                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goDashboard" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Dashboard">
+                    <font><Font name="System Bold" size="16.0" /></font>
+                    <padding><Insets left="30.0" /></padding>
+                </Button>
+
+                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goProducts" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Products">
+                    <font><Font name="System Bold" size="16.0" /></font>
+                    <padding><Insets left="30.0" /></padding>
+                </Button>
+
+                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goCategories" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Categories">
+                    <font><Font name="System Bold" size="16.0" /></font>
+                    <padding><Insets left="30.0" /></padding>
+                </Button>
+
+                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goOrders" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Orders">
+                    <font><Font name="System Bold" size="16.0" /></font>
+                    <padding><Insets left="30.0" /></padding>
+                </Button>
+
+                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goCustomers" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Customers">
+                    <font><Font name="System Bold" size="16.0" /></font>
+                    <padding><Insets left="30.0" /></padding>
+                </Button>
+
+                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goSuppliers" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Suppliers">
+                    <font><Font name="System Bold" size="16.0" /></font>
+                    <padding><Insets left="30.0" /></padding>
+                </Button>
+
+                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #E5738B;" text="Stock">
+                    <font><Font name="System Bold" size="16.0" /></font>
+                    <padding><Insets left="30.0" /></padding>
+                </Button>
+
+                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goReports" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Reports">
+                    <font><Font name="System Bold" size="16.0" /></font>
+                    <padding><Insets left="30.0" /></padding>
+                </Button>
+
+                <Region VBox.vgrow="ALWAYS" />
+
+                <Region prefHeight="1.0" style="-fx-background-color: #613b41;">
+                    <VBox.margin><Insets bottom="20.0" left="20.0" right="20.0" /></VBox.margin>
+                </Region>
+
+                <Button mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #FF99B8; -fx-text-fill: white; -fx-background-radius: 8;" text="&lt;- Log Out">
+                    <VBox.margin>
+                        <Insets bottom="30.0" left="30.0" />
+                    </VBox.margin>
+                    <font><Font name="System Bold" size="14.0" /></font>
+                </Button>
+
+            </children>
+        </VBox>
+
+
+        <!-- MAIN -->
+        <VBox spacing="20" HBox.hgrow="ALWAYS"
+              style="-fx-background-color:#FFFDFD;">
+
+            <padding>
+                <Insets top="40" left="40" right="40" bottom="30"/>
+            </padding>
+
+            <children>
+
+                <Label text="Stock Management" textFill="#c95b74">
+                    <font>
+                        <Font name="System Bold" size="28"/>
+                    </font>
+                </Label>
+
+                <!-- TOOLBAR -->
+                <HBox spacing="15">
+
+                    <Button text="+ Add Stock"
+                            onAction="#handleAddStock"
+                            style="-fx-background-color:#F6DCE2; -fx-text-fill:#613b41;"/>
+
+                    <Button text="Edit"
+                            onAction="#handleEditStock"
+                            style="-fx-background-color:#F6DCE2; -fx-text-fill:#613b41;"/>
+
+                    <Button text="Delete"
+                            onAction="#handleDeleteStock"
+                            style="-fx-background-color:#F6DCE2; -fx-text-fill:#613b41;"/>
+
+                    <Region HBox.hgrow="ALWAYS"/>
+
+                    <Button text="Sort"
+                            onAction="#handleSort"
+                            style="-fx-background-color:#F6DCE2; -fx-text-fill:#613b41;"/>
+
+                </HBox>
+
+
+                <!-- SEARCH -->
+                <HBox spacing="10">
+
+                    <TextField fx:id="searchField"
+                               promptText="Search product..."
+                               prefWidth="220"/>
+
+                    <Button text="Search"
+                            onAction="#handleSearch"/>
+
+                </HBox>
+
+
+                <!-- TABLE -->
+                <TableView fx:id="stockTable"
+                           VBox.vgrow="ALWAYS"
+                           style="-fx-background-color:white; -fx-border-color:#F6DCE2;">
+
+                    <columns>
+
+                        <TableColumn fx:id="colId"
+                                     text="ID"
+                                     prefWidth="80"/>
+
+                        <TableColumn fx:id="colProduct"
+                                     text="Product Name"
+                                     prefWidth="220"/>
+
+                        <TableColumn fx:id="colQuantity"
+                                     text="Quantity"
+                                     prefWidth="150"/>
+
+                        <TableColumn fx:id="colUpdate"
+                                     text="Last Update"
+                                     prefWidth="200"/>
+
+                    </columns>
+
+                </TableView>
+
+            </children>
+
+        </VBox>
+
+    </children>
+</HBox>
