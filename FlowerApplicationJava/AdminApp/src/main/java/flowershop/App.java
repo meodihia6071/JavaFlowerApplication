@@ -1,27 +1,23 @@
 package flowershop;
 
+import flowershop.services.SceneManager;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class App extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
+        SceneManager.setStage(stage);
+        SceneManager.switchScene("/fxml/login.fxml", "Flower Shop");
 
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/fxml/product-view.fxml")
-        );
-
-        Scene scene = new Scene(loader.load(), 500, 400);
-
-        stage.setTitle("Product Test");
-        stage.setScene(scene);
+        stage.setMinWidth(1100);
+        stage.setMinHeight(920);
+        stage.setMaximized(true);
         stage.show();
     }
 
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }
