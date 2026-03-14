@@ -3,6 +3,8 @@ package flowershop.controllers;
 import flowershop.services.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 
 public class CategoryController {
 

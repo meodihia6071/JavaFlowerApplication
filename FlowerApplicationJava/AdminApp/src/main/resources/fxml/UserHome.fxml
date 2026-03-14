@@ -12,148 +12,92 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="flowershop.controllers.UserHomeController"
-            stylesheets="@../css/user-style.css"
-            style="-fx-background-color: #f8eef1;">
+<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.UserHomeController">
 
     <top>
-        <HBox prefHeight="56.0"
-              alignment="CENTER_LEFT"
-              spacing="22.0"
-              style="-fx-background-color: #f7c8d7;">
+        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" style="-fx-background-color: #f7c8d7;">
             <padding>
-                <Insets top="0.0" right="18.0" bottom="0.0" left="18.0"/>
+                <Insets bottom="0.0" left="18.0" right="18.0" top="0.0" />
             </padding>
 
             <children>
-                <Label text="Flower shop"
-                       style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 500;"/>
+                <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 500;" text="Flower shop" />
 
-                <Region HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS" />
 
-                <Button text="Home"
-                        onAction="#goHome"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true; -fx-cursor: hand;"/>
-                <Button text="Flowers"
-                        onAction="#goFlowers"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;"/>
-                <Button text="Categories"
-                        onAction="#goCategories"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;"/>
-                <Button text="Contact"
-                        onAction="#goContact"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;"/>
-                <Button text="Cart"
-                        onAction="#goCart"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;"/>
+                <Button onAction="#goHome" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true; -fx-cursor: hand;" text="Home" />
+                <Button onAction="#goFlowers" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;" text="Flowers" />
+                <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;" text="Categories" />
+                <Button onAction="#goContact" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;" text="Contact" />
+                <Button onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;" text="Cart" />
 
-                <Button text="Log Out"
-                        onAction="#handleLogout"
-                        prefWidth="94.0" prefHeight="34.0"
-                        style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 700; -fx-background-radius: 6; -fx-cursor: hand;"/>
+                <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 700; -fx-background-radius: 6; -fx-cursor: hand;" text="Log Out" />
             </children>
         </HBox>
     </top>
 
     <center>
-        <ScrollPane fitToWidth="true"
-                    hbarPolicy="NEVER"
-                    vbarPolicy="AS_NEEDED"
-                    style="-fx-background: #f8eef1; -fx-background-color: #f8eef1;">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: #f8eef1; -fx-background-color: #f8eef1;" vbarPolicy="AS_NEEDED">
             <content>
-                <VBox spacing="26.0"
-                      alignment="TOP_CENTER"
-                      style="-fx-background-color: #f8eef1;">
+                <VBox alignment="TOP_CENTER" spacing="26.0" style="-fx-background-color: #f8eef1;">
                     <padding>
-                        <Insets top="24.0" right="24.0" bottom="24.0" left="24.0"/>
+                        <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
                     </padding>
 
                     <children>
 
-                        <VBox spacing="26.0"
-                              alignment="TOP_CENTER"
-                              maxWidth="1200.0"
-                              prefWidth="1200.0"
-                              style="-fx-background-color: #f8eef1;">
+                        <VBox alignment="TOP_CENTER" maxWidth="1200.0" prefWidth="1200.0" spacing="26.0" style="-fx-background-color: #f8eef1;">
 
                             <children>
 
-                                <VBox spacing="16.0" alignment="TOP_CENTER" maxWidth="1200.0">
+                                <VBox alignment="TOP_CENTER" maxWidth="1200.0" spacing="16.0">
                                     <children>
-                                        <Label text="Categories"
-                                               maxWidth="1200.0"
-                                               style="-fx-text-fill: #8e5f5f; -fx-font-size: 28px; -fx-font-weight: 700;"/>
+                                        <Label maxWidth="1200.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 28px; -fx-font-weight: 700;" text="Categories" />
 
-                                        <TilePane fx:id="categoryPane"
-                                                  hgap="34.0"
-                                                  vgap="20.0"
-                                                  prefColumns="4"
-                                                  alignment="CENTER"
-                                                  tileAlignment="CENTER"
-                                                  prefTileWidth="150.0"
-                                                  prefTileHeight="170.0"
-                                                  maxWidth="1200.0">
+                                        <TilePane fx:id="categoryPane" alignment="CENTER" hgap="34.0" maxWidth="1200.0" prefColumns="4" prefHeight="280.0" prefTileHeight="280.0" prefTileWidth="185.0" prefWidth="1200.0" tileAlignment="CENTER" vgap="20.0">
 
                                             <children>
-                                                <VBox alignment="CENTER" spacing="10.0"
-                                                      prefWidth="150.0" prefHeight="170.0"
-                                                      style="-fx-background-color: #f5dce2; -fx-padding: 12;">
+                                                <VBox alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
-                                                        <ImageView fitWidth="115.0" fitHeight="115.0" preserveRatio="false">
+                                                        <ImageView cache="true" fitHeight="180.0" fitWidth="150.0" preserveRatio="false">
                                                             <image>
-                                                                <Image url="@../images/category.jpg"/>
+                                                                <Image url="@../images/category.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label text="Birthday Flowers"
-                                                               wrapText="true"
-                                                               style="-fx-text-fill: #9b6666; -fx-font-size: 14px;"/>
+                                          <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Birthday Flowers" />
                                                     </children>
                                                 </VBox>
 
-                                                <VBox alignment="CENTER" spacing="10.0"
-                                                      prefWidth="150.0" prefHeight="170.0"
-                                                      style="-fx-background-color: #f5dce2; -fx-padding: 12;">
+                                                <VBox alignment="CENTER" prefHeight="170.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
-                                                        <ImageView fitWidth="115.0" fitHeight="115.0" preserveRatio="false">
+                                                        <ImageView fitHeight="180.0" fitWidth="150.0" preserveRatio="false">
                                                             <image>
-                                                                <Image url="@../images/category.jpg"/>
+                                                                <Image url="@../images/category.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label text="Wedding Flowers"
-                                                               wrapText="true"
-                                                               style="-fx-text-fill: #9b6666; -fx-font-size: 14px;"/>
+                                          <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Wedding Flowers" />
                                                     </children>
                                                 </VBox>
 
-                                                <VBox alignment="CENTER" spacing="10.0"
-                                                      prefWidth="150.0" prefHeight="170.0"
-                                                      style="-fx-background-color: #f5dce2; -fx-padding: 12;">
+                                                <VBox alignment="CENTER" prefHeight="170.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
-                                                        <ImageView fitWidth="115.0" fitHeight="115.0" preserveRatio="false">
+                                                        <ImageView fitHeight="180.0" fitWidth="150.0" preserveRatio="false">
                                                             <image>
-                                                                <Image url="@../images/category.jpg"/>
+                                                                <Image url="@../images/category.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label text="Anniversary"
-                                                               wrapText="true"
-                                                               style="-fx-text-fill: #9b6666; -fx-font-size: 14px;"/>
+                                          <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Anniversary Flowers" />
                                                     </children>
                                                 </VBox>
 
-                                                <VBox alignment="CENTER" spacing="10.0"
-                                                      prefWidth="150.0" prefHeight="170.0"
-                                                      style="-fx-background-color: #f5dce2; -fx-padding: 12;">
+                                                <VBox alignment="CENTER" prefHeight="170.0" prefWidth="150.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
-                                                        <ImageView fitWidth="115.0" fitHeight="115.0" preserveRatio="false">
+                                                        <ImageView fitHeight="180.0" fitWidth="150.0" preserveRatio="false">
                                                             <image>
-                                                                <Image url="@../images/category.jpg"/>
+                                                                <Image url="@../images/category.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label text="Sympathy Flowers"
-                                                               wrapText="true"
-                                                               style="-fx-text-fill: #9b6666; -fx-font-size: 14px;"/>
+                                          <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Sympathy Flowers" />
                                                     </children>
                                                 </VBox>
                                             </children>
@@ -161,96 +105,62 @@
                                     </children>
                                 </VBox>
 
-                                <VBox spacing="18.0" alignment="TOP_CENTER" maxWidth="1200.0">
+                                <VBox alignment="TOP_CENTER" maxWidth="1200.0" spacing="18.0">
                                     <children>
-                                        <Label text="Featured Products"
-                                               maxWidth="1200.0"
-                                               style="-fx-text-fill: #8e5f5f; -fx-font-size: 28px; -fx-font-weight: 700;"/>
+                                        <Label maxWidth="1200.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 28px; -fx-font-weight: 700;" text="Featured Products" />
 
-                                        <TilePane fx:id="productPane"
-                                                  hgap="30.0"
-                                                  vgap="24.0"
-                                                  prefColumns="4"
-                                                  alignment="CENTER"
-                                                  tileAlignment="CENTER"
-                                                  prefTileWidth="185.0"
-                                                  prefTileHeight="280.0"
-                                                  maxWidth="1200.0">
+                                        <TilePane fx:id="productPane" alignment="CENTER" hgap="30.0" maxWidth="1200.0" prefColumns="4" prefTileHeight="280.0" prefTileWidth="185.0" tileAlignment="CENTER" vgap="24.0">
 
                                             <children>
-                                                <VBox alignment="CENTER" spacing="10.0"
-                                                      prefWidth="185.0" prefHeight="280.0"
-                                                      style="-fx-background-color: #f5dce2; -fx-padding: 12;">
+                                                <VBox alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
-                                                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false">
+                                                        <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
                                                             <image>
-                                                                <Image url="@../images/flower-rose.jpg"/>
+                                                                <Image url="@../images/flower-rose.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label text="Rose Bouquet"
-                                                               style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/>
-                                                        <Label text="\$25"
-                                                               style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/>
-                                                        <Button text="Add to Cart"
-                                                                onAction="#handleAddToCart"
-                                                                style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;"/>
+                                                        <Label prefWidth="98.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Rose Bouquet" />
+                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$25" />
+                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" />
                                                     </children>
                                                 </VBox>
 
-                                                <VBox alignment="CENTER" spacing="10.0"
-                                                      prefWidth="185.0" prefHeight="280.0"
-                                                      style="-fx-background-color: #f5dce2; -fx-padding: 12;">
+                                                <VBox alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
-                                                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false">
+                                                        <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
                                                             <image>
-                                                                <Image url="@../images/flower-rose.jpg"/>
+                                                                <Image url="@../images/flower-rose.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label text="Rose Bouquet"
-                                                               style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/>
-                                                        <Label text="\$25"
-                                                               style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/>
-                                                        <Button text="Add to Cart"
-                                                                onAction="#handleAddToCart"
-                                                                style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;"/>
+                                                        <Label style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Rose Bouquet" />
+                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$25" />
+                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" />
                                                     </children>
                                                 </VBox>
 
-                                                <VBox alignment="CENTER" spacing="10.0"
-                                                      prefWidth="185.0" prefHeight="280.0"
-                                                      style="-fx-background-color: #f5dce2; -fx-padding: 12;">
+                                                <VBox alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
-                                                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false">
+                                                        <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
                                                             <image>
-                                                                <Image url="@../images/flower-rose.jpg"/>
+                                                                <Image url="@../images/flower-rose.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label text="Rose Bouquet"
-                                                               style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/>
-                                                        <Label text="\$25"
-                                                               style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/>
-                                                        <Button text="Add to Cart"
-                                                                onAction="#handleAddToCart"
-                                                                style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;"/>
+                                                        <Label style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Rose Bouquet" />
+                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$25" />
+                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" />
                                                     </children>
                                                 </VBox>
 
-                                                <VBox alignment="CENTER" spacing="10.0"
-                                                      prefWidth="185.0" prefHeight="280.0"
-                                                      style="-fx-background-color: #f5dce2; -fx-padding: 12;">
+                                                <VBox alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
-                                                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false">
+                                                        <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
                                                             <image>
-                                                                <Image url="@../images/flower-rose.jpg"/>
+                                                                <Image url="@../images/flower-rose.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label text="Rose Bouquet"
-                                                               style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/>
-                                                        <Label text="\$25"
-                                                               style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/>
-                                                        <Button text="Add to Cart"
-                                                                onAction="#handleAddToCart"
-                                                                style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;"/>
+                                                        <Label style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Rose Bouquet" />
+                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$25" />
+                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" />
                                                     </children>
                                                 </VBox>
                                             </children>
@@ -268,12 +178,9 @@
     </center>
 
     <bottom>
-        <HBox alignment="CENTER"
-              prefHeight="40.0"
-              style="-fx-background-color: #f7c8d7;">
+        <HBox alignment="CENTER" prefHeight="40.0" style="-fx-background-color: #f7c8d7;">
             <children>
-                <Label text="Flower Shop. flowershop@gmail.com"
-                       style="-fx-text-fill: white; -fx-font-size: 16px;"/>
+                <Label style="-fx-text-fill: white; -fx-font-size: 16px;" text="Flower Shop. flowershop@gmail.com" />
             </children>
         </HBox>
     </bottom>

@@ -7,162 +7,127 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="flowershop.controllers.CartController"
-            stylesheets="@../css/user-style.css"
-            style="-fx-background-color: #f8eef1;">
+<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.CartController">
 
+    <!-- Top Bar -->
     <top>
-        <HBox prefHeight="56.0" alignment="CENTER_LEFT" spacing="22.0" style="-fx-background-color: #f7c8d7;">
+        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" style="-fx-background-color: #f7c8d7;">
             <padding>
-                <Insets top="0.0" right="18.0" bottom="0.0" left="18.0"/>
+                <Insets bottom="0.0" left="18.0" right="18.0" top="0.0" />
             </padding>
             <children>
-                <Label text="Flower shop"
-                       style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 500;"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Button text="Home" onAction="#goHome"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Flowers" onAction="#goFlowers"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Categories" onAction="#goCategories"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Contact" onAction="#goContact"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Cart" onAction="#goCart"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true;"/>
-                <Button text="Log Out" onAction="#handleLogout"
-                        prefWidth="94.0" prefHeight="34.0"
-                        style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 700; -fx-background-radius: 6;"/>
+                <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 500;" text="Flower shop" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Button onAction="#goHome" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Home" />
+                <Button onAction="#goFlowers" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Flowers" />
+                <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Categories" />
+                <Button onAction="#goContact" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Contact" />
+                <Button onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true;" text="Cart" />
+                <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 700; -fx-background-radius: 6;" text="Log Out" />
             </children>
         </HBox>
     </top>
 
+    <!-- Center Section (Updated with AnchorPane for cart items and summary) -->
     <center>
-        <StackPane style="-fx-background-color: #f8eef1;">
-            <children>
-                <VBox spacing="26.0" maxWidth="1320.0" prefWidth="1320.0">
-                    <padding>
-                        <Insets top="22.0" right="26.0" bottom="22.0" left="26.0"/>
-                    </padding>
-
-                    <children>
-
-                        <Label text="Shopping Cart"
-                               maxWidth="1320.0"
-                               prefHeight="42.0"
-                               style="-fx-background-color: #edd6d8; -fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700; -fx-padding: 8 0 0 16;"/>
-
-                        <HBox alignment="CENTER_LEFT" spacing="90.0">
-                            <children>
-                                <VBox alignment="CENTER" spacing="8.0"
-                                      prefWidth="135.0" prefHeight="118.0"
-                                      style="-fx-background-color: #f5dce2; -fx-padding: 10;">
-                                    <children>
-                                        <ImageView fitWidth="78.0" fitHeight="78.0" preserveRatio="false">
-                                            <image>
-                                                <Image url="@../images/category.jpg"/>
-                                            </image>
-                                        </ImageView>
-                                        <Label text="Birthday Flowers"
-                                               style="-fx-text-fill: #9b6666; -fx-font-size: 12px;"/>
-                                    </children>
-                                </VBox>
-
-                                <Label text="\$25"
-                                       style="-fx-text-fill: #9b6666; -fx-font-size: 28px;"/>
-
-                                <HBox alignment="CENTER" spacing="18.0"
-                                      prefWidth="110.0" prefHeight="38.0"
-                                      style="-fx-background-color: #edd6d8;">
-                                    <children>
-                                        <Label text="-" style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;"/>
-                                        <Label text="1" style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;"/>
-                                        <Label text="+" style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;"/>
-                                    </children>
-                                </HBox>
-
-                                <Label text="Remove"
-                                       style="-fx-text-fill: #8e5f5f; -fx-font-size: 22px; -fx-underline: true;"/>
-                            </children>
+      <BorderPane>
+         <top>
+               <!-- Shopping Cart Title -->
+               <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700; -fx-background-color: #edd6d8; -fx-padding: 8 0 0 16;" text="Shopping Cart" BorderPane.alignment="TOP_LEFT">
+               <BorderPane.margin>
+                  <Insets left="6.0" top="6.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <bottom>
+   
+                  <!-- Cart Summary and Checkout -->
+               <HBox alignment="CENTER_LEFT" spacing="180.0" BorderPane.alignment="CENTER">
+                   <children>
+                       <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 700;" text="Cart Summary:" />
+                       <VBox spacing="10.0">
+                           <children>
+                               <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 22px;" text="Subtotal: \$50" />
+                               <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 22px;" text="Shipping: \$5" />
+                               <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 22px;" text="Total: \$55" />
+                           </children>
+                       </VBox>
+                       <Button onAction="#goCheckout" prefHeight="48.0" prefWidth="180.0" style="-fx-background-color: #f59bc0; -fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-background-radius: 6;" text="Checkout" />
+                   </children>
+               </HBox>
+         </bottom>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <HBox alignment="CENTER_LEFT" spacing="90.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="118.0" prefWidth="135.0" spacing="8.0" style="-fx-background-color: #f5dce2; -fx-padding: 10;">
+                           <children>
+                              <ImageView fitHeight="78.0" fitWidth="78.0" preserveRatio="false">
+                                 <image>
+                                    <Image url="@../images/category.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label style="-fx-text-fill: #9b6666; -fx-font-size: 12px;" text="Birthday Flowers" />
+                           </children>
+                        </VBox>
+                        <Label style="-fx-text-fill: #9b6666; -fx-font-size: 28px;" text="\$25" />
+                        <HBox alignment="CENTER" prefHeight="38.0" prefWidth="110.0" spacing="18.0" style="-fx-background-color: #edd6d8;">
+                           <children>
+                              <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;" text="-" />
+                              <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;" text="+">
+                                 <graphic>
+                                    <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;" text="1" />
+                                 </graphic>
+                              </Label>
+                           </children>
                         </HBox>
-
-                        <HBox alignment="CENTER_LEFT" spacing="90.0">
-                            <children>
-                                <VBox alignment="CENTER" spacing="8.0"
-                                      prefWidth="135.0" prefHeight="118.0"
-                                      style="-fx-background-color: #f5dce2; -fx-padding: 10;">
-                                    <children>
-                                        <ImageView fitWidth="78.0" fitHeight="78.0" preserveRatio="false">
-                                            <image>
-                                                <Image url="@../images/category.jpg"/>
-                                            </image>
-                                        </ImageView>
-                                        <Label text="Birthday Flowers"
-                                               style="-fx-text-fill: #9b6666; -fx-font-size: 12px;"/>
-                                    </children>
-                                </VBox>
-
-                                <Label text="\$25"
-                                       style="-fx-text-fill: #9b6666; -fx-font-size: 28px;"/>
-
-                                <HBox alignment="CENTER" spacing="18.0"
-                                      prefWidth="110.0" prefHeight="38.0"
-                                      style="-fx-background-color: #edd6d8;">
-                                    <children>
-                                        <Label text="-" style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;"/>
-                                        <Label text="1" style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;"/>
-                                        <Label text="+" style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;"/>
-                                    </children>
-                                </HBox>
-
-                                <Label text="Remove"
-                                       style="-fx-text-fill: #8e5f5f; -fx-font-size: 22px; -fx-underline: true;"/>
-                            </children>
+                        <Button mnemonicParsing="false" style="-fx-text-fill: #8e5f5f; -fx-underline: true; -fx-background-color: transparent; -fx-font-size: 22px;" text="Remove" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="90.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="118.0" prefWidth="135.0" spacing="8.0" style="-fx-background-color: #f5dce2; -fx-padding: 10;">
+                           <children>
+                              <ImageView fitHeight="78.0" fitWidth="78.0" preserveRatio="false">
+                                 <image>
+                                    <Image url="@../images/category.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Label style="-fx-text-fill: #9b6666; -fx-font-size: 12px;" text="Birthday Flowers" />
+                           </children>
+                        </VBox>
+                        <Label style="-fx-text-fill: #9b6666; -fx-font-size: 28px;" text="\$25" />
+                        <HBox alignment="CENTER" prefHeight="38.0" prefWidth="110.0" spacing="18.0" style="-fx-background-color: #edd6d8;">
+                           <children>
+                              <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;" text="-" />
+                              <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;" text="+">
+                                 <graphic>
+                                    <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;" text="1" />
+                                 </graphic>
+                              </Label>
+                           </children>
                         </HBox>
-
-                        <HBox alignment="CENTER_LEFT" spacing="180.0">
-                            <children>
-                                <Label text="Cart Summary:"
-                                       style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 700;"/>
-
-                                <VBox spacing="10.0">
-                                    <children>
-                                        <Label text="Subtotal: \$50"
-                                               style="-fx-text-fill: #8e5f5f; -fx-font-size: 22px;"/>
-                                        <Label text="Shipping: \$5"
-                                               style="-fx-text-fill: #8e5f5f; -fx-font-size: 22px;"/>
-                                        <Label text="Total: \$55"
-                                               style="-fx-text-fill: #8e5f5f; -fx-font-size: 22px;"/>
-                                    </children>
-                                </VBox>
-
-                                <Region HBox.hgrow="ALWAYS"/>
-
-                                <Button text="Checkout"
-                                        onAction="#goCheckout"
-                                        prefWidth="180.0" prefHeight="48.0"
-                                        style="-fx-background-color: #f59bc0; -fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-background-radius: 6;"/>
-                            </children>
-                        </HBox>
-
-                    </children>
-                </VBox>
-            </children>
-        </StackPane>
+                        <Button mnemonicParsing="false" style="-fx-text-fill: #8e5f5f; -fx-underline: true; -fx-background-color: transparent; -fx-font-size: 22px;" text="Remove" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </center>
+      </BorderPane>
     </center>
 
+    <!-- Bottom Bar (Unchanged) -->
     <bottom>
         <HBox alignment="CENTER" prefHeight="36.0" style="-fx-background-color: #f7c8d7;">
             <children>
-                <Label text="Flower Shop. flowershop@gmail.com"
-                       style="-fx-text-fill: white; -fx-font-size: 13px;"/>
+                <Label style="-fx-text-fill: white; -fx-font-size: 13px;" text="Flower Shop. flowershop@gmail.com" />
             </children>
         </HBox>
     </bottom>
