@@ -1,6 +1,7 @@
 package flowershop.models;
 
 import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
 @Entity
@@ -25,4 +26,44 @@ public class OrderDetail {
     private BigDecimal price;
 
     public OrderDetail() {}
+
+    public int getOrderDetailId() {
+        return orderDetailId;
+    }
+
+    public void setOrderDetailId(int orderDetailId) {
+        this.orderDetailId = orderDetailId;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
 }

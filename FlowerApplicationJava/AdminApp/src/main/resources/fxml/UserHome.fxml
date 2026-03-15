@@ -64,7 +64,7 @@
                                                                 <Image url="@../images/category.jpg" />
                                                             </image>
                                                         </ImageView>
-                                          <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Birthday Flowers" />
+                                                        <Button onAction="#handleCategoryClick" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 16px; -fx-cursor: hand;" text="Birthday Flowers" />
                                                     </children>
                                                 </VBox>
 
@@ -75,7 +75,7 @@
                                                                 <Image url="@../images/category.jpg" />
                                                             </image>
                                                         </ImageView>
-                                          <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Wedding Flowers" />
+                                                        <Button onAction="#handleCategoryClick" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 16px; -fx-cursor: hand;" text="Wedding Flowers" />
                                                     </children>
                                                 </VBox>
 
@@ -86,7 +86,7 @@
                                                                 <Image url="@../images/category.jpg" />
                                                             </image>
                                                         </ImageView>
-                                          <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Anniversary Flowers" />
+                                                        <Button onAction="#handleCategoryClick" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 16px; -fx-cursor: hand;" text="Anniversary Flowers" />
                                                     </children>
                                                 </VBox>
 
@@ -97,7 +97,7 @@
                                                                 <Image url="@../images/category.jpg" />
                                                             </image>
                                                         </ImageView>
-                                          <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Sympathy Flowers" />
+                                                        <Button onAction="#handleCategoryClick" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 16px; -fx-cursor: hand;" text="Sympathy Flowers" />
                                                     </children>
                                                 </VBox>
                                             </children>
@@ -112,6 +112,7 @@
                                         <TilePane fx:id="productPane" alignment="CENTER" hgap="30.0" maxWidth="1200.0" prefColumns="4" prefTileHeight="280.0" prefTileWidth="185.0" tileAlignment="CENTER" vgap="24.0">
 
                                             <children>
+                                                <!-- Birthday -->
                                                 <VBox alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
                                                         <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
@@ -119,12 +120,13 @@
                                                                 <Image url="@../images/flower-rose.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label prefWidth="98.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Rose Bouquet" />
-                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$25" />
-                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" />
+                                                        <Label alignment="CENTER" prefWidth="140.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Pink Tulip Box" wrapText="true" />
+                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$28" />
+                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Pink Tulip Box" />
                                                     </children>
                                                 </VBox>
 
+                                                <!-- Wedding -->
                                                 <VBox alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
                                                         <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
@@ -132,12 +134,13 @@
                                                                 <Image url="@../images/flower-rose.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Rose Bouquet" />
-                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$25" />
-                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" />
+                                                        <Label alignment="CENTER" prefWidth="160.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Ivory Peony Bouquet" wrapText="true" />
+                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$48" />
+                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Ivory Peony Bouquet" />
                                                     </children>
                                                 </VBox>
 
+                                                <!-- Anniversary -->
                                                 <VBox alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
                                                         <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
@@ -145,12 +148,13 @@
                                                                 <Image url="@../images/flower-rose.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Rose Bouquet" />
-                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$25" />
-                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" />
+                                                        <Label alignment="CENTER" prefWidth="200.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Ruby Romance Basket" wrapText="true" />
+                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$36" />
+                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Ruby Romance Basket" />
                                                     </children>
                                                 </VBox>
 
+                                                <!-- Sympathy -->
                                                 <VBox alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="10.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
                                                     <children>
                                                         <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
@@ -158,9 +162,9 @@
                                                                 <Image url="@../images/flower-rose.jpg" />
                                                             </image>
                                                         </ImageView>
-                                                        <Label style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Rose Bouquet" />
-                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$25" />
-                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" />
+                                                        <Label alignment="CENTER" prefWidth="150.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="White Lily Tribute" wrapText="true" />
+                                                        <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$31" />
+                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="White Lily Tribute" />
                                                     </children>
                                                 </VBox>
                                             </children>

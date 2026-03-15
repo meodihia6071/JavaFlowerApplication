@@ -1,10 +1,274 @@
 package flowershop.controllers;
 
+import flowershop.dao.ProductDAO;
+import flowershop.models.Customer;
+import flowershop.models.Product;
+import flowershop.services.CartService;
 import flowershop.services.SceneManager;
+import flowershop.services.SessionManager;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
+
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 
 public class FlowersController {
+
+    @FXML
+    private TextField txtSearch;
+
+    @FXML
+    private ComboBox<String> cboPriceRange;
+
+    @FXML
+    private CheckBox chkBirthday;
+
+    @FXML
+    private CheckBox chkWedding;
+
+    @FXML
+    private CheckBox chkAnniversary;
+
+    @FXML
+    private CheckBox chkSympathy;
+
+    @FXML
+    private CheckBox chkInStockOnly;
+
+    @FXML
+    private ComboBox<String> cboSortBy;
+
+    @FXML
+    private TilePane productTilePane;
+
+    private final ProductDAO productDAO = new ProductDAO();
+    private final CartService cartService = new CartService();
+    private final DecimalFormat moneyFormat = new DecimalFormat("0.##");
+
+    private List<Product> randomizedProducts = new ArrayList<>();
+
+    @FXML
+    public void initialize() {
+        setupFilterControls();
+        loadInitialProducts();
+
+        txtSearch.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+    }
+
+    private void setupFilterControls() {
+        cboPriceRange.getItems().addAll(
+                "All prices",
+                "Under $25",
+                "$25 - $35",
+                "$36 - $45",
+                "Above $45"
+        );
+        cboPriceRange.setValue("All prices");
+
+        cboSortBy.getItems().addAll(
+                "Default",
+                "Name A-Z",
+                "Price low to high",
+                "Price high to low"
+        );
+        cboSortBy.setValue("Default");
+    }
+
+    private void loadInitialProducts() {
+        List<Product> allProducts = productDAO.findAllWithCategory();
+        randomizedProducts = new ArrayList<>(allProducts);
+        Collections.shuffle(randomizedProducts);
+        displayProducts(randomizedProducts);
+    }
+
+    @FXML
+    public void handleShowResults() {
+        applyFilters();
+    }
+
+    private void applyFilters() {
+        List<Product> filtered = new ArrayList<>(randomizedProducts);
+
+        String keyword = txtSearch.getText() == null ? "" : txtSearch.getText().trim().toLowerCase(Locale.ROOT);
+        if (!keyword.isBlank()) {
+            filtered.removeIf(product ->
+                    product.getProductName() == null ||
+                            !product.getProductName().toLowerCase(Locale.ROOT).contains(keyword)
+            );
+        }
+
+        List<String> selectedCategories = getSelectedCategories();
+        if (!selectedCategories.isEmpty()) {
+            filtered.removeIf(product -> {
+                String categoryName = product.getCategory() != null ? product.getCategory().getCategoryName() : "";
+                return !selectedCategories.contains(categoryName);
+            });
+        }
+
+        String priceRange = cboPriceRange.getValue();
+        if (priceRange != null && !priceRange.equals("All prices")) {
+            filtered.removeIf(product -> !matchPriceRange(product.getPrice(), priceRange));
+        }
+
+        if (chkInStockOnly.isSelected()) {
+            filtered.removeIf(product -> product.getQuantity() <= 0);
+        }
+
+        String sortBy = cboSortBy.getValue();
+        if (sortBy != null) {
+            switch (sortBy) {
+                case "Name A-Z" -> filtered.sort(Comparator.comparing(
+                        product -> product.getProductName().toLowerCase(Locale.ROOT)
+                ));
+                case "Price low to high" -> filtered.sort(Comparator.comparing(Product::getPrice));
+                case "Price high to low" -> filtered.sort(Comparator.comparing(Product::getPrice).reversed());
+                default -> {
+                    // Default = giữ thứ tự ngẫu nhiên ban đầu
+                }
+            }
+        }
+
+        displayProducts(filtered);
+    }
+
+    private List<String> getSelectedCategories() {
+        List<String> selected = new ArrayList<>();
+
+        if (chkBirthday.isSelected()) {
+            selected.add("Birthday Flowers");
+        }
+        if (chkWedding.isSelected()) {
+            selected.add("Wedding Flowers");
+        }
+        if (chkAnniversary.isSelected()) {
+            selected.add("Anniversary Flowers");
+        }
+        if (chkSympathy.isSelected()) {
+            selected.add("Sympathy Flowers");
+        }
+
+        return selected;
+    }
+
+    private boolean matchPriceRange(BigDecimal price, String priceRange) {
+        if (price == null) return false;
+
+        return switch (priceRange) {
+            case "Under $25" -> price.compareTo(new BigDecimal("25")) < 0;
+            case "$25 - $35" ->
+                    price.compareTo(new BigDecimal("25")) >= 0 &&
+                            price.compareTo(new BigDecimal("35")) <= 0;
+            case "$36 - $45" ->
+                    price.compareTo(new BigDecimal("36")) >= 0 &&
+                            price.compareTo(new BigDecimal("45")) <= 0;
+            case "Above $45" -> price.compareTo(new BigDecimal("45")) > 0;
+            default -> true;
+        };
+    }
+
+    private void displayProducts(List<Product> products) {
+        productTilePane.getChildren().clear();
+
+        if (products.isEmpty()) {
+            Label emptyLabel = new Label("No flowers found.");
+            emptyLabel.setStyle("-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700;");
+            productTilePane.getChildren().add(emptyLabel);
+            return;
+        }
+
+        for (Product product : products) {
+            productTilePane.getChildren().add(createProductCard(product));
+        }
+    }
+
+    private VBox createProductCard(Product product) {
+        VBox card = new VBox();
+        card.setAlignment(Pos.CENTER);
+        card.setSpacing(10);
+        card.setPrefWidth(190);
+        card.setPrefHeight(280);
+        card.setStyle("-fx-background-color: #f5dce2; -fx-padding: 12;");
+
+        ImageView imageView = new ImageView(loadProductImage(product.getImage()));
+        imageView.setFitWidth(150);
+        imageView.setFitHeight(150);
+        imageView.setPreserveRatio(false);
+
+        Label nameLabel = new Label(product.getProductName());
+        nameLabel.setStyle("-fx-text-fill: #9b6666; -fx-font-size: 16px;");
+        nameLabel.setWrapText(true);
+        nameLabel.setMaxWidth(150);
+        nameLabel.setAlignment(Pos.CENTER);
+
+        Label priceLabel = new Label("$" + formatMoney(product.getPrice()));
+        priceLabel.setStyle("-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;");
+
+        Button addButton = new Button("Add to Cart");
+        addButton.setUserData(product.getProductName());
+        addButton.setOnAction(this::handleAddToCart);
+        addButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px;");
+
+        card.getChildren().addAll(imageView, nameLabel, priceLabel, addButton);
+        return card;
+    }
+
+    private Image loadProductImage(String imageName) {
+        try {
+            InputStream stream = null;
+
+            if (imageName != null && !imageName.isBlank()) {
+                stream = getClass().getResourceAsStream("/images/" + imageName);
+            }
+
+            if (stream == null) {
+                stream = getClass().getResourceAsStream("/images/flower-rose.jpg");
+            }
+
+            return new Image(stream);
+        } catch (Exception e) {
+            InputStream fallback = getClass().getResourceAsStream("/images/flower-rose.jpg");
+            return new Image(fallback);
+        }
+    }
+
+    private String formatMoney(BigDecimal amount) {
+        return amount == null ? "0" : moneyFormat.format(amount);
+    }
+
+    @FXML
+    public void handleAddToCart(javafx.event.ActionEvent event) {
+        Customer customer = SessionManager.getCurrentCustomer();
+
+        try {
+            Button button = (Button) event.getSource();
+            String productName = button.getUserData() != null ? button.getUserData().toString().trim() : "";
+
+            if (productName.isBlank()) {
+                throw new IllegalArgumentException("Không xác định được sản phẩm để thêm vào giỏ.");
+            }
+
+            cartService.addToCart(customer, productName);
+            SceneManager.switchScene("/fxml/Cart.fxml", "Cart");
+        } catch (Exception e) {
+            showInfo("Lỗi", e.getMessage());
+        }
+    }
 
     @FXML
     public void goHome() {
@@ -38,5 +302,13 @@ public class FlowersController {
     @FXML
     public void handleLogout() {
         AuthController.logout();
+    }
+
+    private void showInfo(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

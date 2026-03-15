@@ -3,159 +3,56 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="flowershop.controllers.FlowersController"
-            stylesheets="@../css/user-style.css"
-            style="-fx-background-color: #f8eef1;">
+<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.FlowersController">
 
     <top>
-        <HBox prefHeight="56.0"
-              alignment="CENTER_LEFT"
-              spacing="22.0"
-              style="-fx-background-color: #f7c8d7;">
+        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" style="-fx-background-color: #f7c8d7;">
             <padding>
-                <Insets top="0.0" right="18.0" bottom="0.0" left="18.0"/>
+                <Insets bottom="0.0" left="18.0" right="18.0" top="0.0" />
             </padding>
             <children>
-                <Label text="Flower shop"
-                       style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 500;"/>
+                <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 500;" text="Flower shop" />
 
-                <Region HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS" />
 
-                <Button text="Home" onAction="#goHome"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Flowers" onAction="#goFlowers"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true;"/>
-                <Button text="Categories" onAction="#goCategories"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Contact" onAction="#goContact"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Cart" onAction="#goCart"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
+                <Button onAction="#goHome" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Home" />
+                <Button onAction="#goFlowers" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true;" text="Flowers" />
+                <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Categories" />
+                <Button onAction="#goContact" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Contact" />
+                <Button onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Cart" />
 
-                <Button text="Log Out" onAction="#handleLogout"
-                        prefWidth="94.0" prefHeight="34.0"
-                        style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 700; -fx-background-radius: 6;"/>
+                <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 700; -fx-background-radius: 6;" text="Log Out" />
             </children>
         </HBox>
     </top>
 
     <center>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
-                    style="-fx-background: #f8eef1; -fx-background-color: #f8eef1;">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: #f8eef1; -fx-background-color: #f8eef1;" vbarPolicy="AS_NEEDED">
             <content>
                 <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-background-color: #f8eef1;">
                     <padding>
-                        <Insets top="18.0" right="18.0" bottom="18.0" left="18.0"/>
+                        <Insets bottom="18.0" left="30.0" right="18.0" top="18.0" />
                     </padding>
 
                     <children>
-                        <HBox spacing="24.0" maxWidth="1280.0" prefWidth="1280.0">
+                        <HBox maxWidth="1280.0" prefWidth="1280.0" spacing="30.0">
                             <children>
 
-                                <VBox prefWidth="200.0" spacing="14.0"
-                                      style="-fx-background-color: #f3dfe3; -fx-padding: 14;">
+                                <VBox alignment="TOP_CENTER" spacing="18.0" HBox.hgrow="ALWAYS">
                                     <children>
-                                        <Label text="Flowers"
-                                               style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 700;"/>
+                                        <TextField fx:id="txtSearch" maxWidth="980.0" prefHeight="42.0" promptText="Search flowers ..." style="-fx-background-color: #f4f1f1; -fx-background-radius: 18; -fx-prompt-text-fill: #d59b9b; -fx-font-size: 18px;" />
 
-                                        <VBox spacing="8.0">
-                                            <children>
-                                                <Label text="Price" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;"/>
-                                                <Slider min="10" max="20" value="15"/>
-                                                <HBox spacing="46.0">
-                                                    <children>
-                                                        <Label text="\$10" style="-fx-text-fill: #8e5f5f; -fx-font-size: 10px;"/>
-                                                        <Label text="\$20" style="-fx-text-fill: #8e5f5f; -fx-font-size: 10px;"/>
-                                                    </children>
-                                                </HBox>
-                                            </children>
-                                        </VBox>
-
-                                        <VBox spacing="10.0">
-                                            <children>
-                                                <Label text="Color" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;"/>
-                                                <HBox spacing="10.0">
-                                                    <children>
-                                                        <Region prefWidth="18" prefHeight="18" style="-fx-background-color: #ff4d73; -fx-background-radius: 50;"/>
-                                                        <Region prefWidth="18" prefHeight="18" style="-fx-background-color: #ff9bb4; -fx-background-radius: 50;"/>
-                                                        <Region prefWidth="18" prefHeight="18" style="-fx-background-color: #72d29b; -fx-background-radius: 50;"/>
-                                                        <Region prefWidth="18" prefHeight="18" style="-fx-background-color: #56d7e8; -fx-background-radius: 50;"/>
-                                                    </children>
-                                                </HBox>
-                                            </children>
-                                        </VBox>
-
-                                        <VBox spacing="6.0">
-                                            <children>
-                                                <Label text="Event" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;"/>
-                                                <CheckBox text="Birthday"/>
-                                                <CheckBox text="Wedding"/>
-                                                <CheckBox text="Anniversary"/>
-                                                <CheckBox text="Sympathy"/>
-                                            </children>
-                                        </VBox>
-
-                                        <VBox spacing="6.0">
-                                            <children>
-                                                <Label text="For whom" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;"/>
-                                                <CheckBox text="Spouse"/>
-                                                <CheckBox text="Girlfriend"/>
-                                                <CheckBox text="Mother"/>
-                                                <CheckBox text="Friend"/>
-                                            </children>
-                                        </VBox>
-
-                                        <Button text="Show results"
-                                                prefWidth="120.0" prefHeight="34.0"
-                                                style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: 700; -fx-background-radius: 6;"/>
-                                    </children>
-                                </VBox>
-
-                                <VBox spacing="18.0" HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <TextField promptText="Search flowers ..."
-                                                   prefHeight="42.0"
-                                                   maxWidth="980.0"
-                                                   style="-fx-background-color: #f4f1f1; -fx-background-radius: 18; -fx-prompt-text-fill: #d59b9b; -fx-font-size: 18px;"/>
-
-                                        <TilePane hgap="30.0"
-                                                  vgap="28.0"
-                                                  prefColumns="4"
-                                                  prefTileWidth="190.0"
-                                                  prefTileHeight="280.0">
-
-                                            <children>
-                                                <VBox alignment="CENTER" spacing="10.0" prefWidth="190.0" prefHeight="280.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;">
-                                                    <children>
-                                                        <ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false"><image><Image url="@../images/flower-rose.jpg"/></image></ImageView>
-                                                        <Label text="Rose Bouquet" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/>
-                                                        <Label text="\$25" style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/>
-                                                        <Button text="Add to Cart" onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px;"/>
-                                                    </children>
-                                                </VBox>
-                                                <VBox alignment="CENTER" spacing="10.0" prefWidth="190.0" prefHeight="280.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;"><children><ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false"><image><Image url="@../images/flower-rose.jpg"/></image></ImageView><Label text="Rose Bouquet" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/><Label text="\$25" style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/><Button text="Add to Cart" onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px;"/></children></VBox>
-                                                <VBox alignment="CENTER" spacing="10.0" prefWidth="190.0" prefHeight="280.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;"><children><ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false"><image><Image url="@../images/flower-rose.jpg"/></image></ImageView><Label text="Rose Bouquet" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/><Label text="\$25" style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/><Button text="Add to Cart" onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px;"/></children></VBox>
-                                                <VBox alignment="CENTER" spacing="10.0" prefWidth="190.0" prefHeight="280.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;"><children><ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false"><image><Image url="@../images/flower-rose.jpg"/></image></ImageView><Label text="Rose Bouquet" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/><Label text="\$25" style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/><Button text="Add to Cart" onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px;"/></children></VBox>
-                                                <VBox alignment="CENTER" spacing="10.0" prefWidth="190.0" prefHeight="280.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;"><children><ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false"><image><Image url="@../images/flower-rose.jpg"/></image></ImageView><Label text="Rose Bouquet" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/><Label text="\$25" style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/><Button text="Add to Cart" onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px;"/></children></VBox>
-                                                <VBox alignment="CENTER" spacing="10.0" prefWidth="190.0" prefHeight="280.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;"><children><ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false"><image><Image url="@../images/flower-rose.jpg"/></image></ImageView><Label text="Rose Bouquet" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/><Label text="\$25" style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/><Button text="Add to Cart" onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px;"/></children></VBox>
-                                                <VBox alignment="CENTER" spacing="10.0" prefWidth="190.0" prefHeight="280.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;"><children><ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false"><image><Image url="@../images/flower-rose.jpg"/></image></ImageView><Label text="Rose Bouquet" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/><Label text="\$25" style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/><Button text="Add to Cart" onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px;"/></children></VBox>
-                                                <VBox alignment="CENTER" spacing="10.0" prefWidth="190.0" prefHeight="280.0" style="-fx-background-color: #f5dce2; -fx-padding: 12;"><children><ImageView fitWidth="150.0" fitHeight="150.0" preserveRatio="false"><image><Image url="@../images/flower-rose.jpg"/></image></ImageView><Label text="Rose Bouquet" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;"/><Label text="\$25" style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;"/><Button text="Add to Cart" onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px;"/></children></VBox>
-                                            </children>
-                                        </TilePane>
+                                        <TilePane fx:id="productTilePane" alignment="CENTER" hgap="30.0" prefColumns="4" prefTileHeight="280.0" prefTileWidth="190.0" vgap="28.0" />
                                     </children>
                                 </VBox>
 
@@ -170,9 +67,50 @@
     <bottom>
         <HBox alignment="CENTER" prefHeight="36.0" style="-fx-background-color: #f7c8d7;">
             <children>
-                <Label text="Flower Shop. flowershop@gmail.com" style="-fx-text-fill: white; -fx-font-size: 13px;"/>
+                <Label style="-fx-text-fill: white; -fx-font-size: 13px;" text="Flower Shop. flowershop@gmail.com" />
             </children>
         </HBox>
     </bottom>
+   <left>
+
+                                <VBox prefWidth="230.0" spacing="40.0" style="-fx-background-color: #f3dfe3; -fx-padding: 14;" BorderPane.alignment="CENTER">
+                  <children>
+                      <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 700;" text="Flowers" />
+
+                                        <VBox spacing="8.0">
+                          <children>
+                              <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;" text="Price range" />
+                              <ComboBox fx:id="cboPriceRange" prefWidth="160.0" />
+                          </children>
+                      </VBox>
+
+                                        <VBox spacing="6.0">
+                          <children>
+                              <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;" text="Category filter" />
+                              <CheckBox fx:id="chkBirthday" text="Birthday" />
+                              <CheckBox fx:id="chkWedding" text="Wedding" />
+                              <CheckBox fx:id="chkAnniversary" text="Anniversary" />
+                              <CheckBox fx:id="chkSympathy" text="Sympathy" />
+                          </children>
+                      </VBox>
+
+                                        <VBox spacing="6.0">
+                          <children>
+                              <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;" text="Availability" />
+                              <CheckBox fx:id="chkInStockOnly" text="In stock only" />
+                          </children>
+                      </VBox>
+
+                                        <VBox spacing="8.0">
+                          <children>
+                              <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;" text="Sort by:" />
+                              <ComboBox fx:id="cboSortBy" prefWidth="160.0" />
+                          </children>
+                      </VBox>
+
+                                        <Button onAction="#handleShowResults" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: 700; -fx-background-radius: 6;" text="Show results" />
+                  </children>
+              </VBox>
+   </left>
 
 </BorderPane>
