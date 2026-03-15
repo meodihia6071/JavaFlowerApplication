@@ -101,6 +101,9 @@ public class CartController {
 
         Label quantityLabel = new Label(String.valueOf(item.getQuantity()));
         quantityLabel.setStyle("-fx-text-fill: #8e5f5f; -fx-font-size: 20px;");
+        quantityLabel.setMinWidth(30);
+        quantityLabel.setPrefWidth(40);
+        quantityLabel.setAlignment(Pos.CENTER);
 
         Button btnPlus = new Button("+");
         btnPlus.setStyle("-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-cursor: hand;");
@@ -109,9 +112,9 @@ public class CartController {
             loadCart();
         });
 
-        HBox quantityBox = new HBox(18, btnMinus, quantityLabel, btnPlus);
+        HBox quantityBox = new HBox(12, btnMinus, quantityLabel, btnPlus);
         quantityBox.setAlignment(Pos.CENTER);
-        quantityBox.setPrefWidth(110);
+        quantityBox.setPrefWidth(140);
         quantityBox.setPrefHeight(38);
         quantityBox.setStyle("-fx-background-color: #edd6d8;");
 
