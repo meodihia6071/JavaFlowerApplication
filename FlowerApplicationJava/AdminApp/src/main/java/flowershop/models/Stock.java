@@ -17,6 +17,15 @@ public class Stock {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "supplier")
+    private String supplier;
+
+    @Column(name = "price")
+    private Double price;
+
+    @Column(name = "import_date")
+    private String importDate;
+
     @Column(name = "last_update")
     private String lastUpdate;
 
@@ -57,4 +66,29 @@ public class Stock {
         this.lastUpdate = lastUpdate;
     }
 
+    // ===== GETTER SETTER NEW =====
+
+    public String getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(String supplier) {
+        this.supplier = supplier;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getImportDate() {
+        return importDate;
+    }
+
+    public void setImportDate(String importDate) {
+        this.importDate = importDate;
+    }
 }

@@ -35,14 +35,9 @@ public class AdminSuppliersController {
     @FXML
     private TextField searchField;
 
-    @FXML
-    private ComboBox<String> filterBox;
-
     private SupplierDAO supplierDAO = new SupplierDAO();
 
     private ObservableList<Supplier> supplierList;
-
-    private boolean sortAsc = true;
 
     @FXML
     public void initialize(){
@@ -52,15 +47,9 @@ public class AdminSuppliersController {
         colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
 
+        supplierTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
         loadSuppliers();
-
-        filterBox.getItems().addAll(
-                "All",
-                "A-M",
-                "N-Z"
-        );
-
-        filterBox.setValue("All");
     }
 
     private void loadSuppliers(){
@@ -72,7 +61,8 @@ public class AdminSuppliersController {
         supplierTable.setItems(supplierList);
     }
 
-    // NAVIGATION
+    // ================= NAVIGATION =================
+
     @FXML
     void goDashboard(ActionEvent e){
         SceneManager.switchScene("/fxml/AdminDashboard.fxml","Dashboard");
@@ -114,121 +104,116 @@ public class AdminSuppliersController {
         SceneManager.switchScene("/fxml/login.fxml","Login");
     }
 
-    // ADD
+    // ================= ADD =================
+
     @FXML
     void handleAddSupplier(ActionEvent e){
 
-        TextInputDialog name = new TextInputDialog();
-        name.setHeaderText("Supplier Name");
-        Optional<String> nameResult = name.showAndWait();
+        TextInputDialog nameDialog = new TextInputDialog();
+        nameDialog.setHeaderText("Enter Supplier Name");
 
-        if(nameResult.isEmpty()) return;
+        Optional<String> name = nameDialog.showAndWait();
+        if(name.isEmpty()) return;
 
-        TextInputDialog phone = new TextInputDialog();
-        phone.setHeaderText("Phone");
-        Optional<String> phoneResult = phone.showAndWait();
+        TextInputDialog phoneDialog = new TextInputDialog();
+        phoneDialog.setHeaderText("Enter Phone");
 
-        if(phoneResult.isEmpty()) return;
+        Optional<String> phone = phoneDialog.showAndWait();
+        if(phone.isEmpty()) return;
 
-        TextInputDialog address = new TextInputDialog();
-        address.setHeaderText("Address");
-        Optional<String> addressResult = address.showAndWait();
+        TextInputDialog addressDialog = new TextInputDialog();
+        addressDialog.setHeaderText("Enter Address");
 
-        if(addressResult.isEmpty()) return;
+        Optional<String> address = addressDialog.showAndWait();
+        if(address.isEmpty()) return;
 
         Supplier s = new Supplier();
 
-        s.setSupplierName(nameResult.get());
-        s.setPhone(phoneResult.get());
-        s.setAddress(addressResult.get());
+        s.setSupplierName(name.get());
+        s.setPhone(phone.get());
+        s.setAddress(address.get());
 
         supplierDAO.save(s);
 
         loadSuppliers();
     }
 
-    // EDIT
+    // ================= EDIT =================
+
     @FXML
     void handleEditSupplier(ActionEvent e){
 
         Supplier s = supplierTable.getSelectionModel().getSelectedItem();
 
         if(s == null){
-            showAlert("Please select supplier");
+            showAlert("Please select a supplier");
             return;
         }
 
-        TextInputDialog name = new TextInputDialog(s.getSupplierName());
-        name.setHeaderText("Edit Supplier Name");
-        Optional<String> nameResult = name.showAndWait();
+        TextInputDialog nameDialog = new TextInputDialog(s.getSupplierName());
+        nameDialog.setHeaderText("Edit Supplier Name");
 
-        if(nameResult.isEmpty()) return;
+        Optional<String> name = nameDialog.showAndWait();
+        if(name.isEmpty()) return;
 
-        TextInputDialog phone = new TextInputDialog(s.getPhone());
-        phone.setHeaderText("Edit Phone");
-        Optional<String> phoneResult = phone.showAndWait();
+        TextInputDialog phoneDialog = new TextInputDialog(s.getPhone());
+        phoneDialog.setHeaderText("Edit Phone");
 
-        if(phoneResult.isEmpty()) return;
+        Optional<String> phone = phoneDialog.showAndWait();
+        if(phone.isEmpty()) return;
 
-        TextInputDialog address = new TextInputDialog(s.getAddress());
-        address.setHeaderText("Edit Address");
-        Optional<String> addressResult = address.showAndWait();
+        TextInputDialog addressDialog = new TextInputDialog(s.getAddress());
+        addressDialog.setHeaderText("Edit Address");
 
-        if(addressResult.isEmpty()) return;
+        Optional<String> address = addressDialog.showAndWait();
+        if(address.isEmpty()) return;
 
-        s.setSupplierName(nameResult.get());
-        s.setPhone(phoneResult.get());
-        s.setAddress(addressResult.get());
+        s.setSupplierName(name.get());
+        s.setPhone(phone.get());
+        s.setAddress(address.get());
 
         supplierDAO.update(s);
 
         loadSuppliers();
     }
 
-    // DELETE
+    // ================= DELETE =================
+
     @FXML
     void handleDeleteSupplier(ActionEvent e){
 
         Supplier s = supplierTable.getSelectionModel().getSelectedItem();
 
         if(s == null){
-            showAlert("Please select supplier");
+            showAlert("Please select a supplier");
             return;
         }
 
-        supplierDAO.delete(s);
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setHeaderText("Delete Supplier?");
+        confirm.setContentText("Are you sure you want to delete this supplier?");
 
-        loadSuppliers();
-    }
+        Optional<ButtonType> result = confirm.showAndWait();
 
-    // SORT
-    @FXML
-    void handleSort(ActionEvent e){
+        if(result.isPresent() && result.get() == ButtonType.OK){
 
-        if(sortAsc){
+            supplierDAO.delete(s);
 
-            FXCollections.sort(
-                    supplierList,
-                    Comparator.comparing(Supplier::getSupplierName)
-            );
-
-        }else{
-
-            FXCollections.sort(
-                    supplierList,
-                    Comparator.comparing(Supplier::getSupplierName).reversed()
-            );
-
+            loadSuppliers();
         }
-
-        sortAsc = !sortAsc;
     }
 
-    // SEARCH
+    // ================= SEARCH =================
+
     @FXML
     void handleSearch(ActionEvent e){
 
         String keyword = searchField.getText().toLowerCase();
+
+        if(keyword.isEmpty()){
+            supplierTable.setItems(supplierList);
+            return;
+        }
 
         supplierTable.setItems(
                 supplierList.filtered(
@@ -237,33 +222,41 @@ public class AdminSuppliersController {
         );
     }
 
-    // FILTER
+    // ================= SORT =================
+
     @FXML
-    void handleFilter(ActionEvent e){
-
-        String option = filterBox.getValue();
-
-        if(option.equals("All")){
-
-            supplierTable.setItems(supplierList);
-
-        }else if(option.equals("A-M")){
-
-            supplierTable.setItems(
-                    supplierList.filtered(
-                            s -> s.getSupplierName().toUpperCase().charAt(0) <= 'M'
-                    )
-            );
-
-        }else{
-
-            supplierTable.setItems(
-                    supplierList.filtered(
-                            s -> s.getSupplierName().toUpperCase().charAt(0) > 'M'
-                    )
-            );
-        }
+    void sortNameAZ(){
+        FXCollections.sort(
+                supplierList,
+                Comparator.comparing(Supplier::getSupplierName)
+        );
     }
+
+    @FXML
+    void sortNameZA(){
+        FXCollections.sort(
+                supplierList,
+                Comparator.comparing(Supplier::getSupplierName).reversed()
+        );
+    }
+
+    @FXML
+    void sortNewest(){
+        FXCollections.sort(
+                supplierList,
+                Comparator.comparing(Supplier::getSupplierId).reversed()
+        );
+    }
+
+    @FXML
+    void sortOldest(){
+        FXCollections.sort(
+                supplierList,
+                Comparator.comparing(Supplier::getSupplierId)
+        );
+    }
+
+    // ================= ALERT =================
 
     private void showAlert(String text){
 

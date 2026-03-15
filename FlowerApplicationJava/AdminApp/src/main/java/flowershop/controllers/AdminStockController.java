@@ -14,7 +14,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import javafx.scene.Node;
+import javafx.scene.layout.VBox;
+
 import java.util.List;
+import javafx.scene.layout.GridPane;
+import java.time.LocalDate;
 
 public class AdminStockController {
 
@@ -31,10 +36,22 @@ public class AdminStockController {
     private TableColumn<Stock,Integer> colQuantity;
 
     @FXML
+    private TableColumn<Stock,String> colSupplier;
+
+    @FXML
+    private TableColumn<Stock,Double> colPrice;
+
+    @FXML
+    private TableColumn<Stock,String> colImportDate;
+
+    @FXML
     private TableColumn<Stock,String> colUpdate;
 
     @FXML
     private TextField searchField;
+
+    @FXML
+    private VBox sidebar;
 
     private StockDAO stockDAO = new StockDAO();
 
@@ -46,9 +63,24 @@ public class AdminStockController {
         colId.setCellValueFactory(new PropertyValueFactory<>("id"));
         colProduct.setCellValueFactory(new PropertyValueFactory<>("productName"));
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        colSupplier.setCellValueFactory(new PropertyValueFactory<>("supplier"));
+        colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+        colImportDate.setCellValueFactory(new PropertyValueFactory<>("importDate"));
         colUpdate.setCellValueFactory(new PropertyValueFactory<>("lastUpdate"));
 
+
+        stockTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        stockTable.setRowFactory(tv -> {
+            TableRow<Stock> row = new TableRow<>();
+            row.setPrefHeight(35);
+            return row;
+        });
+
         loadStock();
+
+        // ===== SET ACTIVE MENU =====
+        setActiveMenu("Stock");
     }
 
     private void loadStock(){
@@ -57,6 +89,27 @@ public class AdminStockController {
         stockList = FXCollections.observableArrayList(list);
 
         stockTable.setItems(stockList);
+    }
+
+    // ===== ACTIVE MENU =====
+
+    private void setActiveMenu(String name){
+
+        if(sidebar == null) return;
+
+        for(Node node : sidebar.getChildren()){
+
+            if(node instanceof Button){
+
+                Button btn = (Button) node;
+
+                btn.getStyleClass().remove("menu-active");
+
+                if(btn.getText().equalsIgnoreCase(name)){
+                    btn.getStyleClass().add("menu-active");
+                }
+            }
+        }
     }
 
     // ================= NAVIGATION =================
@@ -112,14 +165,63 @@ public class AdminStockController {
     @FXML
     public void handleAddStock(ActionEvent event){
 
-        Stock stock = new Stock();
-        stock.setProductName("New Flower");
-        stock.setQuantity(10);
-        stock.setLastUpdate("2026");
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Add Stock");
 
-        stockDAO.save(stock);
+        Label nameLabel = new Label("Product:");
+        TextField nameField = new TextField();
 
-        loadStock();
+        Label qtyLabel = new Label("Quantity:");
+        TextField qtyField = new TextField();
+
+        Label supplierLabel = new Label("Supplier:");
+        TextField supplierField = new TextField();
+
+        Label priceLabel = new Label("Price:");
+        TextField priceField = new TextField();
+
+        Label importLabel = new Label("Import Date:");
+        TextField importField = new TextField();
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        grid.add(nameLabel,0,0);
+        grid.add(nameField,1,0);
+
+        grid.add(qtyLabel,0,1);
+        grid.add(qtyField,1,1);
+
+        grid.add(supplierLabel,0,2);
+        grid.add(supplierField,1,2);
+
+        grid.add(priceLabel,0,3);
+        grid.add(priceField,1,3);
+
+        grid.add(importLabel,0,4);
+        grid.add(importField,1,4);
+
+        dialog.getDialogPane().setContent(grid);
+
+        ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
+
+        if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
+
+            Stock stock = new Stock();
+
+            stock.setProductName(nameField.getText());
+            stock.setQuantity(Integer.parseInt(qtyField.getText()));
+            stock.setSupplier(supplierField.getText());
+            stock.setPrice(Double.parseDouble(priceField.getText()));
+            stock.setImportDate(importField.getText());
+            stock.setLastUpdate(java.time.LocalDate.now().toString());
+
+            stockDAO.save(stock);
+
+            loadStock();
+        }
     }
 
     @FXML
@@ -129,16 +231,66 @@ public class AdminStockController {
 
         if(selected == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setContentText("Select stock first");
+            alert.setContentText("Please select stock to edit");
             alert.show();
             return;
         }
 
-        selected.setQuantity(selected.getQuantity()+1);
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Edit Stock");
 
-        stockDAO.update(selected);
+        Label nameLabel = new Label("Product:");
+        TextField nameField = new TextField(selected.getProductName());
 
-        loadStock();
+        Label qtyLabel = new Label("Quantity:");
+        TextField qtyField = new TextField(String.valueOf(selected.getQuantity()));
+
+        Label supplierLabel = new Label("Supplier:");
+        TextField supplierField = new TextField(selected.getSupplier());
+
+        Label priceLabel = new Label("Price:");
+        TextField priceField = new TextField(String.valueOf(selected.getPrice()));
+
+        Label importLabel = new Label("Import Date:");
+        TextField importField = new TextField(selected.getImportDate());
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+
+        grid.add(nameLabel,0,0);
+        grid.add(nameField,1,0);
+
+        grid.add(qtyLabel,0,1);
+        grid.add(qtyField,1,1);
+
+        grid.add(supplierLabel,0,2);
+        grid.add(supplierField,1,2);
+
+        grid.add(priceLabel,0,3);
+        grid.add(priceField,1,3);
+
+        grid.add(importLabel,0,4);
+        grid.add(importField,1,4);
+
+        dialog.getDialogPane().setContent(grid);
+
+        ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
+
+        if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
+
+            selected.setProductName(nameField.getText());
+            selected.setQuantity(Integer.parseInt(qtyField.getText()));
+            selected.setSupplier(supplierField.getText());
+            selected.setPrice(Double.parseDouble(priceField.getText()));
+            selected.setImportDate(importField.getText());
+            selected.setLastUpdate(java.time.LocalDate.now().toString());
+
+            stockDAO.update(selected);
+
+            loadStock();
+        }
     }
 
     @FXML
@@ -146,20 +298,70 @@ public class AdminStockController {
 
         Stock selected = stockTable.getSelectionModel().getSelectedItem();
 
-        if(selected == null) return;
+        if(selected == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("Please select stock to delete");
+            alert.show();
+            return;
+        }
 
-        stockDAO.delete(selected);
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Stock");
+        confirm.setHeaderText("Confirm Delete");
+        confirm.setContentText("Delete stock of " + selected.getProductName() + "?");
 
-        loadStock();
+        if(confirm.showAndWait().get() == ButtonType.OK){
+
+            stockDAO.delete(selected);
+            loadStock();
+        }
     }
 
     // ================= SEARCH + SORT =================
 
     @FXML
-    public void handleSort(ActionEvent event){
+    public void sortNameAZ(){
 
         FXCollections.sort(stockList,
                 (a,b)->a.getProductName().compareToIgnoreCase(b.getProductName()));
+
+        stockTable.setItems(stockList);
+    }
+
+    @FXML
+    public void sortNameZA(){
+
+        FXCollections.sort(stockList,
+                (a,b)->b.getProductName().compareToIgnoreCase(a.getProductName()));
+
+        stockTable.setItems(stockList);
+    }
+
+    @FXML
+    public void sortQuantityAsc(){
+
+        FXCollections.sort(stockList,
+                (a,b)->Integer.compare(a.getQuantity(), b.getQuantity()));
+
+        stockTable.setItems(stockList);
+    }
+
+    @FXML
+    public void sortQuantityDesc(){
+
+        FXCollections.sort(stockList,
+                (a,b)->Integer.compare(b.getQuantity(), a.getQuantity()));
+
+        stockTable.setItems(stockList);
+    }
+
+    @FXML
+    public void sortNewest(){
+
+        FXCollections.sort(stockList,
+                (a,b)->b.getLastUpdate().compareTo(a.getLastUpdate()));
+
+        stockTable.setItems(stockList);
     }
 
     @FXML

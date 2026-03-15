@@ -1,6 +1,7 @@
 package flowershop.models;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "suppliers")
@@ -11,16 +12,34 @@ public class Supplier {
     @Column(name = "id")
     private int supplierId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String supplierName;
 
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "address")
     private String address;
 
+    @Column(name = "created_date")
+    private LocalDate createdDate;
+
+    @Column(name = "status")
+    private String status;
+
     public Supplier() {}
+
+    public Supplier(String supplierName, String phone, String email, String address, LocalDate createdDate, String status) {
+        this.supplierName = supplierName;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.createdDate = createdDate;
+        this.status = status;
+    }
 
     public int getSupplierId() {
         return supplierId;
@@ -46,11 +65,40 @@ public class Supplier {
         this.phone = phone;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getAddress() {
         return address;
     }
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public LocalDate getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDate createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return supplierName;
     }
 }

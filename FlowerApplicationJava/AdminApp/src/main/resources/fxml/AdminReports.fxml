@@ -4,10 +4,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.*?>
-<?import javafx.scene.text.Font?>
 
-<HBox prefHeight="650" prefWidth="1000"
-      style="-fx-background-color:#F8F8F8;"
+<HBox prefHeight="650"
+      prefWidth="1100"
+      stylesheets="@../css/admin-style.css"
+      styleClass="main-bg"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="flowershop.controllers.AdminReportsController">
@@ -15,84 +16,50 @@
     <children>
 
         <!-- SIDEBAR -->
-        <VBox prefWidth="220" style="-fx-background-color:#F6E1E5;">
+        <VBox prefWidth="230" styleClass="sidebar">
+
             <children>
 
-                <Label text="Flower shop" textFill="#613b41">
-                    <font>
-                        <Font name="System Bold" size="26.0" />
-                    </font>
-                    <VBox.margin>
-                        <Insets bottom="10.0" left="20.0" top="30.0" />
-                    </VBox.margin>
-                </Label>
+                <Label text="🌷 Flower Shop" styleClass="logo"/>
 
-                <Region prefHeight="1.0" style="-fx-background-color: #613b41;">
-                    <VBox.margin>
-                        <Insets bottom="20.0" left="20.0" right="20.0" />
-                    </VBox.margin>
-                </Region>
+                <Separator prefWidth="180" styleClass="sidebar-separator"/>
 
-                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goDashboard" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Dashboard">
-                    <font><Font name="System Bold" size="16.0" /></font>
-                    <padding><Insets left="30.0" /></padding>
-                </Button>
+                <Button text="🏠 Dashboard" onAction="#goDashboard" styleClass="menu-btn"/>
+                <Button text="🌸 Products" onAction="#goProducts" styleClass="menu-btn"/>
+                <Button text="📂 Categories" onAction="#goCategories" styleClass="menu-btn"/>
+                <Button text="📦 Orders" onAction="#goOrders" styleClass="menu-btn"/>
+                <Button text="👤 Customers" onAction="#goCustomers" styleClass="menu-btn"/>
+                <Button text="🚚 Suppliers" onAction="#goSuppliers" styleClass="menu-btn"/>
+                <Button text="📦 Stock" onAction="#goStock" styleClass="menu-btn"/>
 
-                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goProducts" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Products">
-                    <font><Font name="System Bold" size="16.0" /></font>
-                    <padding><Insets left="30.0" /></padding>
-                </Button>
+                <!-- ACTIVE -->
+                <Button text="📈 Reports"
+                        styleClass="menu-btn"
+                        style="
+                            -fx-background-color:white;
+                            -fx-text-fill:#e25a84;
+                            -fx-font-weight:bold;
+                            -fx-pref-width:230;
+                            -fx-alignment:CENTER_LEFT;
+                            -fx-padding:15 0 15 30;
+                            -fx-border-width:0 0 0 6;
+                            -fx-border-color:#e25a84;
+                        "/>
 
-                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goCategories" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Categories">
-                    <font><Font name="System Bold" size="16.0" /></font>
-                    <padding><Insets left="30.0" /></padding>
-                </Button>
+                <Region VBox.vgrow="ALWAYS"/>
 
-                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goOrders" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Orders">
-                    <font><Font name="System Bold" size="16.0" /></font>
-                    <padding><Insets left="30.0" /></padding>
-                </Button>
-
-                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goCustomers" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Customers">
-                    <font><Font name="System Bold" size="16.0" /></font>
-                    <padding><Insets left="30.0" /></padding>
-                </Button>
-
-                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goSuppliers" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Suppliers">
-                    <font><Font name="System Bold" size="16.0" /></font>
-                    <padding><Insets left="30.0" /></padding>
-                </Button>
-
-                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#goStock" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #613b41;" text="Stock">
-                    <font><Font name="System Bold" size="16.0" /></font>
-                    <padding><Insets left="30.0" /></padding>
-                </Button>
-
-                <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="40.0" prefWidth="220.0" style="-fx-background-color: transparent; -fx-text-fill: #E5738B;" text="Reports">
-                    <font><Font name="System Bold" size="16.0" /></font>
-                    <padding><Insets left="30.0" /></padding>
-                </Button>
-
-                <Region VBox.vgrow="ALWAYS" />
-
-                <Region prefHeight="1.0" style="-fx-background-color: #613b41;">
-                    <VBox.margin><Insets bottom="20.0" left="20.0" right="20.0" /></VBox.margin>
-                </Region>
-
-                <Button mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #FF99B8; -fx-text-fill: white; -fx-background-radius: 8;" text="&lt;- Log Out">
-                    <VBox.margin>
-                        <Insets bottom="30.0" left="30.0" />
-                    </VBox.margin>
-                    <font><Font name="System Bold" size="14.0" /></font>
-                </Button>
+                <Button text="⏻ Log Out"
+                        onAction="#handleLogout"
+                        styleClass="logout-btn"/>
 
             </children>
+
         </VBox>
 
-
         <!-- MAIN CONTENT -->
-        <VBox spacing="25" HBox.hgrow="ALWAYS"
-              style="-fx-background-color:#FFFDFD;">
+        <VBox spacing="25"
+              styleClass="main-content"
+              HBox.hgrow="ALWAYS">
 
             <padding>
                 <Insets top="40" left="40" right="40"/>
@@ -100,49 +67,95 @@
 
             <children>
 
-                <Label text="Reports Dashboard" textFill="#c95b74">
-                    <font>
-                        <Font name="System Bold" size="28"/>
-                    </font>
-                </Label>
+                <Label text="Reports Dashboard"
+                       styleClass="page-title"/>
 
                 <!-- SUMMARY CARDS -->
-                <HBox spacing="30">
+                <HBox spacing="20">
 
-                    <VBox spacing="10"
-                          style="-fx-background-color:#FDE8EE; -fx-padding:20; -fx-background-radius:12;">
-                        <Label text="Total Products" textFill="#613b41"/>
-                        <Label fx:id="totalProducts" style="-fx-font-size:22; -fx-text-fill:#E5738B;"/>
+                    <VBox styleClass="report-card">
+                        <Label text="🌸 Products"/>
+                        <Label fx:id="totalProducts" styleClass="report-number"/>
                     </VBox>
 
-                    <VBox spacing="10"
-                          style="-fx-background-color:#FDE8EE; -fx-padding:20; -fx-background-radius:12;">
-                        <Label text="Total Orders" textFill="#613b41"/>
-                        <Label fx:id="totalOrders" style="-fx-font-size:22; -fx-text-fill:#E5738B;"/>
+                    <VBox styleClass="report-card">
+                        <Label text="📦 Orders"/>
+                        <Label fx:id="totalOrders" styleClass="report-number"/>
                     </VBox>
 
-                    <VBox spacing="10"
-                          style="-fx-background-color:#FDE8EE; -fx-padding:20; -fx-background-radius:12;">
-                        <Label text="Total Customers" textFill="#613b41"/>
-                        <Label fx:id="totalCustomers" style="-fx-font-size:22; -fx-text-fill:#E5738B;"/>
+                    <VBox styleClass="report-card">
+                        <Label text="👤 Customers"/>
+                        <Label fx:id="totalCustomers" styleClass="report-number"/>
+                    </VBox>
+
+                    <VBox styleClass="report-card">
+                        <Label text="💰 Revenue"/>
+                        <Label fx:id="totalRevenue" styleClass="report-number"/>
                     </VBox>
 
                 </HBox>
 
-                <!-- CHART -->
-                <BarChart fx:id="revenueChart"
-                          prefHeight="400"
-                          style="-fx-background-color:white; -fx-border-color:#F6DCE2;">
 
-                    <xAxis>
-                        <CategoryAxis fx:id="xAxis"/>
-                    </xAxis>
+                <!-- CHART AREA -->
+                <HBox spacing="20">
 
-                    <yAxis>
-                        <NumberAxis fx:id="yAxis"/>
-                    </yAxis>
+                    <!-- REVENUE CHART -->
+                    <BarChart fx:id="revenueChart"
+                              prefWidth="550"
+                              prefHeight="350"
+                              animated="false">
 
-                </BarChart>
+                        <xAxis>
+                            <CategoryAxis fx:id="xAxis" label="Month"/>
+                        </xAxis>
+
+                        <yAxis>
+                            <NumberAxis fx:id="yAxis" label="Revenue"/>
+                        </yAxis>
+
+                    </BarChart>
+
+
+                    <!-- TOP FLOWERS -->
+                    <PieChart fx:id="topProductsChart"
+                              prefWidth="350"
+                              prefHeight="350"/>
+
+                </HBox>
+
+
+                <!-- RECENT ORDERS -->
+                <VBox spacing="10">
+
+                    <Label text="Recent Orders"
+                           style="-fx-font-size:18px;-fx-font-weight:bold;"/>
+
+                    <TableView fx:id="recentOrdersTable"
+                               prefHeight="180">
+
+                        <columns>
+
+                            <TableColumn fx:id="colOrderId"
+                                         text="Order ID"
+                                         prefWidth="100"/>
+
+                            <TableColumn fx:id="colCustomer"
+                                         text="Customer"
+                                         prefWidth="200"/>
+
+                            <TableColumn fx:id="colDate"
+                                         text="Date"
+                                         prefWidth="150"/>
+
+                            <TableColumn fx:id="colTotal"
+                                         text="Total"
+                                         prefWidth="120"/>
+
+                        </columns>
+
+                    </TableView>
+
+                </VBox>
 
             </children>
 
