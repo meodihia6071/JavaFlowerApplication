@@ -12,19 +12,20 @@
 <BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.CartController">
 
     <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" style="-fx-background-color: #f7c8d7;">
+        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" styleClass="top-bar">
             <padding>
                 <Insets bottom="0.0" left="18.0" right="18.0" top="0.0" />
             </padding>
             <children>
-                <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 500;" text="Flower shop" />
+                <Label styleClass="brand-label" text="Flower shop" />
                 <Region HBox.hgrow="ALWAYS" />
-                <Button onAction="#goHome" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Home" />
-                <Button onAction="#goFlowers" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Flowers" />
-                <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Categories" />
-                <Button onAction="#goContact" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Contact" />
-                <Button onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true;" text="Cart" />
-                <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 700; -fx-background-radius: 6;" text="Log Out" />
+
+                <Button onAction="#goHome" styleClass="nav-button" text="Home" />
+                <Button onAction="#goFlowers" styleClass="nav-button" text="Flowers" />
+                <Button onAction="#goCategories" styleClass="nav-button" text="Categories" />
+                <Button onAction="#goContact" styleClass="nav-button" text="Contact" />
+                <Button fx:id="btnCart" text="Cart" onAction="#goCart" styleClass="nav-button" />
+                <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" styleClass="logout-button" text="Log Out" />
             </children>
         </HBox>
     </top>
@@ -50,13 +51,13 @@
                                 <Label fx:id="lblTotal" style="-fx-text-fill: #8e5f5f; -fx-font-size: 22px;" text="Total: $0" />
                             </children>
                         </VBox>
-                        <Button onAction="#goCheckout" prefHeight="48.0" prefWidth="180.0" style="-fx-background-color: #f59bc0; -fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-background-radius: 6;" text="Checkout" />
+                        <Button onAction="#goCheckout" prefHeight="48.0" prefWidth="180.0" style="-fx-font-size: 24px;" styleClass="primary-button" text="Checkout" />
                     </children>
                 </HBox>
             </bottom>
 
             <center>
-                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" style="-fx-background: transparent; -fx-background-color: transparent;">
+                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="AS_NEEDED">
                     <content>
                         <VBox fx:id="cartItemsContainer" spacing="10.0" BorderPane.alignment="CENTER">
                             <padding>

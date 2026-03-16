@@ -25,7 +25,11 @@ public class OrderDetail {
 
     private BigDecimal price;
 
-    public OrderDetail() {}
+    @Column(name = "note")
+    private String note;
+
+    public OrderDetail() {
+    }
 
     public int getOrderDetailId() {
         return orderDetailId;
@@ -59,11 +63,20 @@ public class OrderDetail {
         this.quantity = quantity;
     }
 
+
     public BigDecimal getPrice() {
         return price;
     }
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

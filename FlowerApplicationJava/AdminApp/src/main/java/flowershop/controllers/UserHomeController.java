@@ -1,17 +1,23 @@
 package flowershop.controllers;
 
+import flowershop.dao.ProductDAO;
 import flowershop.models.Customer;
+import flowershop.models.Product;
 import flowershop.services.CartService;
 import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
+import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.Labeled;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +30,11 @@ public class UserHomeController {
     @FXML
     private TilePane productPane;
 
+    @FXML
+    private Button btnCart;
+
     private final CartService cartService = new CartService();
+    private final ProductDAO productDAO = new ProductDAO();
 
     @FXML
     public void initialize() {
@@ -57,6 +67,151 @@ public class UserHomeController {
                 }
             });
         }
+
+        Platform.runLater(() -> {
+            applyHoverEffectsToContainer(categoryPane);
+            applyHoverEffectsToContainer(productPane);
+            wireFeaturedProductCards();
+            refreshCartButtonText();
+        });
+    }
+
+    private void wireFeaturedProductCards() {
+        if (productPane == null) return;
+
+        for (Node node : productPane.getChildren()) {
+            if (node instanceof VBox card) {
+                card.setOnMouseClicked(event -> {
+                    if (event.getTarget() instanceof Button) {
+                        return;
+                    }
+
+                    String productName = extractProductNameFromCard(card);
+                    if (productName == null || productName.isBlank()) return;
+
+                    openProductDetail(productName, card);
+                });
+            }
+        }
+    }
+
+    private String extractProductNameFromCard(VBox card) {
+        for (Node child : card.getChildren()) {
+            if (child instanceof javafx.scene.control.Label label) {
+                String text = label.getText();
+                if (text != null && !text.isBlank() && !text.startsWith("$")) {
+                    return text.trim();
+                }
+            }
+        }
+        return null;
+    }
+
+    private void openProductDetail(String productName, Node ownerNode) {
+        Product product = productDAO.findByName(productName);
+        if (product == null) {
+            showInfo("Lỗi", "Không tìm thấy sản phẩm.");
+            return;
+        }
+
+        ProductDetailDialogController.showDialog(product, ownerNode.getScene().getWindow());
+        refreshCartButtonText();
+    }
+
+    private void refreshCartButtonText() {
+        if (btnCart == null) return;
+
+        Customer customer = SessionManager.getCurrentCustomer();
+        int cartCount = cartService.getCartQuantity(customer);
+
+        btnCart.setText(cartCount > 0 ? "Cart (" + cartCount + ")" : "Cart");
+    }
+
+    private void applyHoverEffectsToContainer(Parent root) {
+        if (root == null) return;
+
+        List<VBox> cards = new ArrayList<>();
+        collectCardVBoxes(root, cards);
+
+        for (VBox card : cards) {
+            Labeled titleNode = findTitleNode(card);
+            if (titleNode != null) {
+                applyHoverEffect(card, titleNode);
+            }
+        }
+    }
+
+    private void collectCardVBoxes(Node node, List<VBox> cards) {
+        if (node instanceof VBox vbox && isCardBox(vbox)) {
+            cards.add(vbox);
+        }
+
+        if (node instanceof Parent parent) {
+            for (Node child : parent.getChildrenUnmodifiable()) {
+                collectCardVBoxes(child, cards);
+            }
+        }
+    }
+
+    private boolean isCardBox(VBox vbox) {
+        String style = vbox.getStyle();
+        return style != null && style.contains("#f5dce2");
+    }
+
+    private Labeled findTitleNode(Parent parent) {
+        List<Labeled> labeledNodes = new ArrayList<>();
+        collectLabeledNodes(parent, labeledNodes);
+
+        for (Labeled node : labeledNodes) {
+            String text = node.getText();
+            if (text == null) continue;
+
+            String trimmed = text.trim();
+            if (trimmed.isBlank()) continue;
+            if (trimmed.startsWith("$")) continue;
+            if (trimmed.equalsIgnoreCase("Add to Cart")) continue;
+
+            return node;
+        }
+
+        return null;
+    }
+
+    private void collectLabeledNodes(Node node, List<Labeled> labeledNodes) {
+        if (node instanceof Labeled labeled) {
+            labeledNodes.add(labeled);
+        }
+
+        if (node instanceof Parent parent) {
+            for (Node child : parent.getChildrenUnmodifiable()) {
+                collectLabeledNodes(child, labeledNodes);
+            }
+        }
+    }
+
+    private void applyHoverEffect(VBox card, Labeled titleNode) {
+        ScaleTransition scaleUp = new ScaleTransition(Duration.millis(150), card);
+        scaleUp.setToX(1.05);
+        scaleUp.setToY(1.05);
+
+        ScaleTransition scaleDown = new ScaleTransition(Duration.millis(150), card);
+        scaleDown.setToX(1.0);
+        scaleDown.setToY(1.0);
+
+        String normalStyle = titleNode.getStyle() == null ? "" : titleNode.getStyle();
+        String hoverStyle = normalStyle + "; -fx-text-fill: #cf4f84;";
+
+        card.setOnMouseEntered(e -> {
+            scaleDown.stop();
+            scaleUp.playFromStart();
+            titleNode.setStyle(hoverStyle);
+        });
+
+        card.setOnMouseExited(e -> {
+            scaleUp.stop();
+            scaleDown.playFromStart();
+            titleNode.setStyle(normalStyle);
+        });
     }
 
     @FXML
@@ -99,44 +254,18 @@ public class UserHomeController {
         Customer customer = SessionManager.getCurrentCustomer();
 
         try {
-            String productName = resolveProductName((Button) event.getSource());
+            Button source = (Button) event.getSource();
+            String productName = source.getUserData() != null ? source.getUserData().toString().trim() : "";
+
+            if (productName.isBlank()) {
+                throw new IllegalArgumentException("Không xác định được sản phẩm.");
+            }
+
             cartService.addToCart(customer, productName);
-            SceneManager.switchScene("/fxml/Cart.fxml", "Cart");
+            refreshCartButtonText();
+            event.consume();
         } catch (Exception e) {
             showInfo("Lỗi", e.getMessage());
-        }
-    }
-
-    private String resolveProductName(Button sourceButton) {
-        if (sourceButton.getUserData() != null) {
-            return sourceButton.getUserData().toString().trim();
-        }
-
-        Node parent = sourceButton.getParent();
-        if (parent instanceof Parent card) {
-            List<Label> labels = new ArrayList<>();
-            collectLabels(card, labels);
-
-            for (Label label : labels) {
-                String text = label.getText();
-                if (text != null && !text.isBlank() && !text.trim().startsWith("$")) {
-                    return text.trim();
-                }
-            }
-        }
-
-        throw new IllegalArgumentException("Không đọc được tên sản phẩm từ giao diện.");
-    }
-
-    private void collectLabels(Node node, List<Label> labels) {
-        if (node instanceof Label label) {
-            labels.add(label);
-        }
-
-        if (node instanceof Parent parent) {
-            for (Node child : parent.getChildrenUnmodifiable()) {
-                collectLabels(child, labels);
-            }
         }
     }
 

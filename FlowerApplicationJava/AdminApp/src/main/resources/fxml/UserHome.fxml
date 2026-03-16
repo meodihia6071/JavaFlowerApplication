@@ -15,23 +15,27 @@
 <BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.UserHomeController">
 
     <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" style="-fx-background-color: #f7c8d7;">
+        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" styleClass="top-bar">
             <padding>
                 <Insets bottom="0.0" left="18.0" right="18.0" top="0.0" />
             </padding>
 
             <children>
-                <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 500;" text="Flower shop" />
+                <Label styleClass="brand-label" text="Flower shop" />
 
                 <Region HBox.hgrow="ALWAYS" />
 
-                <Button onAction="#goHome" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true; -fx-cursor: hand;" text="Home" />
-                <Button onAction="#goFlowers" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;" text="Flowers" />
-                <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;" text="Categories" />
-                <Button onAction="#goContact" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;" text="Contact" />
-                <Button onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-cursor: hand;" text="Cart" />
+                <Button onAction="#goHome" styleClass="nav-button-active" text="Home" />
+                <Button onAction="#goFlowers" styleClass="nav-button" text="Flowers" />
+                <Button onAction="#goCategories" styleClass="nav-button" text="Categories" />
+                <Button onAction="#goContact" styleClass="nav-button" text="Contact" />
+                <Button fx:id="btnCart" onAction="#goCart" styleClass="nav-button" text="Cart" />
 
-                <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 700; -fx-background-radius: 6; -fx-cursor: hand;" text="Log Out" />
+                <Button onAction="#handleLogout"
+                        prefHeight="34.0"
+                        prefWidth="94.0"
+                        styleClass="logout-button"
+                        text="Log Out" />
             </children>
         </HBox>
     </top>
@@ -122,7 +126,7 @@
                                                         </ImageView>
                                                         <Label alignment="CENTER" prefWidth="140.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Pink Tulip Box" wrapText="true" />
                                                         <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$28" />
-                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Pink Tulip Box" />
+                                                        <Button onAction="#handleAddToCart" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Pink Tulip Box" />
                                                     </children>
                                                 </VBox>
 
@@ -136,7 +140,7 @@
                                                         </ImageView>
                                                         <Label alignment="CENTER" prefWidth="160.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Ivory Peony Bouquet" wrapText="true" />
                                                         <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$48" />
-                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Ivory Peony Bouquet" />
+                                                        <Button onAction="#handleAddToCart" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Ivory Peony Bouquet" />
                                                     </children>
                                                 </VBox>
 
@@ -150,7 +154,7 @@
                                                         </ImageView>
                                                         <Label alignment="CENTER" prefWidth="200.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Ruby Romance Basket" wrapText="true" />
                                                         <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$36" />
-                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Ruby Romance Basket" />
+                                                        <Button onAction="#handleAddToCart" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Ruby Romance Basket" />
                                                     </children>
                                                 </VBox>
 
@@ -164,7 +168,7 @@
                                                         </ImageView>
                                                         <Label alignment="CENTER" prefWidth="150.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="White Lily Tribute" wrapText="true" />
                                                         <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$31" />
-                                                        <Button onAction="#handleAddToCart" style="-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="White Lily Tribute" />
+                                                        <Button onAction="#handleAddToCart" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="White Lily Tribute" />
                                                     </children>
                                                 </VBox>
                                             </children>

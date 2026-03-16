@@ -20,21 +20,31 @@
 .nav-button {
     -fx-background-color: transparent;
     -fx-text-fill: #8e5f5f;
-    -fx-font-size: 15px;
+    -fx-font-size: 18px;
     -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 6 12 6 12;
     -fx-underline: false;
 }
 
 .nav-button:hover {
-    -fx-underline: true;
+    -fx-text-fill: #cf4f84;
+    -fx-background-color: #f9dde6;
 }
 
 .nav-button-active {
-    -fx-background-color: transparent;
-    -fx-text-fill: #8e5f5f;
-    -fx-font-size: 15px;
+    -fx-background-color: #f9dde6;
+    -fx-text-fill: #cf4f84;
+    -fx-font-size: 18px;
     -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 6 12 6 12;
     -fx-underline: true;
+}
+
+.nav-button-active:hover {
+    -fx-background-color: #f6d2de;
+    -fx-text-fill: #b93d73;
 }
 
 .logout-button, .primary-button {

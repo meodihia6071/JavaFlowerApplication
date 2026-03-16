@@ -6,7 +6,7 @@
 <VBox spacing="10" xmlns:fx="http://javafx.com/fxml"
       fx:controller="flowershop.controllers.ProductController">
 
-    <TableView fx:id="productTable" prefHeight="300">
+    <TableView fx:id="productTable" prefHeight="300" >
 
         <columns>
             <TableColumn fx:id="colId" text="ID" prefWidth="80"/>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -12,93 +11,67 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="flowershop.controllers.AuthController"
-            stylesheets="@../css/user-style.css"
-            style="-fx-background-color: #f2f2f2;">
+<AnchorPane style="-fx-background-color: #f2f2f2;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.AuthController">
 
     <children>
-        <StackPane AnchorPane.topAnchor="20.0"
-                   AnchorPane.bottomAnchor="20.0"
-                   AnchorPane.leftAnchor="20.0"
-                   AnchorPane.rightAnchor="20.0">
+        <StackPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
 
-            <HBox maxWidth="1400.0"
-                  prefWidth="1100.0"
-                  style="-fx-background-color: #f8eef1;">
+            <HBox maxWidth="1400.0" prefWidth="1100.0" style="-fx-background-color: #f8eef1;">
 
                 <children>
 
-                    <VBox alignment="CENTER"
-                          prefWidth="500.0"
-                          spacing="30.0"
-                          style="-fx-background-color: #f8eef1;">
+                    <VBox alignment="CENTER" prefWidth="500.0" spacing="30.0" style="-fx-background-color: #f8eef1;">
                         <children>
 
                             <VBox alignment="CENTER" spacing="10.0">
                                 <children>
-                                    <Label text="Welcome to Flower Shop!"
-                                           style="-fx-text-fill: #cf4f84; -fx-font-size: 32px; -fx-font-weight: 800;"/>
-                                    <Label text="Fresh Flowers For Every Moment"
-                                           style="-fx-text-fill: #f07ea6; -fx-font-size: 18px; -fx-font-weight: 700;"/>
+                                    <Label style="-fx-text-fill: #cf4f84; -fx-font-size: 32px; -fx-font-weight: 800;" text="Welcome to Flower Shop!" />
+                                    <Label style="-fx-text-fill: #f07ea6; -fx-font-size: 18px; -fx-font-weight: 700;" text="Fresh Flowers For Every Moment" />
                                 </children>
                             </VBox>
 
-                            <GridPane hgap="16.0" vgap="18.0" maxWidth="360.0">
+                            <GridPane hgap="16.0" maxWidth="360.0" vgap="18.0">
                                 <columnConstraints>
-                                    <ColumnConstraints minWidth="90.0" prefWidth="100.0"/>
-                                    <ColumnConstraints hgrow="ALWAYS" minWidth="180.0"/>
+                                    <ColumnConstraints minWidth="90.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" minWidth="180.0" />
                                 </columnConstraints>
 
                                 <children>
-                                    <Label text="Username" GridPane.rowIndex="0" GridPane.columnIndex="0"
-                                           style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;"/>
-                                    <TextField fx:id="txtLoginUsername"
-                                               GridPane.rowIndex="0" GridPane.columnIndex="1"
-                                               prefHeight="40.0"
-                                               style="-fx-background-color: #f6d6e0; -fx-background-radius: 0; -fx-border-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
+                                    <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;" text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <TextField fx:id="txtLoginUsername" prefHeight="40.0" style="-fx-background-color: #f6d6e0; -fx-background-radius: 0; -fx-border-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                                    <Label text="Password" GridPane.rowIndex="1" GridPane.columnIndex="0"
-                                           style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;"/>
-                                    <PasswordField fx:id="txtLoginPassword"
-                                                   GridPane.rowIndex="1" GridPane.columnIndex="1"
-                                                   prefHeight="40.0"
-                                                   style="-fx-background-color: #f6d6e0; -fx-background-radius: 0; -fx-border-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
+                                    <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                    <PasswordField fx:id="txtLoginPassword" prefHeight="40.0" style="-fx-background-color: #f6d6e0; -fx-background-radius: 0; -fx-border-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 </children>
+                        <rowConstraints>
+                           <RowConstraints />
+                           <RowConstraints />
+                        </rowConstraints>
                             </GridPane>
 
                             <VBox alignment="CENTER" spacing="18.0">
                                 <children>
-                                    <Button text="Login"
-                                            onAction="#handleLogin"
-                                            prefWidth="120.0" prefHeight="42.0"
-                                            style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: 700; -fx-background-radius: 8; -fx-cursor: hand;"/>
+                                    <Button onAction="#handleLogin" prefHeight="42.0" prefWidth="120.0" style="-fx-font-size: 22px;" styleClass="primary-button" text="Login" />
 
-                                    <Label text="Sign up"
-                                           onMouseClicked="#goToSignup"
-                                           style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-underline: true; -fx-cursor: hand;"/>
+                                    <Label onMouseClicked="#goToSignup" style="-fx-text-fill: #8e5f5f;  -fx-font-size: 20px; -fx-underline: true; -fx-cursor: hand;" text="Sign up" />
                                 </children>
                             </VBox>
 
                         </children>
                         <padding>
-                            <Insets top="40.0" right="35.0" bottom="40.0" left="35.0"/>
+                            <Insets bottom="40.0" left="35.0" right="35.0" top="40.0" />
                         </padding>
                     </VBox>
 
                     <StackPane HBox.hgrow="ALWAYS">
                         <children>
-                            <ImageView preserveRatio="false"
-                                       fitWidth="570.0"
-                                       fitHeight="700.0"
-                                       StackPane.alignment="CENTER">
+                            <ImageView fitHeight="700.0" fitWidth="570.0" preserveRatio="false" StackPane.alignment="CENTER">
                                 <image>
-                                    <Image url="@../images/login-bg.jpg"/>
+                                    <Image url="@../images/login-bg.jpg" />
                                 </image>
                             </ImageView>
                         </children>

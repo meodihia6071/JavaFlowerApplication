@@ -6,6 +6,7 @@ import flowershop.models.Product;
 import flowershop.services.CartService;
 import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
+import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -18,6 +19,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
+import javafx.event.ActionEvent;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -57,6 +60,9 @@ public class FlowersController {
     @FXML
     private TilePane productTilePane;
 
+    @FXML
+    private Button btnCart;
+
     private final ProductDAO productDAO = new ProductDAO();
     private final CartService cartService = new CartService();
     private final DecimalFormat moneyFormat = new DecimalFormat("0.##");
@@ -67,8 +73,18 @@ public class FlowersController {
     public void initialize() {
         setupFilterControls();
         loadInitialProducts();
+        refreshCartButtonText();
 
         txtSearch.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
+    }
+
+    private void refreshCartButtonText() {
+        if (btnCart == null) return;
+
+        Customer customer = SessionManager.getCurrentCustomer();
+        int cartCount = cartService.getCartQuantity(customer);
+
+        btnCart.setText(cartCount > 0 ? "Cart (" + cartCount + ")" : "Cart");
     }
 
     private void setupFilterControls() {
@@ -139,7 +155,6 @@ public class FlowersController {
                 case "Price low to high" -> filtered.sort(Comparator.comparing(Product::getPrice));
                 case "Price high to low" -> filtered.sort(Comparator.comparing(Product::getPrice).reversed());
                 default -> {
-                    // Default = giữ thứ tự ngẫu nhiên ban đầu
                 }
             }
         }
@@ -222,10 +237,46 @@ public class FlowersController {
         Button addButton = new Button("Add to Cart");
         addButton.setUserData(product.getProductName());
         addButton.setOnAction(this::handleAddToCart);
-        addButton.setStyle("-fx-background-color: transparent; -fx-text-fill: #b36b6b; -fx-font-size: 15px;");
+        addButton.setStyle(" -fx-text-fill: #b36b6b; -fx-font-size: 15px;");
+
+        applyHoverEffect(card, nameLabel);
+
+        card.setOnMouseClicked(event -> {
+            if (event.getTarget() instanceof Button) {
+                return;
+            }
+
+            ProductDetailDialogController.showDialog(product, card.getScene().getWindow());
+            refreshCartButtonText();
+        });
 
         card.getChildren().addAll(imageView, nameLabel, priceLabel, addButton);
         return card;
+    }
+
+    private void applyHoverEffect(VBox card, Label nameLabel) {
+        ScaleTransition scaleUp = new ScaleTransition(Duration.millis(150), card);
+        scaleUp.setToX(1.05);
+        scaleUp.setToY(1.05);
+
+        ScaleTransition scaleDown = new ScaleTransition(Duration.millis(150), card);
+        scaleDown.setToX(1.0);
+        scaleDown.setToY(1.0);
+
+        String normalStyle = nameLabel.getStyle() == null ? "" : nameLabel.getStyle();
+        String hoverStyle = normalStyle + "; -fx-text-fill: #cf4f84;";
+
+        card.setOnMouseEntered(e -> {
+            scaleDown.stop();
+            scaleUp.playFromStart();
+            nameLabel.setStyle(hoverStyle);
+        });
+
+        card.setOnMouseExited(e -> {
+            scaleUp.stop();
+            scaleDown.playFromStart();
+            nameLabel.setStyle(normalStyle);
+        });
     }
 
     private Image loadProductImage(String imageName) {
@@ -252,7 +303,7 @@ public class FlowersController {
     }
 
     @FXML
-    public void handleAddToCart(javafx.event.ActionEvent event) {
+    public void handleAddToCart(ActionEvent event) {
         Customer customer = SessionManager.getCurrentCustomer();
 
         try {
@@ -264,7 +315,8 @@ public class FlowersController {
             }
 
             cartService.addToCart(customer, productName);
-            SceneManager.switchScene("/fxml/Cart.fxml", "Cart");
+            refreshCartButtonText();
+            event.consume();
         } catch (Exception e) {
             showInfo("Lỗi", e.getMessage());
         }

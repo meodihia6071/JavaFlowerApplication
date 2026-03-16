@@ -35,7 +35,8 @@ public class Order {
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails;
 
-    public Order() {}
+    public Order() {
+    }
 
     public int getOrderId() {
         return orderId;

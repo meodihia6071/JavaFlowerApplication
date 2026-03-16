@@ -19,27 +19,23 @@
             style="-fx-background-color: #f8eef1;">
 
     <top>
-        <HBox prefHeight="56.0" alignment="CENTER_LEFT" spacing="22.0" style="-fx-background-color: #f7c8d7;">
+        <HBox prefHeight="56.0" alignment="CENTER_LEFT" spacing="22.0" styleClass="top-bar">
             <padding>
                 <Insets top="0.0" right="18.0" bottom="0.0" left="18.0"/>
             </padding>
             <children>
-                <Label text="Flower shop"
-                       style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 500;"/>
+                <Label text="Flower shop" styleClass="brand-label"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button text="Home" onAction="#goHome"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Flowers" onAction="#goFlowers"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Categories" onAction="#goCategories"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Contact" onAction="#goContact"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
-                <Button text="Cart" onAction="#goCart"
-                        style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true;"/>
+
+                <Button text="Home" onAction="#goHome" styleClass="nav-button"/>
+                <Button text="Flowers" onAction="#goFlowers" styleClass="nav-button"/>
+                <Button text="Categories" onAction="#goCategories" styleClass="nav-button"/>
+                <Button text="Contact" onAction="#goContact" styleClass="nav-button"/>
+                <Button text="Cart" onAction="#goCart" styleClass="nav-button-active"/>
+
                 <Button text="Log Out" onAction="#handleLogout"
                         prefWidth="94.0" prefHeight="34.0"
-                        style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 700; -fx-background-radius: 6;"/>
+                        styleClass="logout-button"/>
             </children>
         </HBox>
     </top>

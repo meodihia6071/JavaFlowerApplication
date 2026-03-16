@@ -16,22 +16,27 @@
 <BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.FlowersController">
 
     <top>
-        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" style="-fx-background-color: #f7c8d7;">
+        <HBox prefHeight="56.0"
+              alignment="CENTER_LEFT"
+              spacing="22.0"
+              styleClass="top-bar">
             <padding>
-                <Insets bottom="0.0" left="18.0" right="18.0" top="0.0" />
+                <Insets top="0.0" right="18.0" bottom="0.0" left="18.0"/>
             </padding>
             <children>
-                <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 500;" text="Flower shop" />
+                <Label text="Flower shop" styleClass="brand-label"/>
 
-                <Region HBox.hgrow="ALWAYS" />
+                <Region HBox.hgrow="ALWAYS"/>
 
-                <Button onAction="#goHome" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Home" />
-                <Button onAction="#goFlowers" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true;" text="Flowers" />
-                <Button onAction="#goCategories" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Categories" />
-                <Button onAction="#goContact" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Contact" />
-                <Button onAction="#goCart" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Cart" />
+                <Button text="Home" onAction="#goHome" styleClass="nav-button"/>
+                <Button text="Flowers" onAction="#goFlowers" styleClass="nav-button-active"/>
+                <Button text="Categories" onAction="#goCategories" styleClass="nav-button"/>
+                <Button text="Contact" onAction="#goContact" styleClass="nav-button"/>
+                <Button fx:id="btnCart" text="Cart" onAction="#goCart" styleClass="nav-button"/>
 
-                <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: 700; -fx-background-radius: 6;" text="Log Out" />
+                <Button text="Log Out" onAction="#handleLogout"
+                        prefWidth="94.0" prefHeight="34.0"
+                        styleClass="logout-button"/>
             </children>
         </HBox>
     </top>
@@ -50,7 +55,7 @@
 
                                 <VBox alignment="TOP_CENTER" spacing="18.0" HBox.hgrow="ALWAYS">
                                     <children>
-                                        <TextField fx:id="txtSearch" maxWidth="980.0" prefHeight="42.0" promptText="Search flowers ..." style="-fx-background-color: #f4f1f1; -fx-background-radius: 18; -fx-prompt-text-fill: #d59b9b; -fx-font-size: 18px;" />
+                                        <TextField fx:id="txtSearch" maxWidth="980.0" prefHeight="42.0" promptText="Search flowers ..." style="-fx-background-color: #ffffff; -fx-background-radius: 18; -fx-prompt-text-fill: #d59b9b; -fx-font-size: 18px;" />
 
                                         <TilePane fx:id="productTilePane" alignment="CENTER" hgap="30.0" prefColumns="4" prefTileHeight="280.0" prefTileWidth="190.0" vgap="28.0" />
                                     </children>
@@ -108,7 +113,7 @@
                           </children>
                       </VBox>
 
-                                        <Button onAction="#handleShowResults" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #f59bc0; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: 700; -fx-background-radius: 6;" text="Show results" />
+                                        <Button onAction="#handleShowResults" prefHeight="34.0" prefWidth="120.0" style="-fx-font-size: 14px;" styleClass="primary-button" text="Show results" />
                   </children>
               </VBox>
    </left>
