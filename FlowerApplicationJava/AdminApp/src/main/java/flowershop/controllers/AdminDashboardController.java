@@ -3,6 +3,7 @@ package flowershop.controllers;
 import flowershop.models.User;
 import flowershop.models.Customer;
 import flowershop.dao.CustomerDAO;
+import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -18,6 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
 
 public class AdminDashboardController {
 
@@ -220,22 +224,46 @@ public class AdminDashboardController {
 
     @FXML
     public void handleCustomers(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng Customers đang được phát triển.");
+        SceneManager.switchScene("/fxml/AdminCustomers.fxml", "Customers");
     }
 
     @FXML
     public void handleStock(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng Stock đang được phát triển.");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/AdminStock.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Stock Management");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     public void handleSuppliers(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng Suppliers đang được phát triển.");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/AdminSuppliers.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Suppliers Management");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
     public void handleReports(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng Reports đang được phát triển.");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/AdminReports.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Reports");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML

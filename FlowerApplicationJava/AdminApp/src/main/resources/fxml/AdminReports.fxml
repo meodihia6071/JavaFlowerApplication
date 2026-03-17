@@ -48,9 +48,15 @@
 
                 <Region VBox.vgrow="ALWAYS"/>
 
-                <Button text="⏻ Log Out"
-                        onAction="#handleLogout"
-                        styleClass="logout-btn"/>
+                <HBox alignment="CENTER" spacing="10">
+
+                    <padding>
+                        <Insets top="20" bottom="20"/>
+                    </padding>
+                    <Button text="⏻ Log Out"
+                            onAction="#handleLogout"
+                            styleClass="logout-btn"/>
+                </HBox>
 
             </children>
 

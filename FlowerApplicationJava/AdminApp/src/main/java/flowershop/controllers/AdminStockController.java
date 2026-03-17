@@ -379,6 +379,11 @@ public class AdminStockController {
         if(selected == null){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setContentText("Please select stock to delete");
+            alert.getDialogPane().getStylesheets().add(
+                    getClass().getResource("/css/admin-style.css").toExternalForm()
+            );
+
+            alert.getDialogPane().getStyleClass().add("dialog-pane");
             alert.show();
             return;
         }

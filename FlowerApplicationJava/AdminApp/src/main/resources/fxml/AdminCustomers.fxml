@@ -9,7 +9,7 @@
       styleClass="main-bg"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="flowershop.controllers.AdminProductsController">
+      fx:controller="flowershop.controllers.AdminCustomerController">
 
     <children>
 
@@ -24,7 +24,14 @@
 
                 <Button text="🏠 Dashboard" onAction="#goDashboard" styleClass="menu-btn"/>
 
-                <Button text="🌸 Products"
+                <Button text="🌸 Products" onAction="#goProducts" styleClass="menu-btn"/>
+
+                <Button text="📂 Categories" onAction="#goCategories" styleClass="menu-btn"/>
+
+                <Button text="📦 Orders" onAction="#goOrders" styleClass="menu-btn"/>
+
+                <!-- ACTIVE -->
+                <Button text="👤 Customers"
                         styleClass="menu-btn"
                         style="
                             -fx-background-color:white;
@@ -39,9 +46,6 @@
                             -fx-border-radius:0;
                         "/>
 
-                <Button text="📂 Categories" onAction="#goCategories" styleClass="menu-btn"/>
-                <Button text="📦 Orders" onAction="#goOrders" styleClass="menu-btn"/>
-                <Button text="👤 Customers" onAction="#goCustomers" styleClass="menu-btn"/>
                 <Button text="🚚 Suppliers" onAction="#goSuppliers" styleClass="menu-btn"/>
                 <Button text="📦 Stock" onAction="#goStock" styleClass="menu-btn"/>
                 <Button text="📈 Reports" onAction="#goReports" styleClass="menu-btn"/>
@@ -52,7 +56,6 @@
                     <padding>
                         <Insets top="20" bottom="20"/>
                     </padding>
-
                     <Button text="⏻ Log Out"
                             onAction="#handleLogout"
                             styleClass="logout-btn"/>
@@ -62,7 +65,7 @@
 
         </VBox>
 
-        <!-- MAIN CONTENT -->
+        <!-- MAIN -->
         <VBox spacing="20"
               styleClass="main-content"
               HBox.hgrow="ALWAYS">
@@ -73,28 +76,27 @@
 
             <children>
 
-                <Label text="Product Management"
+                <Label text="Customer Management"
                        styleClass="page-title"/>
 
-                <!-- TOOL BAR -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
 
-                    <Button text="➕ Add Product"
-                            onAction="#handleAddProduct"
+                    <Button text="➕ Add Customer"
+                            onAction="#handleAddCustomer"
                             styleClass="tool-btn"/>
 
                     <Button text="✏ Edit"
-                            onAction="#handleEditProduct"
+                            onAction="#handleEditCustomer"
                             styleClass="tool-btn"/>
 
                     <Button text="🗑 Delete"
-                            onAction="#handleDeleteProduct"
+                            onAction="#handleDeleteCustomer"
                             styleClass="tool-btn"/>
 
                     <Region HBox.hgrow="ALWAYS"/>
 
                     <TextField fx:id="searchField"
-                               promptText="Search product..."
+                               promptText="Search customer..."
                                prefWidth="260"
                                prefHeight="36"
                                styleClass="search-box"/>
@@ -109,8 +111,6 @@
                         <items>
                             <MenuItem text="Name A → Z" onAction="#sortNameAZ"/>
                             <MenuItem text="Name Z → A" onAction="#sortNameZA"/>
-                            <MenuItem text="Price ↑" onAction="#sortPriceAsc"/>
-                            <MenuItem text="Price ↓" onAction="#sortPriceDesc"/>
                             <MenuItem text="Newest" onAction="#sortNewest"/>
                         </items>
 
@@ -118,42 +118,17 @@
 
                 </HBox>
 
-                <!-- TABLE -->
-                <TableView fx:id="productTable"
+                <TableView fx:id="customerTable"
                            VBox.vgrow="ALWAYS">
 
                     <columns>
 
-                        <TableColumn fx:id="colId"
-                                     text="ID"
-                                     prefWidth="70"
-                                     styleClass="center-column"/>
-
-                        <TableColumn fx:id="colName"
-                                     text="Product Name"
-                                     prefWidth="220"
-                                     styleClass="left-column"/>
-
-                        <TableColumn fx:id="colPrice"
-                                     text="Price"
-                                     prefWidth="120"
-                                     styleClass="center-column"/>
-
-                        <TableColumn fx:id="colQuantity"
-                                     text="Stock"
-                                     prefWidth="100"
-                                     styleClass="center-column"/>
-
-                        <TableColumn fx:id="colImage"
-                                     text="Image"
-                                     prefWidth="180"
-                                     styleClass="left-column"/>
-
-                        <TableColumn fx:id="colCategory"
-                                     text="Category"
-                                     prefWidth="120"
-                                     styleClass="center-column"/>
-
+                        <TableColumn fx:id="colId" text="ID" prefWidth="80" styleClass="center-column"/>
+                        <TableColumn fx:id="colName" text="Customer Name" prefWidth="220" styleClass="left-column"/>
+                        <TableColumn fx:id="colUserId" text="User ID" prefWidth="80" styleClass="center-column" />
+                        <TableColumn fx:id="colPhone" text="Phone" prefWidth="150" styleClass="center-column"/>
+                        <TableColumn fx:id="colEmail" text="Email" prefWidth="220" styleClass="left-column"/>
+                        <TableColumn fx:id="colPoints" text="Points" prefWidth="120" styleClass="center-column"/>
                     </columns>
 
                 </TableView>
