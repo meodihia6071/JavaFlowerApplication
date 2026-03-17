@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #FFFDFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.AdminDashboardController">
+<HBox prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #FFFDFD;" stylesheets="@../css/dashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.AdminDashboardController">
     <children>
         <VBox alignment="TOP_CENTER" prefWidth="300.0" spacing="15.0" style="-fx-background-color: #FFF0F5; -fx-border-color: #F8C8D4; -fx-border-width: 0 1 0 0;">
             <padding>
@@ -108,40 +108,29 @@
                     </children>
                 </HBox>
 
-                <GridPane alignment="CENTER" hgap="40.0" vgap="40.0" VBox.vgrow="ALWAYS">
+                <GridPane fx:id="buttonGrid" alignment="CENTER" hgap="40.0" vgap="40.0" VBox.vgrow="ALWAYS">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="150.0" prefWidth="180.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="200.0" minWidth="150.0" prefWidth="180.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="50.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" percentWidth="50.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints minHeight="50.0" prefHeight="60.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="50.0" prefHeight="60.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="50.0" prefHeight="60.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="50.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                        <RowConstraints valignment="CENTER" vgrow="ALWAYS" percentHeight="25.0" />
+                        <RowConstraints valignment="CENTER" vgrow="ALWAYS" percentHeight="25.0" />
+                        <RowConstraints valignment="CENTER" vgrow="ALWAYS" percentHeight="25.0" />
+                        <RowConstraints valignment="CENTER" vgrow="ALWAYS" percentHeight="25.0" />
                     </rowConstraints>
                     <children>
-                        <Button mnemonicParsing="false" onAction="#handleProducts" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #F8DEE3; -fx-text-fill: #734848; -fx-background-radius: 5;" text="Products">
-                            <font><Font name="System Bold" size="16.0" /></font></Button>
-                        <Button mnemonicParsing="false" onAction="#handleCategories" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #F8DEE3; -fx-text-fill: #734848; -fx-background-radius: 5;" text="Categories" GridPane.columnIndex="1">
-                            <font><Font name="System Bold" size="16.0" /></font></Button>
-                        <Button mnemonicParsing="false" onAction="#handleOrders" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #F8DEE3; -fx-text-fill: #734848; -fx-background-radius: 5;" text="Orders" GridPane.rowIndex="1">
-                            <font><Font name="System Bold" size="16.0" /></font></Button>
-                        <Button mnemonicParsing="false" onAction="#handleCustomers" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #F8DEE3; -fx-text-fill: #734848; -fx-background-radius: 5;" text="Customers" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <font><Font name="System Bold" size="16.0" /></font></Button>
-                        <Button mnemonicParsing="false" onAction="#handleStock" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #F8DEE3; -fx-text-fill: #734848; -fx-background-radius: 5;" text="Stock" GridPane.rowIndex="2">
-                            <font><Font name="System Bold" size="16.0" /></font></Button>
-                        <Button mnemonicParsing="false" onAction="#handleSuppliers" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #F8DEE3; -fx-text-fill: #734848; -fx-background-radius: 5;" text="Suppliers" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                            <font><Font name="System Bold" size="16.0" /></font></Button>
-                        <Button mnemonicParsing="false" onAction="#handleReports" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #F8DEE3; -fx-text-fill: #734848; -fx-background-radius: 5;" text="Reports" GridPane.rowIndex="3">
-                            <font><Font name="System Bold" size="16.0" /></font></Button>
-                        <Button mnemonicParsing="false" onAction="#handleUserManage" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #F8DEE3; -fx-text-fill: #734848; -fx-background-radius: 5;" text="User Manage" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                            <font><Font name="System Bold" size="16.0" /></font></Button>
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleProducts" text="Products" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleCategories" text="Categories" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleOrders" text="Orders" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleCustomers" text="Customers" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleStock" text="Stock" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleSuppliers" text="Suppliers" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleReports" text="Reports" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleUserManage" text="User Manage" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                     </children>
-                    <VBox.margin>
-                        <Insets />
-                    </VBox.margin>
                     <padding>
-                        <Insets bottom="40.0" top="40.0" />
+                        <Insets bottom="40.0" top="40.0" left="40.0" right="40.0" />
                     </padding>
                 </GridPane>
             </children>

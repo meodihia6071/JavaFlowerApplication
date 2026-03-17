@@ -3,28 +3,27 @@ package flowershop.controllers;
 import flowershop.models.User;
 import flowershop.models.Customer;
 import flowershop.dao.CustomerDAO;
-import flowershop.services.SceneManager;     // vẫn giữ vì handleLogout dùng nó
 import flowershop.services.SessionManager;
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import org.hibernate.Session;
-import flowershop.utils.HibernateUtil;
+import javafx.util.Duration;
+
 public class AdminDashboardController {
 
-    @FXML private ImageView avatarImageView;
     @FXML private TextField txtEmail;
     @FXML private TextField txtName;
     @FXML private TextField txtRole;
-
-    // Khai báo 2 ô mật khẩu và 1 nút con mắt
     @FXML private PasswordField txtPassword;
     @FXML private TextField txtPasswordVisible;
     @FXML private Button btnTogglePassword;
@@ -32,200 +31,223 @@ public class AdminDashboardController {
     @FXML private Button btnUpdate;
     @FXML private Button btnLogout;
 
-    // Biến trạng thái: false = đang ẩn (••••), true = đang hiện (123456)
-    private boolean isPasswordVisible = false;
+    @FXML private GridPane buttonGrid;
 
+    // HÀM CHẠY NGAY KHI MỞ MÀN HÌNH - SETUP HIỆU ỨNG VÀ ĐỔ DỮ LIỆU THẬT
     @FXML
     public void initialize() {
+        // 1. Phục hồi toàn bộ hiệu ứng phóng to cho các nút
+        if (btnUpdate != null) addSmoothHoverEffect(btnUpdate);
+        if (btnLogout != null) addSmoothHoverEffect(btnLogout);
+        if (buttonGrid != null) {
+            for (Node node : buttonGrid.getChildren()) {
+                if (node instanceof Button) addSmoothHoverEffect((Button) node);
+            }
+        }
+
+        // 2. LẤY DỮ LIỆU TỪ BẢNG USERS
         User currentUser = SessionManager.getCurrentUser();
-
         if (currentUser != null) {
-            // Đổ mật khẩu vào cả 2 ô để luôn đồng bộ
+            txtRole.setText(currentUser.getRole());
             txtPassword.setText(currentUser.getPassword());
-            txtPasswordVisible.setText(currentUser.getPassword());
 
-            // Ban đầu ẩn ô TextField, hiện ô PasswordField
-            txtPasswordVisible.setVisible(false);
-            txtPasswordVisible.setManaged(false);
+            // 3. CẦM user_id CHẠY SANG BẢNG CUSTOMERS ĐỂ LẤY EMAIL VÀ TÊN
+            try {
+                CustomerDAO customerDAO = new CustomerDAO();
+                // Sửa thành getUserId() cho khớp với DB chuẩn
+                Customer profile = customerDAO.findByUserId(currentUser.getUserId());
 
-            // Hiển thị Role
-            if ("admin".equalsIgnoreCase(currentUser.getRole())) {
-                txtRole.setText("Quản trị viên (Admin)");
-            } else {
-                txtRole.setText("Nhân viên (Staff)");
-            }
-
-            // Lấy thông tin Tên/Email từ bảng Customer
-            CustomerDAO customerDAO = new CustomerDAO();
-            Customer customerData = customerDAO.findByUserId(currentUser.getUserId());
-
-            if (customerData != null) {
-                txtName.setText(customerData.getCustomerName());
-                txtEmail.setText(customerData.getEmail() != null ? customerData.getEmail() : "");
-            } else {
-                txtName.setText(currentUser.getUsername());
-                txtEmail.setText("");
+                if (profile != null) {
+                    // Nếu tìm thấy -> Đổ dữ liệu thật lên màn hình!
+                    txtName.setText(profile.getCustomerName());
+                    if (profile.getEmail() != null) {
+                        txtEmail.setText(profile.getEmail());
+                    } else {
+                        txtEmail.setText("");
+                    }
+                } else {
+                    // Đề phòng trường hợp Admin mới tạo bên users mà chưa kịp tạo profile bên customers
+                    txtName.setText(currentUser.getUsername());
+                    txtEmail.setText("Chưa liên kết hồ sơ");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Lỗi khi kéo dữ liệu từ bảng customers sang!");
             }
         }
     }
 
-    // =========================================================
-    // HÀM XỬ LÝ ẨN/HIỆN MẬT KHẨU
-    // =========================================================
-    @FXML
-    void togglePasswordVisibility(ActionEvent event) {
-        if (!isPasswordVisible) {
-            // Chuyển sang CHẾ ĐỘ HIỆN
-            txtPasswordVisible.setText(txtPassword.getText());
-            txtPasswordVisible.setVisible(true);
-            txtPasswordVisible.setManaged(true);
+    // HÀM TẠO HIỆU ỨNG PHÓNG TO NÚT 0.3 GIÂY
+    private void addSmoothHoverEffect(Button btn) {
+        ScaleTransition scaleIn = new ScaleTransition(Duration.seconds(0.3), btn);
+        scaleIn.setToX(1.03);
+        scaleIn.setToY(1.03);
 
-            txtPassword.setVisible(false);
-            txtPassword.setManaged(false);
+        ScaleTransition scaleOut = new ScaleTransition(Duration.seconds(0.3), btn);
+        scaleOut.setToX(1.0);
+        scaleOut.setToY(1.0);
 
-            btnTogglePassword.setText("Ẩn");
-            isPasswordVisible = true;
-        } else {
-            // Chuyển sang CHẾ ĐỘ ẨN
-            txtPassword.setText(txtPasswordVisible.getText());
-            txtPassword.setVisible(true);
-            txtPassword.setManaged(true);
+        btn.setOnMouseEntered(e -> {
+            scaleOut.stop();
+            scaleIn.playFromStart();
+        });
 
-            txtPasswordVisible.setVisible(false);
-            txtPasswordVisible.setManaged(false);
-
-            btnTogglePassword.setText("Hiện");
-            isPasswordVisible = false;
-        }
+        btn.setOnMouseExited(e -> {
+            scaleIn.stop();
+            scaleOut.playFromStart();
+        });
     }
 
+    // --- CÁC HÀM XỬ LÝ SỰ KIỆN GIAO DIỆN ---
+
+    // Đã thêm tính năng Check Email bằng Regex vào đây
     @FXML
-    void handleUpdateProfile(ActionEvent event) {
-        String newName = txtName.getText().trim();
-        String newEmail = txtEmail.getText().trim();
+    public void handleUpdateProfile(ActionEvent event) {
+        String email = txtEmail.getText();
+        String password = txtPassword.getText();
 
-        // Lấy pass từ ô đang hiển thị
-        String newPassword = isPasswordVisible ? txtPasswordVisible.getText().trim() : txtPassword.getText().trim();
-
-        if (newName.isEmpty() || newEmail.isEmpty() || newPassword.isEmpty()) {
-            showErrorAlert("Lỗi nhập liệu", "Vui lòng điền đầy đủ Tên, Email và Mật khẩu!");
+        if (email == null || email.trim().isEmpty()) {
+            showAlert("Lỗi", "Email không được để trống!");
             return;
         }
 
-        // ... (Giữ nguyên phần bắt lỗi Regex Email và kiểm tra trùng lặp DB như bạn đã gửi trước) ...
+        // Kiểm tra định dạng Email
+        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+        if (!email.matches(emailRegex)) {
+            showAlert("Lỗi", "Định dạng email không hợp lệ!\nVui lòng nhập đúng định dạng (Ví dụ: quyenha@gmail.com)");
+            return;
+        }
 
-        User currentUser = SessionManager.getCurrentUser();
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // Kiểm tra trùng username/email
-            Long userCount = session.createQuery("select count(u) from User u where u.username = :username and u.userId <> :userId", Long.class)
-                    .setParameter("username", newName)
-                    .setParameter("userId", currentUser.getUserId())
-                    .uniqueResult();
-            if (userCount > 0) {
-                showErrorAlert("Trùng", "Tên đăng nhập đã tồn tại!");
-                return;
-            }
+        if (password == null || password.trim().isEmpty()) {
+            showAlert("Lỗi", "Mật khẩu không được để trống!");
+            return;
+        }
 
-            session.beginTransaction();
-            currentUser.setUsername(newName);
-            currentUser.setPassword(newPassword);
-            session.merge(currentUser);
+        showAlert("Thành công", "Dữ liệu hợp lệ! Sẵn sàng gọi code Database để cập nhật.");
+    }
 
-            CustomerDAO customerDAO = new CustomerDAO();
-            Customer customerData = customerDAO.findByUserId(currentUser.getUserId());
-            if (customerData != null) {
-                customerData.setCustomerName(newName);
-                customerData.setEmail(newEmail);
-                session.merge(customerData);
-            } else {
-                Customer newC = new Customer();
-                newC.setCustomerName(newName);
-                newC.setEmail(newEmail);
-                newC.setUser(currentUser);
-                session.persist(newC);
-            }
-            session.getTransaction().commit();
+    // =========================================================
+    // NÚT ĐĂNG XUẤT (BAY THẲNG VỀ TRANG LOGIN VỚI FADE-IN)
+    // =========================================================
+    @FXML
+    public void handleLogout(ActionEvent event) {
+        try {
+            // Xóa phiên đăng nhập hiện tại
+            SessionManager.clear();
 
-            // Cập nhật lại Text cho cả 2 ô sau khi lưu
-            txtPassword.setText(newPassword);
-            txtPasswordVisible.setText(newPassword);
-            SessionManager.setCurrentUser(currentUser);
+            // Tải trang Login
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
+            Parent root = loader.load();
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Cập nhật thành công!");
-            alert.showAndWait();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setTitle("Đăng nhập");
+
+            // Ép tàng hình và đổi Root
+            root.setOpacity(0);
+            stage.getScene().setRoot(root);
+
+            // Chạy hiệu ứng Fade-in 0.4s
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.4), root);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+            fadeIn.play();
+
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert("Lỗi", "Không thể tải trang Đăng nhập!");
         }
     }
 
     @FXML
-    void handleLogout(ActionEvent event) {
-        SessionManager.clear();
-        try {
-            SceneManager.switchScene("/fxml/login.fxml", "Đăng nhập");
-        } catch (Exception e) {
-            e.printStackTrace();
+    public void togglePasswordVisibility(ActionEvent event) {
+        if (txtPassword.isVisible()) {
+            txtPasswordVisible.setText(txtPassword.getText());
+            txtPasswordVisible.setVisible(true);
+            txtPasswordVisible.setManaged(true);
+            txtPassword.setVisible(false);
+            txtPassword.setManaged(false);
+            btnTogglePassword.setText("Ẩn");
+        } else {
+            txtPassword.setText(txtPasswordVisible.getText());
+            txtPassword.setVisible(true);
+            txtPassword.setManaged(true);
+            txtPasswordVisible.setVisible(false);
+            txtPasswordVisible.setManaged(false);
+            btnTogglePassword.setText("Hiện");
         }
     }
 
-    private void showErrorAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    // ====================== MỞ CỬA SỔ MỚI (NEW WINDOW) ======================
-    // Đây là đúng ý bạn: giống như Login → AdminDashboard, khi nhấn Products/Categories... sẽ mở cửa sổ mới hoàn toàn
-
-    private void openNewWindow(String fxmlPath, String title) {
+    // =========================================================
+    // HÀM CHUYỂN TRANG CHỨC NĂNG (ĐÃ TÍCH HỢP FADE-IN 0.4s)
+    // =========================================================
+    private void switchScene(ActionEvent event, String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Scene scene = new Scene(loader.load());
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setTitle(title);
 
-            Stage newStage = new Stage();
-            newStage.setTitle(title);
-            newStage.setScene(scene);
-            newStage.setResizable(true);
-            newStage.setMinWidth(1100);   // kích thước phù hợp với layout bạn muốn
-            newStage.setMinHeight(700);
-            newStage.show();
+            // Ép tàng hình và đổi Root
+            root.setOpacity(0);
+            stage.getScene().setRoot(root);
+
+            // Chạy hiệu ứng Fade-in
+            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.4), root);
+            fadeIn.setFromValue(0.0);
+            fadeIn.setToValue(1.0);
+            fadeIn.play();
+
         } catch (Exception e) {
             e.printStackTrace();
-            showErrorAlert("Lỗi mở cửa sổ", "Không thể mở: " + title + "\nKiểm tra đường dẫn FXML hoặc file tồn tại chưa!");
+            showAlert("Lỗi", "Không thể tải file FXML: " + fxmlPath);
         }
     }
 
-    @FXML void handleProducts(ActionEvent event) { openFeature("/fxml/AdminProducts.fxml", "Quản lý Sản phẩm"); }
-    @FXML void handleCategories(ActionEvent event) { openFeature("/fxml/AdminCategories.fxml", "Quản lý Danh mục"); }
-    @FXML void handleOrders(ActionEvent event) { openFeature("/fxml/AdminOrders.fxml", "Quản lý Đơn hàng"); }
-    @FXML void handleCustomers(ActionEvent event) { openFeature("/fxml/AdminCustomers.fxml", "Quản lý Khách hàng"); }
-    @FXML void handleStock(ActionEvent event) { openFeature("/fxml/AdminStock.fxml", "Quản lý Kho"); }
-    @FXML void handleSuppliers(ActionEvent event) { openFeature("/fxml/AdminSuppliers.fxml", "Quản lý Nhà cung cấp"); }
-    @FXML void handleReports(ActionEvent event) { openFeature("/fxml/AdminReports.fxml", "Xem Báo cáo"); }
-    @FXML void handleUserManage(ActionEvent event) { openFeature("/fxml/AdminUserManage.fxml", "Quản lý Tài khoản"); }
-
-    // Hàm chuyển trang thông minh: Có file thì mở, chưa có file thì báo Coming Soon
-    private void openFeature(String fxmlPath, String title) {
-        try {
-            // Kiểm tra xem file FXML đã được anh Quyền tạo chưa
-            if (getClass().getResource(fxmlPath) == null) {
-                showComingSoonAlert(title);
-            } else {
-                SceneManager.switchScene(fxmlPath, title);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            showComingSoonAlert(title);
-        }
+    @FXML
+    public void handleCategories(ActionEvent event) {
+        switchScene(event, "/fxml/AdminCategories.fxml", "Quản Lý Danh Mục");
     }
 
-    private void showComingSoonAlert(String featureName) {
+    @FXML
+    public void handleProducts(ActionEvent event) {
+        switchScene(event, "/fxml/AdminProducts.fxml", "Quản Lý Sản Phẩm");
+    }
+
+    @FXML
+    public void handleOrders(ActionEvent event) {
+        showAlert("Thông báo", "Chức năng Orders đang được phát triển.");
+    }
+
+    @FXML
+    public void handleCustomers(ActionEvent event) {
+        showAlert("Thông báo", "Chức năng Customers đang được phát triển.");
+    }
+
+    @FXML
+    public void handleStock(ActionEvent event) {
+        showAlert("Thông báo", "Chức năng Stock đang được phát triển.");
+    }
+
+    @FXML
+    public void handleSuppliers(ActionEvent event) {
+        showAlert("Thông báo", "Chức năng Suppliers đang được phát triển.");
+    }
+
+    @FXML
+    public void handleReports(ActionEvent event) {
+        showAlert("Thông báo", "Chức năng Reports đang được phát triển.");
+    }
+
+    @FXML
+    public void handleUserManage(ActionEvent event) {
+        showAlert("Thông báo", "Chức năng User Manage đang được phát triển.");
+    }
+
+    private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Thông báo hệ thống");
+        alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText("Giao diện [" + featureName + "] đang được thiết kế. Vui lòng quay lại sau!");
+        alert.setContentText(content);
         alert.showAndWait();
-    }}
+    }
+}
