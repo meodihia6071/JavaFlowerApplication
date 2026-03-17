@@ -59,7 +59,7 @@ public class SupplierDAO {
 
             tx = session.beginTransaction();
 
-            session.update(supplier);
+            session.merge(supplier);
 
             tx.commit();
 

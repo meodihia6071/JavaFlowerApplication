@@ -8,8 +8,8 @@ public class Stock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "stock_id")
+    private int stockId;
 
     @Column(name = "product_name")
     private String productName;
@@ -17,28 +17,27 @@ public class Stock {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "import_price")
+    private double importPrice;
+
+    @Column(name = "sell_price")
+    private double sellPrice;
+
     @Column(name = "supplier")
     private String supplier;
-
-    @Column(name = "price")
-    private Double price;
 
     @Column(name = "import_date")
     private String importDate;
 
-    @Column(name = "last_update")
-    private String lastUpdate;
-
     public Stock(){}
 
-    public int getId() {
-        return id;
+    public int getStockId() {
+        return stockId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStockId(int stockId) {
+        this.stockId = stockId;
     }
-
 
     public String getProductName() {
         return productName;
@@ -48,7 +47,6 @@ public class Stock {
         this.productName = productName;
     }
 
-
     public int getQuantity() {
         return quantity;
     }
@@ -57,16 +55,21 @@ public class Stock {
         this.quantity = quantity;
     }
 
-
-    public String getLastUpdate() {
-        return lastUpdate;
+    public double getImportPrice() {
+        return importPrice;
     }
 
-    public void setLastUpdate(String lastUpdate) {
-        this.lastUpdate = lastUpdate;
+    public void setImportPrice(double importPrice) {
+        this.importPrice = importPrice;
     }
 
-    // ===== GETTER SETTER NEW =====
+    public double getSellPrice() {
+        return sellPrice;
+    }
+
+    public void setSellPrice(double sellPrice) {
+        this.sellPrice = sellPrice;
+    }
 
     public String getSupplier() {
         return supplier;
@@ -74,14 +77,6 @@ public class Stock {
 
     public void setSupplier(String supplier) {
         this.supplier = supplier;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public String getImportDate() {

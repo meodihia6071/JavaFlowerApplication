@@ -30,9 +30,25 @@ public class Supplier {
     @Column(name = "status")
     private String status;
 
-    public Supplier() {}
+    // Constructor rỗng (bắt buộc cho JPA)
+    public Supplier() {
+    }
 
-    public Supplier(String supplierName, String phone, String email, String address, LocalDate createdDate, String status) {
+    // Constructor đầy đủ
+    public Supplier(int supplierId, String supplierName, String phone, String email,
+                    String address, LocalDate createdDate, String status) {
+        this.supplierId = supplierId;
+        this.supplierName = supplierName;
+        this.phone = phone;
+        this.email = email;
+        this.address = address;
+        this.createdDate = createdDate;
+        this.status = status;
+    }
+
+    // Constructor khi thêm mới (không cần id)
+    public Supplier(String supplierName, String phone, String email,
+                    String address, LocalDate createdDate, String status) {
         this.supplierName = supplierName;
         this.phone = phone;
         this.email = email;

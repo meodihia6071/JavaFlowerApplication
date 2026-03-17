@@ -11,26 +11,41 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-public class AdminSuppliersController {
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.control.TableCell;
 
+import javafx.scene.layout.GridPane;
+
+public class AdminSuppliersController {
     @FXML
     private TableView<Supplier> supplierTable;
 
     @FXML
-    private TableColumn<Supplier,Integer> colId;
+    private TableColumn<Supplier, Integer> colId;
 
     @FXML
-    private TableColumn<Supplier,String> colName;
+    private TableColumn<Supplier, String> colName;
 
     @FXML
-    private TableColumn<Supplier,String> colPhone;
+    private TableColumn<Supplier, String> colPhone;
 
     @FXML
-    private TableColumn<Supplier,String> colAddress;
+    private TableColumn<Supplier, String> colEmail;
+
+    @FXML
+    private TableColumn<Supplier, String> colAddress;
+
+    @FXML
+    private TableColumn<Supplier, LocalDate> colCreatedDate;
+
+    @FXML
+    private TableColumn<Supplier, String> colStatus;
 
     @FXML
     private TextField searchField;
@@ -45,7 +60,37 @@ public class AdminSuppliersController {
         colId.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
         colName.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
         colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colCreatedDate.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        colStatus.setCellFactory(column -> new TableCell<Supplier, String>() {
+
+            @Override
+            protected void updateItem(String status, boolean empty) {
+                super.updateItem(status, empty);
+
+                if (empty || status == null) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+
+                    Circle circle = new Circle(5);
+
+                    if (status.equalsIgnoreCase("Active")) {
+                        circle.setFill(Color.GREEN);
+                        setText(" Active");
+                    } else {
+                        circle.setFill(Color.RED);
+                        setText(" Inactive");
+                    }
+
+                    setGraphic(circle);
+                    setContentDisplay(ContentDisplay.LEFT);
+                }
+            }
+        });
+
 
         supplierTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -107,74 +152,151 @@ public class AdminSuppliersController {
     // ================= ADD =================
 
     @FXML
-    void handleAddSupplier(ActionEvent e){
+    public void handleAddSupplier(ActionEvent event){
 
-        TextInputDialog nameDialog = new TextInputDialog();
-        nameDialog.setHeaderText("Enter Supplier Name");
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Add Supplier");
 
-        Optional<String> name = nameDialog.showAndWait();
-        if(name.isEmpty()) return;
+        dialog.getDialogPane().getStylesheets().add(
+                getClass().getResource("/css/admin-style.css").toExternalForm()
+        );
+        dialog.getDialogPane().getStyleClass().add("dialog-pane");
 
-        TextInputDialog phoneDialog = new TextInputDialog();
-        phoneDialog.setHeaderText("Enter Phone");
+        TextField nameField = new TextField();
+        TextField phoneField = new TextField();
+        TextField emailField = new TextField();
+        TextField addressField = new TextField();
+        ComboBox<String> statusBox = new ComboBox<>();
+        statusBox.getItems().addAll("Active","Inactive");
+        statusBox.setValue("Active");
 
-        Optional<String> phone = phoneDialog.showAndWait();
-        if(phone.isEmpty()) return;
+        GridPane grid = new GridPane();
+        grid.setHgap(15);
+        grid.setVgap(12);
+        grid.setStyle("-fx-padding:20;");
 
-        TextInputDialog addressDialog = new TextInputDialog();
-        addressDialog.setHeaderText("Enter Address");
+        grid.add(new Label("Supplier Name:"),0,0);
+        grid.add(nameField,1,0);
 
-        Optional<String> address = addressDialog.showAndWait();
-        if(address.isEmpty()) return;
+        grid.add(new Label("Phone:"),0,1);
+        grid.add(phoneField,1,1);
 
-        Supplier s = new Supplier();
+        grid.add(new Label("Email:"),0,2);
+        grid.add(emailField,1,2);
 
-        s.setSupplierName(name.get());
-        s.setPhone(phone.get());
-        s.setAddress(address.get());
+        grid.add(new Label("Address:"),0,3);
+        grid.add(addressField,1,3);
 
-        supplierDAO.save(s);
+        grid.add(new Label("Status:"),0,4);
+        grid.add(statusBox,1,4);
 
-        loadSuppliers();
+        dialog.getDialogPane().setContent(grid);
+
+        ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
+
+        if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
+
+            Supplier s = new Supplier();
+
+            s.setSupplierName(nameField.getText());
+            s.setPhone(phoneField.getText());
+            s.setEmail(emailField.getText());
+            s.setAddress(addressField.getText());
+            s.setStatus(statusBox.getValue());
+
+            s.setCreatedDate(java.time.LocalDate.now());
+
+            supplierDAO.save(s);
+
+            loadSuppliers();
+        }
     }
 
     // ================= EDIT =================
 
     @FXML
-    void handleEditSupplier(ActionEvent e){
+    public void handleEditSupplier(ActionEvent event){
 
-        Supplier s = supplierTable.getSelectionModel().getSelectedItem();
+        Supplier selected = supplierTable.getSelectionModel().getSelectedItem();
 
-        if(s == null){
-            showAlert("Please select a supplier");
+        if(selected == null){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select supplier first!");
+
+            alert.getDialogPane().getStylesheets().add(
+                    getClass().getResource("/css/admin-style.css").toExternalForm()
+            );
+
+            alert.getDialogPane().getStyleClass().add("dialog-pane");
+
+            alert.show();
             return;
         }
 
-        TextInputDialog nameDialog = new TextInputDialog(s.getSupplierName());
-        nameDialog.setHeaderText("Edit Supplier Name");
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Edit Supplier");
 
-        Optional<String> name = nameDialog.showAndWait();
-        if(name.isEmpty()) return;
+        dialog.getDialogPane().getStylesheets().add(
+                getClass().getResource("/css/admin-style.css").toExternalForm()
+        );
+        dialog.getDialogPane().getStyleClass().add("dialog-pane");
 
-        TextInputDialog phoneDialog = new TextInputDialog(s.getPhone());
-        phoneDialog.setHeaderText("Edit Phone");
+        Label nameLabel = new Label("Supplier Name:");
+        TextField nameField = new TextField(selected.getSupplierName());
 
-        Optional<String> phone = phoneDialog.showAndWait();
-        if(phone.isEmpty()) return;
+        Label phoneLabel = new Label("Phone:");
+        TextField phoneField = new TextField(selected.getPhone());
 
-        TextInputDialog addressDialog = new TextInputDialog(s.getAddress());
-        addressDialog.setHeaderText("Edit Address");
+        Label emailLabel = new Label("Email:");
+        TextField emailField = new TextField(selected.getEmail());
 
-        Optional<String> address = addressDialog.showAndWait();
-        if(address.isEmpty()) return;
+        Label addressLabel = new Label("Address:");
+        TextField addressField = new TextField(selected.getAddress());
 
-        s.setSupplierName(name.get());
-        s.setPhone(phone.get());
-        s.setAddress(address.get());
+        Label statusLabel = new Label("Status:");
+        ComboBox<String> statusBox = new ComboBox<>();
+        statusBox.getItems().addAll("Active","Inactive");
+        statusBox.setValue(selected.getStatus());
 
-        supplierDAO.update(s);
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
 
-        loadSuppliers();
+        grid.add(nameLabel,0,0);
+        grid.add(nameField,1,0);
+
+        grid.add(phoneLabel,0,1);
+        grid.add(phoneField,1,1);
+
+        grid.add(emailLabel,0,2);
+        grid.add(emailField,1,2);
+
+        grid.add(addressLabel,0,3);
+        grid.add(addressField,1,3);
+
+        grid.add(statusLabel,0,4);
+        grid.add(statusBox,1,4);
+
+        dialog.getDialogPane().setContent(grid);
+
+        ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
+
+        if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
+
+            selected.setSupplierName(nameField.getText());
+            selected.setPhone(phoneField.getText());
+            selected.setEmail(emailField.getText());
+            selected.setAddress(addressField.getText());
+            selected.setStatus(statusBox.getValue());
+
+            supplierDAO.update(selected);
+
+            loadSuppliers();
+        }
     }
 
     // ================= DELETE =================
@@ -190,6 +312,10 @@ public class AdminSuppliersController {
         }
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.getDialogPane().getStylesheets().add(
+                getClass().getResource("/css/admin-style.css").toExternalForm()
+        );
+        confirm.getDialogPane().getStyleClass().add("dialog-pane");
         confirm.setHeaderText("Delete Supplier?");
         confirm.setContentText("Are you sure you want to delete this supplier?");
 
