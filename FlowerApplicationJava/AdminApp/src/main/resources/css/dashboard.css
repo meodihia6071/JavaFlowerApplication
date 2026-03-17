@@ -1,0 +1,14 @@
+/* Chỉ giữ lại hiệu ứng đổi màu và đổ bóng trong CSS */
+.dash-button {
+    -fx-background-color: #F8DEE3;
+    -fx-text-fill: #734848;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.dash-button:hover {
+    -fx-background-color: #FFB6C1;
+    -fx-effect: dropshadow(three-pass-box, rgba(201, 75, 110, 0.4), 15, 0, 0, 5);
+}

@@ -11,16 +11,13 @@ public class CustomerDAO extends BaseDAO<Customer> {
         super(Customer.class);
     }
 
-    // Thêm hàm này để tìm Profile dựa theo ID của User đang đăng nhập
-    public Customer findByUserId(int userId) {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            // Lưu ý: Chữ "user.userId" hay "userId" phụ thuộc vào cách anh map trong file Customer.java
-            // Dưới đây là cách map phổ biến nhất nếu anh dùng @ManyToOne hoặc @OneToOne
-            Query<Customer> query = session.createQuery(
-                    "from Customer c where c.user.userId = :userId", Customer.class
-            );
-            query.setParameter("userId", userId);
-            return query.uniqueResult();
+    // Anh dán đè hàm này vào CustomerDAO.java nhé
+    public flowershop.models.Customer findByUserId(int userId) {
+        try (org.hibernate.Session session = flowershop.utils.HibernateUtil.getSessionFactory().openSession()) {
+            // Lưu ý: "c.user.user_id" tùy thuộc vào cách anh đặt tên biến trong class Customer
+            return session.createQuery("FROM Customer c WHERE c.user.id = :userId", flowershop.models.Customer.class)
+                    .setParameter("userId", userId)
+                    .uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
