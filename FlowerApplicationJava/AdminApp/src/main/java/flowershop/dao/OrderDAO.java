@@ -16,19 +16,35 @@ public class OrderDAO extends BaseDAO<Order> {
     public Order findCartByCustomerId(int customerId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Order> query = session.createQuery(
-                    "select distinct o from Order o " +
-                            "left join fetch o.orderDetails od " +
-                            "left join fetch od.product " +
-                            "where o.customer.customerId = :customerId and o.status = :status " +
-                            "order by o.orderId desc",
+                    "from Order where customer.customerId = :customerId and status = :status",
                     Order.class
             );
             query.setParameter("customerId", customerId);
             query.setParameter("status", "CART");
-            query.setMaxResults(1);
+            return query.uniqueResult();
+        }
+    }
 
-            List<Order> orders = query.list();
-            return orders.isEmpty() ? null : orders.get(0);
+    public Order findByCustomerAndStatus(int customerId, String status) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Order> query = session.createQuery(
+                    "from Order where customer.customerId = :customerId and status = :status",
+                    Order.class
+            );
+            query.setParameter("customerId", customerId);
+            query.setParameter("status", status);
+            return query.uniqueResult();
+        }
+    }
+
+    public List<Order> findAllByCustomerId(int customerId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<Order> query = session.createQuery(
+                    "from Order where customer.customerId = :customerId order by orderDate desc",
+                    Order.class
+            );
+            query.setParameter("customerId", customerId);
+            return query.list();
         }
     }
 }

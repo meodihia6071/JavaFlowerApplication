@@ -329,11 +329,7 @@ public class CartController {
 
     @FXML
     public void goContact() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText(null);
-        alert.setTitle("Contact");
-        alert.setContentText("Chưa code màn Contact.");
-        alert.showAndWait();
+        SceneManager.switchScene("/fxml/Contact.fxml", "Contact");
     }
 
     @FXML

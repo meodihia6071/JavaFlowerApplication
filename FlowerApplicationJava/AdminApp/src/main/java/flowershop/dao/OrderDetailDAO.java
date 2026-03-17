@@ -19,42 +19,52 @@ public class OrderDetailDAO extends BaseDAO<OrderDetail> {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<OrderDetail> query = session.createQuery(
                     "select od from OrderDetail od " +
-                            "left join fetch od.product " +
+                            "join fetch od.product " +
+                            "join fetch od.order " +
                             "where od.order.orderId = :orderId " +
                             "order by od.orderDetailId",
                     OrderDetail.class
             );
             query.setParameter("orderId", orderId);
-            return query.list();
+            return safeList(query.list());
         }
     }
 
-    public OrderDetail findByOrderProductAndNote(int orderId, int productId, String note) {
+    public OrderDetail findByIdWithProduct(int orderDetailId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<OrderDetail> query = session.createQuery(
                     "select od from OrderDetail od " +
-                            "where od.order.orderId = :orderId " +
-                            "and od.product.productId = :productId " +
-                            "and coalesce(od.note, '') = :note",
+                            "join fetch od.product " +
+                            "join fetch od.order " +
+                            "where od.orderDetailId = :orderDetailId",
+                    OrderDetail.class
+            );
+            query.setParameter("orderDetailId", orderDetailId);
+            return query.uniqueResult();
+        }
+    }
+
+    public OrderDetail findByOrderAndProductAndNote(int orderId, int productId, String note) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Query<OrderDetail> query = session.createQuery(
+                    "from OrderDetail " +
+                            "where order.orderId = :orderId " +
+                            "and product.productId = :productId " +
+                            "and ((:note is null and note is null) or note = :note)",
                     OrderDetail.class
             );
             query.setParameter("orderId", orderId);
             query.setParameter("productId", productId);
-            query.setParameter("note", note == null ? "" : note.trim());
-            query.setMaxResults(1);
-
-            List<OrderDetail> result = query.list();
-            return result.isEmpty() ? null : result.get(0);
+            query.setParameter("note", note);
+            return query.uniqueResult();
         }
     }
 
     public int getTotalQuantityByOrderAndProduct(int orderId, int productId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Long> query = session.createQuery(
-                    "select coalesce(sum(od.quantity), 0) " +
-                            "from OrderDetail od " +
-                            "where od.order.orderId = :orderId " +
-                            "and od.product.productId = :productId",
+                    "select coalesce(sum(quantity), 0) from OrderDetail " +
+                            "where order.orderId = :orderId and product.productId = :productId",
                     Long.class
             );
             query.setParameter("orderId", orderId);
@@ -71,9 +81,9 @@ public class OrderDetailDAO extends BaseDAO<OrderDetail> {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
 
-            OrderDetail entity = session.get(OrderDetail.class, orderDetailId);
-            if (entity != null) {
-                session.remove(entity);
+            OrderDetail detail = session.get(OrderDetail.class, orderDetailId);
+            if (detail != null) {
+                session.remove(detail);
             }
 
             transaction.commit();
@@ -83,7 +93,7 @@ public class OrderDetailDAO extends BaseDAO<OrderDetail> {
         }
     }
 
-    public List<OrderDetail> safeList(List<OrderDetail> items) {
+    private List<OrderDetail> safeList(List<OrderDetail> items) {
         return items == null ? new ArrayList<>() : items;
     }
 }

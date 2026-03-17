@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="flowershop.controllers.ContactController"
+            stylesheets="@../css/user-style.css"
+            style="-fx-background-color: #f8eef1;">
+
+    <top>
+        <HBox alignment="CENTER_LEFT"
+              prefHeight="56.0"
+              spacing="22.0"
+              styleClass="top-bar">
+            <padding>
+                <Insets top="0" right="18" bottom="0" left="18"/>
+            </padding>
+
+            <children>
+                <Label text="Flower shop" styleClass="brand-label"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button text="Home" onAction="#goHome" styleClass="nav-button"/>
+                <Button text="Flowers" onAction="#goFlowers" styleClass="nav-button"/>
+                <Button text="Categories" onAction="#goCategories" styleClass="nav-button"/>
+                <Button text="Contact" styleClass="nav-button-active"/>
+                <Button fx:id="btnCart" text="Cart" onAction="#goCart" styleClass="nav-button"/>
+
+                <Button text="Log Out"
+                        onAction="#handleLogout"
+                        prefWidth="94"
+                        prefHeight="34"
+                        styleClass="logout-button"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true"
+                    hbarPolicy="NEVER"
+                    vbarPolicy="AS_NEEDED"
+                    style="-fx-background: #f8eef1; -fx-background-color: #f8eef1;">
+            <content>
+                <VBox alignment="TOP_CENTER"
+                      spacing="28"
+                      style="-fx-background-color: #f8eef1;">
+                    <padding>
+                        <Insets top="26" right="24" bottom="28" left="24"/>
+                    </padding>
+
+                    <children>
+
+                        <VBox alignment="CENTER" spacing="8">
+                            <children>
+                                <Label fx:id="lblTitle"
+                                       text="Contact Us"
+                                       style="-fx-font-size: 30px; -fx-text-fill: #8e5f5f; -fx-font-weight: 800;"/>
+
+                                <Label fx:id="lblSubtitle"
+                                       text="We are always ready to listen and help you choose the perfect flowers."
+                                       wrapText="true"
+                                       maxWidth="780"
+                                       style="-fx-font-size: 15px; -fx-text-fill: #b07a7a;"/>
+                            </children>
+                        </VBox>
+
+                        <HBox alignment="TOP_CENTER"
+                              spacing="34"
+                              maxWidth="1180"
+                              prefWidth="1180">
+                            <children>
+
+                                <VBox fx:id="storeCard"
+                                      spacing="18"
+                                      prefWidth="540"
+                                      minHeight="360"
+                                      style="-fx-background-color:#f5dce2; -fx-background-radius:16; -fx-padding:28; -fx-border-color:#f0c7d2; -fx-border-radius:16;">
+                                    <children>
+                                        <Label text="Flower Shop"
+                                               style="-fx-font-size:22px; -fx-font-weight:800; -fx-text-fill:#8e5f5f;"/>
+
+                                        <Label wrapText="true"
+                                               text="Flower Shop là địa chỉ tin cậy dành cho những ai đang tìm kiếm các bó hoa tươi, giỏ hoa và lẵng hoa mang phong cách nhẹ nhàng, tinh tế. Chúng tôi tập trung vào trải nghiệm đặt hoa trực tuyến nhanh, dễ dùng và phù hợp cho nhiều dịp như sinh nhật, kỷ niệm, cưới hỏi và chia buồn."
+                                               style="-fx-font-size:15px; -fx-text-fill:#9b6666; -fx-line-spacing:3;"/>
+
+                                        <Separator style="-fx-background-color:#e8b9c8;"/>
+
+                                        <VBox spacing="10">
+                                            <children>
+                                                <Label text="Why choose us?"
+                                                       style="-fx-font-size:18px; -fx-font-weight:700; -fx-text-fill:#8e5f5f;"/>
+
+                                                <Label text="• Giao diện đặt hoa đơn giản, dễ thao tác"
+                                                       style="-fx-font-size:14px; -fx-text-fill:#9b6666;"/>
+                                                <Label text="• Nhiều mẫu hoa theo danh mục dịp sử dụng"
+                                                       style="-fx-font-size:14px; -fx-text-fill:#9b6666;"/>
+                                                <Label text="• Hỗ trợ ghi chú riêng cho từng sản phẩm"
+                                                       style="-fx-font-size:14px; -fx-text-fill:#9b6666;"/>
+                                                <Label text="• Theo dõi giỏ hàng nhanh ngay trên thanh menu"
+                                                       style="-fx-font-size:14px; -fx-text-fill:#9b6666;"/>
+                                            </children>
+                                        </VBox>
+
+                                        <Region VBox.vgrow="ALWAYS"/>
+
+                                        <HBox spacing="14">
+                                            <children>
+                                                <VBox prefWidth="220"
+                                                      spacing="6"
+                                                      style="-fx-background-color:#f8eef1; -fx-background-radius:12; -fx-padding:14;">
+                                                    <children>
+                                                        <Label text="Opening Hours"
+                                                               style="-fx-font-size:15px; -fx-font-weight:700; -fx-text-fill:#8e5f5f;"/>
+                                                        <Label text="08:00 - 21:00 mỗi ngày"
+                                                               style="-fx-font-size:14px; -fx-text-fill:#b07a7a;"/>
+                                                    </children>
+                                                </VBox>
+
+                                                <VBox prefWidth="220"
+                                                      spacing="6"
+                                                      style="-fx-background-color:#f8eef1; -fx-background-radius:12; -fx-padding:14;">
+                                                    <children>
+                                                        <Label text="Customer Support"
+                                                               style="-fx-font-size:15px; -fx-font-weight:700; -fx-text-fill:#8e5f5f;"/>
+                                                        <Label text="Luôn sẵn sàng hỗ trợ đặt hoa"
+                                                               wrapText="true"
+                                                               style="-fx-font-size:14px; -fx-text-fill:#b07a7a;"/>
+                                                    </children>
+                                                </VBox>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+
+                                <VBox fx:id="formCard"
+                                      spacing="16"
+                                      prefWidth="540"
+                                      minHeight="360"
+                                      style="-fx-background-color:#f5dce2; -fx-background-radius:16; -fx-padding:28; -fx-border-color:#f0c7d2; -fx-border-radius:16;">
+                                    <children>
+                                        <Label text="Send Message"
+                                               style="-fx-font-size:22px; -fx-font-weight:800; -fx-text-fill:#8e5f5f;"/>
+
+                                        <Label text="Leave your message here and we will contact you as soon as possible."
+                                               wrapText="true"
+                                               style="-fx-font-size:14px; -fx-text-fill:#b07a7a;"/>
+
+                                        <TextField fx:id="txtName"
+                                                   promptText="Your Name"
+                                                   prefHeight="42"
+                                                   style="-fx-background-color:#fffafc; -fx-background-radius:10; -fx-border-color:#ecc2cf; -fx-border-radius:10; -fx-text-fill:#8e5f5f; -fx-prompt-text-fill:#c69b9b; -fx-font-size:14px;"/>
+
+                                        <TextField fx:id="txtEmail"
+                                                   promptText="Your Email"
+                                                   prefHeight="42"
+                                                   style="-fx-background-color:#fffafc; -fx-background-radius:10; -fx-border-color:#ecc2cf; -fx-border-radius:10; -fx-text-fill:#8e5f5f; -fx-prompt-text-fill:#c69b9b; -fx-font-size:14px;"/>
+
+                                        <TextArea fx:id="txtMessage"
+                                                  promptText="Your Message"
+                                                  prefHeight="190"
+                                                  wrapText="true"
+                                                  style="-fx-background-color:#fffafc; -fx-background-radius:10; -fx-border-color:#ecc2cf; -fx-border-radius:10; -fx-text-fill:#8e5f5f; -fx-prompt-text-fill:#c69b9b; -fx-font-size:14px;"/>
+
+                                        <HBox alignment="CENTER_RIGHT" spacing="12">
+                                            <children>
+                                                <Button fx:id="btnClear"
+                                                        text="Clear"
+                                                        onAction="#handleClear"
+                                                        prefWidth="100"
+                                                        prefHeight="38"
+                                                        style="-fx-background-color:#edd6d8; -fx-text-fill:#8e5f5f; -fx-font-size:14px; -fx-font-weight:700; -fx-background-radius:10; -fx-cursor:hand;"/>
+
+                                                <Button fx:id="btnSend"
+                                                        text="Send Message"
+                                                        onAction="#handleSendMessage"
+                                                        prefWidth="150"
+                                                        prefHeight="38"
+                                                        styleClass="primary-button"
+                                                        style="-fx-font-size:15px; -fx-background-radius:10;"/>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </HBox>
+
+                        <HBox alignment="CENTER"
+                              spacing="24"
+                              maxWidth="1180"
+                              prefWidth="1180">
+                            <children>
+
+                                <VBox fx:id="addressBox"
+                                      alignment="CENTER"
+                                      spacing="8"
+                                      prefWidth="370"
+                                      style="-fx-background-color:#f5dce2; -fx-background-radius:14; -fx-padding:18;">
+                                    <children>
+                                        <Label text="ĐỊA CHỈ"
+                                               style="-fx-font-weight:800; -fx-text-fill:#8e5f5f; -fx-font-size:16px;"/>
+                                        <Label text="Số 4, ngách 1 ngõ 34, Âu Cơ, Tây Hồ"
+                                               wrapText="true"
+                                               alignment="CENTER"
+                                               maxWidth="300"
+                                               style="-fx-text-fill:#9b6666; -fx-font-size:14px;"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox fx:id="phoneBox"
+                                      alignment="CENTER"
+                                      spacing="8"
+                                      prefWidth="370"
+                                      style="-fx-background-color:#f5dce2; -fx-background-radius:14; -fx-padding:18;">
+                                    <children>
+                                        <Label text="PHONE"
+                                               style="-fx-font-weight:800; -fx-text-fill:#8e5f5f; -fx-font-size:16px;"/>
+                                        <Label text="0359341138"
+                                               style="-fx-text-fill:#f28c8c; -fx-font-size:15px; -fx-font-weight:700;"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox fx:id="emailBox"
+                                      alignment="CENTER"
+                                      spacing="8"
+                                      prefWidth="370"
+                                      style="-fx-background-color:#f5dce2; -fx-background-radius:14; -fx-padding:18;">
+                                    <children>
+                                        <Label text="EMAIL"
+                                               style="-fx-font-weight:800; -fx-text-fill:#8e5f5f; -fx-font-size:16px;"/>
+                                        <Label text="camfloralhouse@gmail.com"
+                                               wrapText="true"
+                                               style="-fx-text-fill:#f28c8c; -fx-font-size:15px; -fx-font-weight:700;"/>
+                                    </children>
+                                </VBox>
+
+                            </children>
+                        </HBox>
+
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER"
+              prefHeight="40"
+              styleClass="footer-bar">
+            <children>
+                <Label text="Flower Shop. flowershop@gmail.com"
+                       style="-fx-text-fill:white; -fx-font-size:14px;"/>
+            </children>
+        </HBox>
+    </bottom>
+
+</BorderPane>

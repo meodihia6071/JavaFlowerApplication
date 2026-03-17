@@ -19,6 +19,21 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
+    @Column(name = "recipient_name")
+    private String recipientName;
+
+    @Column(name = "recipient_email")
+    private String recipientEmail;
+
+    @Column(name = "recipient_phone")
+    private String recipientPhone;
+
+    @Column(name = "shipping_address")
+    private String shippingAddress;
+
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
     @Column(name = "order_date")
     private LocalDateTime orderDate;
 
@@ -52,6 +67,46 @@ public class Order {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public String getRecipientName() {
+        return recipientName;
+    }
+
+    public void setRecipientName(String recipientName) {
+        this.recipientName = recipientName;
+    }
+
+    public String getRecipientEmail() {
+        return recipientEmail;
+    }
+
+    public void setRecipientEmail(String recipientEmail) {
+        this.recipientEmail = recipientEmail;
+    }
+
+    public String getRecipientPhone() {
+        return recipientPhone;
+    }
+
+    public void setRecipientPhone(String recipientPhone) {
+        this.recipientPhone = recipientPhone;
+    }
+
+    public String getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(String shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
     public LocalDateTime getOrderDate() {

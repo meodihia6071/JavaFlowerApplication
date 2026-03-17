@@ -108,7 +108,7 @@ public class UserHomeController {
     }
 
     private void openProductDetail(String productName, Node ownerNode) {
-        Product product = productDAO.findByName(productName);
+        Product product = productDAO.findByProductName(productName);
         if (product == null) {
             showInfo("Lỗi", "Không tìm thấy sản phẩm.");
             return;
@@ -241,7 +241,7 @@ public class UserHomeController {
 
     @FXML
     public void goContact() {
-        showInfo("Contact", "Vẽ nốt Contact đy-.-.");
+        SceneManager.switchScene("/fxml/Contact.fxml", "Contact");
     }
 
     @FXML

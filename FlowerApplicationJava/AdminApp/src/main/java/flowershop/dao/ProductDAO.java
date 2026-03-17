@@ -13,14 +13,13 @@ public class ProductDAO extends BaseDAO<Product> {
         super(Product.class);
     }
 
-    public Product findByName(String productName) {
+    public Product findByProductName(String productName) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             Query<Product> query = session.createQuery(
                     "from Product where productName = :productName",
                     Product.class
             );
             query.setParameter("productName", productName);
-            query.setMaxResults(1);
             return query.uniqueResult();
         }
     }
@@ -28,8 +27,7 @@ public class ProductDAO extends BaseDAO<Product> {
     public List<Product> findAllWithCategory() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery(
-                    "select distinct p from Product p " +
-                            "left join fetch p.category",
+                    "select distinct p from Product p left join fetch p.category",
                     Product.class
             ).list();
         }

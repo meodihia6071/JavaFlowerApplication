@@ -4,38 +4,34 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="flowershop.controllers.OrderController"
-            stylesheets="@../css/user-style.css"
-            style="-fx-background-color: #f8eef1;">
+<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.OrderController">
 
     <top>
-        <HBox prefHeight="56.0" alignment="CENTER_LEFT" spacing="22.0" styleClass="top-bar">
+        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" styleClass="top-bar">
             <padding>
-                <Insets top="0.0" right="18.0" bottom="0.0" left="18.0"/>
+                <Insets bottom="0.0" left="18.0" right="18.0" top="0.0" />
             </padding>
+
             <children>
-                <Label text="Flower shop" styleClass="brand-label"/>
-                <Region HBox.hgrow="ALWAYS"/>
+                <Label styleClass="brand-label" text="Flower shop" />
+                <Region HBox.hgrow="ALWAYS" />
 
-                <Button text="Home" onAction="#goHome" styleClass="nav-button"/>
-                <Button text="Flowers" onAction="#goFlowers" styleClass="nav-button"/>
-                <Button text="Categories" onAction="#goCategories" styleClass="nav-button"/>
-                <Button text="Contact" onAction="#goContact" styleClass="nav-button"/>
-                <Button text="Cart" onAction="#goCart" styleClass="nav-button-active"/>
+                <Button onAction="#goHome" styleClass="nav-button" text="Home" />
+                <Button onAction="#goFlowers" styleClass="nav-button" text="Flowers" />
+                <Button onAction="#goCategories" styleClass="nav-button" text="Categories" />
+                <Button onAction="#goContact" styleClass="nav-button" text="Contact" />
+                <Button fx:id="btnCart" onAction="#goCart" styleClass="nav-button-active" text="Cart" />
 
-                <Button text="Log Out" onAction="#handleLogout"
-                        prefWidth="94.0" prefHeight="34.0"
-                        styleClass="logout-button"/>
+                <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" styleClass="logout-button" text="Log Out" />
             </children>
         </HBox>
     </top>
@@ -43,115 +39,138 @@
     <center>
         <StackPane style="-fx-background-color: #f8eef1;">
             <children>
-                <VBox spacing="28.0" maxWidth="1260.0" prefWidth="1260.0">
+                <VBox fx:id="mainBox" maxWidth="1260.0" prefWidth="1260.0" spacing="28.0">
                     <padding>
-                        <Insets top="26.0" right="30.0" bottom="26.0" left="30.0"/>
+                        <Insets bottom="26.0" left="30.0" right="30.0" top="26.0" />
                     </padding>
 
                     <children>
 
-                        <Label text="Checkout"
-                               maxWidth="1260.0"
-                               prefHeight="42.0"
-                               style="-fx-background-color: #edd6d8; -fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700; -fx-padding: 8 0 0 16;"/>
+                        <Label fx:id="lblCheckoutTitle" maxWidth="1260.0" prefHeight="42.0" style="-fx-background-color: #edd6d8; -fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700; -fx-padding: 8 0 0 16;" text="Checkout" />
 
                         <HBox spacing="80.0">
                             <children>
 
-                                <VBox spacing="20.0" prefWidth="520.0">
+                                <!-- LEFT -->
+                                <VBox fx:id="leftPanel" prefWidth="540.0" spacing="20.0">
                                     <children>
-                                        <Label text="Customer Information"
-                                               style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700;"/>
+                                        <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700;" text="Customer Information" />
 
                                         <HBox alignment="CENTER_LEFT" spacing="20.0">
                                             <children>
-                                                <Label text="Full name" prefWidth="100.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;"/>
-                                                <TextField prefWidth="250.0" style="-fx-background-color: #f6d6e0;"/>
+                                                <Label prefWidth="100.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;" text="Full name" />
+                                                <TextField fx:id="txtFullName" prefWidth="250.0" style="-fx-background-color: #f6d6e0; -fx-text-fill: #8e5f5f;" />
                                             </children>
                                         </HBox>
 
                                         <HBox alignment="CENTER_LEFT" spacing="20.0">
                                             <children>
-                                                <Label text="Email" prefWidth="100.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;"/>
-                                                <TextField prefWidth="250.0" style="-fx-background-color: #f6d6e0;"/>
+                                                <Label prefWidth="100.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;" text="Email" />
+                                                <TextField fx:id="txtEmail" prefWidth="250.0" style="-fx-background-color: #f6d6e0; -fx-text-fill: #8e5f5f;" />
                                             </children>
                                         </HBox>
 
                                         <HBox alignment="CENTER_LEFT" spacing="20.0">
                                             <children>
-                                                <Label text="Phone" prefWidth="100.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;"/>
-                                                <TextField prefWidth="250.0" style="-fx-background-color: #f6d6e0;"/>
+                                                <Label prefWidth="100.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;" text="Phone" />
+                                                <TextField fx:id="txtPhone" prefWidth="250.0" style="-fx-background-color: #f6d6e0; -fx-text-fill: #8e5f5f;" />
                                             </children>
                                         </HBox>
 
                                         <HBox alignment="CENTER_LEFT" spacing="20.0">
                                             <children>
-                                                <Label text="Address" prefWidth="100.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;"/>
-                                                <TextField prefWidth="250.0" style="-fx-background-color: #f6d6e0;"/>
+                                                <Label prefWidth="100.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;" text="Address" />
+                                                <TextArea fx:id="txtAddress" prefHeight="90.0" prefWidth="250.0" style="-fx-background-color: #f6d6e0; -fx-text-fill: #8e5f5f;" wrapText="true" />
                                             </children>
                                         </HBox>
 
                                         <VBox spacing="10.0">
                                             <children>
-                                                <Label text="Payment Method"
-                                                       style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700;"/>
-                                                <CheckBox text="Credit Card"/>
-                                                <CheckBox text="PayPal"/>
-                                                <CheckBox text="Cash on Delivery"/>
+                                                <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700;" text="Payment Method" />
+
+                                                <CheckBox fx:id="chkCreditCard" onAction="#handlePaymentSelection" text="Credit Card" />
+                                                <CheckBox fx:id="chkPayPal" onAction="#handlePaymentSelection" text="PayPal" />
+                                                <CheckBox fx:id="chkCashOnDelivery" onAction="#handlePaymentSelection" text="Cash on Delivery" />
+                                            </children>
+                                        </VBox>
+
+                                        <VBox spacing="10.0">
+                                            <children>
+                                                <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700;" text="Use Points" />
+
+                                                <Label fx:id="lblCurrentPoints" style="-fx-text-fill: #8e5f5f; -fx-font-size: 15px;" text="Current points: 0" />
+
+                                                <HBox alignment="CENTER_LEFT" spacing="16.0">
+                                                    <children>
+                                                        <Button fx:id="btnMinusPoint" onAction="#handleDecreasePoint" prefHeight="36.0" prefWidth="44.0" style="-fx-background-color: #edd6d8; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-font-weight: 700; -fx-background-radius: 8; -fx-cursor: hand;" text="-" />
+
+                                                        <Label fx:id="lblUsedPoints" prefWidth="40.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-font-weight: 700;" text="0" />
+
+                                                        <Button fx:id="btnPlusPoint" onAction="#handleIncreasePoint" prefHeight="36.0" prefWidth="44.0" style="-fx-background-color: #edd6d8; -fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-font-weight: 700; -fx-background-radius: 8; -fx-cursor: hand;" text="+" />
+
+                                                        <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 15px;" text="points used" />
+                                                    </children>
+                                                </HBox>
+
+                                                <Label fx:id="lblPointRule" style="-fx-text-fill: #d06c95; -fx-font-size: 13px; -fx-font-style: italic;" text="1 point = voucher giảm 10%" />
                                             </children>
                                         </VBox>
                                     </children>
                                 </VBox>
 
-                                <Region prefWidth="1.5" maxHeight="340.0" style="-fx-background-color: #f59bc0;"/>
+                                <Region maxHeight="520.0" prefWidth="1.5" style="-fx-background-color: #f59bc0;" />
 
-                                <VBox spacing="18.0" prefWidth="350.0">
+                                <!-- RIGHT -->
+                                <VBox fx:id="rightPanel" prefWidth="380.0" spacing="18.0">
                                     <children>
-                                        <Label text="Order Summary"
-                                               style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700;"/>
-                                        <Label text="--------------"
-                                               style="-fx-text-fill: #8e5f5f; -fx-font-size: 18px;"/>
+                                        <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700;" text="Order Summary" />
+
+                                        <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="--------------" />
+
+                                        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="180.0" style="-fx-background: transparent; -fx-background-color: transparent;" vbarPolicy="AS_NEEDED">
+                                            <content>
+                                                <VBox fx:id="orderItemsContainer" spacing="10.0" />
+                                            </content>
+                                        </ScrollPane>
+
+                                        <Region prefHeight="10.0" />
 
                                         <HBox>
                                             <children>
-                                                <Label text="Rose Bouquet x1" prefWidth="220.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"/>
-                                                <Label text="\$25" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"/>
+                                                <Label prefWidth="220.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;" text="Subtotal" />
+                                                <Label fx:id="lblSubtotal" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;" text="\$0" />
                                             </children>
                                         </HBox>
 
                                         <HBox>
                                             <children>
-                                                <Label text="Tulip Bouquet x1" prefWidth="220.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"/>
-                                                <Label text="\$25" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"/>
-                                            </children>
-                                        </HBox>
-
-                                        <Region prefHeight="14.0"/>
-
-                                        <HBox>
-                                            <children>
-                                                <Label text="Subtotal" prefWidth="220.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"/>
-                                                <Label text="\$50" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"/>
+                                                <Label prefWidth="220.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;" text="Shipping" />
+                                                <Label fx:id="lblShipping" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;" text="\$0" />
                                             </children>
                                         </HBox>
 
                                         <HBox>
                                             <children>
-                                                <Label text="Shipping" prefWidth="220.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"/>
-                                                <Label text="\$5" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"/>
+                                                <Label prefWidth="220.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;" text="Points discount" />
+                                                <Label fx:id="lblDiscount" style="-fx-text-fill: #d06c95; -fx-font-size: 16px; -fx-font-weight: 700;" text="-$0" />
                                             </children>
                                         </HBox>
 
                                         <HBox>
                                             <children>
-                                                <Label text="Total" prefWidth="220.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"/>
-                                                <Label text="\$55" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"/>
+                                                <Label prefWidth="220.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px; -fx-font-weight: 700;" text="Total" />
+                                                <Label fx:id="lblTotal" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px; -fx-font-weight: 700;" text="\$0" />
                                             </children>
                                         </HBox>
 
-                                        <Button text="Place Order"
-                                                prefWidth="180.0" prefHeight="48.0"
-                                                style="-fx-background-color: #f59bc0; -fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-background-radius: 6;"/>
+                                        <HBox>
+                                            <children>
+                                                <Label prefWidth="220.0" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;" text="Points earned" />
+                                                <Label fx:id="lblEarnedPoints" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;" text="+0" />
+                                            </children>
+                                        </HBox>
+
+                                        <Button fx:id="btnPlaceOrder" onAction="#handlePlaceOrder" prefHeight="48.0" prefWidth="180.0" style="-fx-font-size: 24px; -fx-background-radius: 6;" styleClass="primary-button" text="Place Order" />
                                     </children>
                                 </VBox>
 
@@ -165,10 +184,9 @@
     </center>
 
     <bottom>
-        <HBox alignment="CENTER" prefHeight="36.0" style="-fx-background-color: #f7c8d7;">
+        <HBox alignment="CENTER" prefHeight="36.0" styleClass="footer-bar">
             <children>
-                <Label text="Flower Shop. flowershop@gmail.com"
-                       style="-fx-text-fill: white; -fx-font-size: 13px;"/>
+                <Label style="-fx-text-fill: white; -fx-font-size: 13px;" text="Flower Shop. flowershop@gmail.com" />
             </children>
         </HBox>
     </bottom>
