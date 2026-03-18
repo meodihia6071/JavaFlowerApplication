@@ -154,3 +154,10 @@ WHERE product_name = 'Pink Tulip Box';
 UPDATE products
 SET quantity = 5
 WHERE product_id = 2;
+
+ALTER TABLE orders
+ADD COLUMN recipient_name VARCHAR(100) NULL AFTER customer_id,
+ADD COLUMN recipient_email VARCHAR(100) NULL AFTER recipient_name,
+ADD COLUMN recipient_phone VARCHAR(20) NULL AFTER recipient_email,
+ADD COLUMN shipping_address VARCHAR(255) NULL AFTER recipient_phone,
+ADD COLUMN payment_method VARCHAR(50) NULL AFTER shipping_address;
