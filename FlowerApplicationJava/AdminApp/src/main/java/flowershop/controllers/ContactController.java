@@ -2,6 +2,7 @@ package flowershop.controllers;
 
 import flowershop.models.Customer;
 import flowershop.services.CartService;
+import flowershop.services.EmailService;
 import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
 import javafx.animation.FadeTransition;
@@ -124,6 +125,7 @@ public class ContactController {
 
     @FXML
     private void handleSendMessage() {
+
         String name = txtName.getText().trim();
         String email = txtEmail.getText().trim();
         String message = txtMessage.getText().trim();
@@ -133,13 +135,19 @@ public class ContactController {
             return;
         }
 
-        if (!email.contains("@") || !email.contains(".")) {
-            showInfo("Email chưa hợp lệ", "Vui lòng nhập đúng định dạng email.");
-            return;
-        }
+        try {
+            EmailService.sendEmail(name, email, message);
 
-        showInfo("Gửi thành công", "Cảm ơn bạn đã liên hệ với Flower Shop. Chúng tôi sẽ phản hồi sớm nhất.");
-        clearForm();
+            showInfo("Thành công", "Cảm ơn bạn đã phải hồi !");
+
+            // clear form
+            txtName.clear();
+            txtEmail.clear();
+            txtMessage.clear();
+
+        } catch (Exception e) {
+            showInfo("Lỗi", "Chưa gửi được !");
+        }
     }
 
     @FXML

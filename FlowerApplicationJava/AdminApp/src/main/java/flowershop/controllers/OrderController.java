@@ -1,24 +1,22 @@
 package flowershop.controllers;
 
+import flowershop.dao.OrderDAO;
 import flowershop.models.Customer;
 import flowershop.models.OrderDetail;
 import flowershop.services.CartService;
 import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
+import flowershop.services.PaymentService;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import java.awt.Desktop;
+import java.net.URI;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -28,6 +26,7 @@ import javafx.util.Duration;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 public class OrderController {
@@ -118,6 +117,19 @@ public class OrderController {
         addHoverEffect(btnPlaceOrder);
         addHoverEffect(btnMinusPoint);
         addHoverEffect(btnPlusPoint);
+    }
+
+    private void handleVNPayPayment(long amount, int orderId) {
+        try {
+            String url = PaymentService.createQRUrl(amount, orderId);
+
+            if (Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(new URI(url));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setupPhoneValidation() {
@@ -254,19 +266,13 @@ public class OrderController {
 
     @FXML
     private void handlePaymentSelection() {
-        CheckBox selected = null;
-
-        if (chkCreditCard.isSelected()) selected = chkCreditCard;
-        if (chkPayPal.isSelected()) selected = chkPayPal;
-        if (chkCashOnDelivery.isSelected()) selected = chkCashOnDelivery;
-
-        if (selected == chkCreditCard) {
+        if (chkCreditCard.isSelected()) {
             chkPayPal.setSelected(false);
             chkCashOnDelivery.setSelected(false);
-        } else if (selected == chkPayPal) {
+        } else if (chkPayPal.isSelected()) {
             chkCreditCard.setSelected(false);
             chkCashOnDelivery.setSelected(false);
-        } else if (selected == chkCashOnDelivery) {
+        } else if (chkCashOnDelivery.isSelected()) {
             chkCreditCard.setSelected(false);
             chkPayPal.setSelected(false);
         }
@@ -306,7 +312,7 @@ public class OrderController {
         }
 
         try {
-            cartService.placeOrder(
+            var order = cartService.placeOrder(
                     currentCustomer,
                     fullName,
                     email,
@@ -316,8 +322,32 @@ public class OrderController {
                     usedPoints
             );
 
-            showInfo("Thành công", "Đặt hàng thành công!");
+            if (paymentMethod.equals("VNPAY")) {
+                handleVNPayPayment(order.getTotal().longValue(), order.getOrderId());
+                showInfo("Đang xử lý", "Đang chờ xác nhận thanh toán...");
+
+                new Thread(() -> {
+                    try {
+                        Thread.sleep(10000);
+
+                        javafx.application.Platform.runLater(() -> {
+                            order.setStatus("PAID");
+                            new OrderDAO().update(order);
+
+                            showInfo("Thành công", "Thanh toán thành công!");
+                        });
+
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        }
+                    }).start();
+                }
+            else {
+                showInfo("Cancel", "Đã hủy thanh toán !");
+            }
+
             SceneManager.switchScene("/fxml/UserHome.fxml", "User Home");
+
         } catch (Exception e) {
             showInfo("Lỗi", e.getMessage());
         }
@@ -325,7 +355,7 @@ public class OrderController {
 
     private String getSelectedPaymentMethod() {
         if (chkCreditCard.isSelected()) return "Credit Card";
-        if (chkPayPal.isSelected()) return "PayPal";
+        if (chkPayPal.isSelected()) return "VNPAY";
         if (chkCashOnDelivery.isSelected()) return "Cash on Delivery";
         return null;
     }

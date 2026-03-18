@@ -185,14 +185,14 @@ public class CartService {
         updateCartTotal(detail.getOrder());
     }
 
-    public void placeOrder(Customer customer,
+    public Order placeOrder(Customer customer,
                            String recipientName,
                            String recipientEmail,
                            String recipientPhone,
                            String shippingAddress,
                            String paymentMethod,
                            int pointsUsed) {
-
+        Order order = new Order();
         if (customer == null) {
             throw new IllegalArgumentException("Bạn cần đăng nhập trước.");
         }
@@ -256,6 +256,8 @@ public class CartService {
         cartOrder.setTotal(finalTotal);
 
         orderDAO.update(cartOrder);
+
+        return cartOrder;
     }
 
     private Order getOrCreateCart(Customer customer) {

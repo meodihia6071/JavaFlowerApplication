@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2e87cc5b-e851-4659-a3ec-9db949ee6f36" name="Changes" comment="" />
+    <list default="true" id="2e87cc5b-e851-4659-a3ec-9db949ee6f36" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,9 +15,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="3AkA2mbka7TEBMkfT8JI7fOIOXt" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -26,9 +28,9 @@
     "Application.App.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "quyen/login",
+    "git-widget-placeholder": "khoa/codeBasedOnThuongBranch",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/JavaFlowerApplication/JavaFlowerApplication",
+    "last_opened_file_path": "D:/JavaFlowerApplication/AdminApp",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -54,6 +56,7 @@
       <option name="presentableId" value="Default" />
       <updated>1773125997321</updated>
       <workItem from="1773126002300" duration="385000" />
+      <workItem from="1773776547468" duration="44000" />
     </task>
     <servers />
   </component>
