@@ -191,6 +191,8 @@ public class AdminStockController {
         SceneManager.switchScene("/fxml/AdminStock.fxml","Stock");
     }
 
+    @FXML public void goEmployees(){ SceneManager.switchScene("/fxml/AdminEmployees.fxml","Employees");}
+
     @FXML
     public void goReports(ActionEvent event){
         SceneManager.switchScene("/fxml/AdminReports.fxml","Reports");

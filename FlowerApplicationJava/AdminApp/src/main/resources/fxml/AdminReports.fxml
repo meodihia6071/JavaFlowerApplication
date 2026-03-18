@@ -31,6 +31,7 @@
                 <Button text="👤 Customers" onAction="#goCustomers" styleClass="menu-btn"/>
                 <Button text="🚚 Suppliers" onAction="#goSuppliers" styleClass="menu-btn"/>
                 <Button text="📦 Stock" onAction="#goStock" styleClass="menu-btn"/>
+                <Button text="👨‍💼 Employees" onAction="#goEmployees" styleClass="menu-btn"/>
 
                 <!-- ACTIVE -->
                 <Button text="📈 Reports"

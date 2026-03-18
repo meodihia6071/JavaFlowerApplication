@@ -28,7 +28,7 @@
                         <Insets bottom="20.0" />
                     </VBox.margin>
                     <image>
-                        <Image url="@../images/F.jpg" />
+                        <Image url="@../images/F.png" />
                     </image>
                 </ImageView>
 
@@ -131,7 +131,7 @@
                         <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleStock" text="📦 Stock" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                         <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleSuppliers" text="🚚 Suppliers" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleReports" text="📊 Reports" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleUserManage" text="⚙ User Manage" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleUserManage" text="👨‍💼 Employees" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                     </children>
                     <padding>
                         <Insets bottom="40.0" top="40.0" left="40.0" right="40.0" />

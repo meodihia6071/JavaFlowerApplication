@@ -268,7 +268,15 @@ public class AdminDashboardController {
 
     @FXML
     public void handleUserManage(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng User Manage đang được phát triển.");
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/AdminEmployees.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Employee Management");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(String title, String content) {

@@ -9,7 +9,7 @@
       styleClass="main-bg"
       xmlns="http://javafx.com/javafx/21"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="flowershop.controllers.AdminSuppliersController">
+      fx:controller="flowershop.controllers.AdminEmployeeController">
 
     <children>
 
@@ -27,9 +27,11 @@
                 <Button text="📂 Categories" onAction="#goCategories" styleClass="menu-btn"/>
                 <Button text="📦 Orders" onAction="#goOrders" styleClass="menu-btn"/>
                 <Button text="👤 Customers" onAction="#goCustomers" styleClass="menu-btn"/>
+                <Button text="🚚 Suppliers" onAction="#goSuppliers" styleClass="menu-btn"/>
+                <Button text="📦 Stock" onAction="#goStock" styleClass="menu-btn"/>
 
-                <!-- ACTIVE -->
-                <Button text="🚚 Suppliers"
+                <!-- ACTIVE MENU -->
+                <Button text="👨‍💼 Employees"
                         styleClass="menu-btn"
                         style="
                             -fx-background-color:white;
@@ -44,14 +46,11 @@
                             -fx-border-radius:0;
                         "/>
 
-                <Button text="📦 Stock" onAction="#goStock" styleClass="menu-btn"/>
-                <Button text="👨‍💼 Employees" onAction="#goEmployees" styleClass="menu-btn"/>
                 <Button text="📈 Reports" onAction="#goReports" styleClass="menu-btn"/>
 
                 <Region VBox.vgrow="ALWAYS"/>
 
                 <HBox alignment="CENTER" spacing="10">
-
                     <padding>
                         <Insets top="20" bottom="20"/>
                     </padding>
@@ -65,7 +64,6 @@
 
         </VBox>
 
-
         <!-- MAIN CONTENT -->
         <VBox spacing="20"
               styleClass="main-content"
@@ -77,29 +75,28 @@
 
             <children>
 
-                <Label text="Supplier Management"
+                <Label text="Employee Management"
                        styleClass="page-title"/>
 
-
-                <!-- TOOLBAR -->
+                <!-- TOOL BAR -->
                 <HBox spacing="15" alignment="CENTER_LEFT">
 
-                    <Button text="➕ Add Supplier"
-                            onAction="#handleAddSupplier"
+                    <Button text="➕ Add Employee"
+                            onAction="#handleAddEmployee"
                             styleClass="tool-btn"/>
 
                     <Button text="✏ Edit"
-                            onAction="#handleEditSupplier"
+                            onAction="#handleEditEmployee"
                             styleClass="tool-btn"/>
 
                     <Button text="🗑 Delete"
-                            onAction="#handleDeleteSupplier"
+                            onAction="#handleDeleteEmployee"
                             styleClass="tool-btn"/>
 
                     <Region HBox.hgrow="ALWAYS"/>
 
                     <TextField fx:id="searchField"
-                               promptText="Search supplier..."
+                               promptText="Search employee..."
                                prefWidth="260"
                                prefHeight="36"
                                styleClass="search-box"/>
@@ -112,21 +109,19 @@
                                 styleClass="tool-btn">
 
                         <items>
-
                             <MenuItem text="Name A → Z" onAction="#sortNameAZ"/>
                             <MenuItem text="Name Z → A" onAction="#sortNameZA"/>
-                            <MenuItem text="Newest" onAction="#sortNewest"/>
-                            <MenuItem text="Oldest" onAction="#sortOldest"/>
-
+                            <MenuItem text="Salary ↑" onAction="#sortSalaryAsc"/>
+                            <MenuItem text="Salary ↓" onAction="#sortSalaryDesc"/>
+                            <MenuItem text="Role" onAction="#sortRole"/>
                         </items>
 
                     </MenuButton>
 
                 </HBox>
 
-
                 <!-- TABLE -->
-                <TableView fx:id="supplierTable"
+                <TableView fx:id="employeeTable"
                            VBox.vgrow="ALWAYS">
 
                     <columns>
@@ -137,7 +132,12 @@
                                      styleClass="center-column"/>
 
                         <TableColumn fx:id="colName"
-                                     text="Supplier Name"
+                                     text="Name"
+                                     prefWidth="180"
+                                     styleClass="left-column"/>
+
+                        <TableColumn fx:id="colEmail"
+                                     text="Email"
                                      prefWidth="220"
                                      styleClass="left-column"/>
 
@@ -146,24 +146,19 @@
                                      prefWidth="140"
                                      styleClass="center-column"/>
 
-                        <TableColumn fx:id="colEmail"
-                                     text="Email"
-                                     prefWidth="200"
-                                     styleClass="left-column"/>
+                        <TableColumn fx:id="colRole"
+                                     text="Role"
+                                     prefWidth="120"
+                                     styleClass="center-column"/>
 
-                        <TableColumn fx:id="colAddress"
-                                     text="Address"
-                                     prefWidth="220"
-                                     styleClass="left-column"/>
-
-                        <TableColumn fx:id="colCreatedDate"
-                                     text="Created Date"
-                                     prefWidth="140"
+                        <TableColumn fx:id="colSalary"
+                                     text="Salary"
+                                     prefWidth="120"
                                      styleClass="center-column"/>
 
                         <TableColumn fx:id="colStatus"
                                      text="Status"
-                                     prefWidth="110"
+                                     prefWidth="120"
                                      styleClass="center-column"/>
 
                     </columns>
