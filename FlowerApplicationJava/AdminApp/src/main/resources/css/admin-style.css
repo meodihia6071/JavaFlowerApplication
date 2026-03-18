@@ -370,3 +370,54 @@
     -fx-background-radius: 8;
 }
 
+.combo-box {
+    -fx-background-color: #ffe4ec;
+    -fx-border-color: #e25a84;
+    -fx-border-radius: 6;
+}
+.chart-bar {
+    -fx-bar-fill: #e25a84;
+}
+
+.chart-series-line {
+    -fx-stroke: #e25a84;
+    -fx-stroke-width: 2px;
+}
+
+.chart-line-symbol {
+    -fx-background-color: #e25a84, white;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+/* Refresh button */
+.button.refresh-btn {
+    -fx-background-color: #f8c3d1; /* hồng nhạt */
+    -fx-text-fill: #e25a84;        /* chữ hồng đậm */
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+}
+
+.button.refresh-btn:hover {
+    -fx-background-color: #e25a84;
+    -fx-text-fill: white;
+}
+
+/* Export button */
+.button.export-btn {
+    -fx-background-color: #ffe4ec; /* hồng nhẹ */
+    -fx-text-fill: #e25a84;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+}
+
+.button.export-btn:hover {
+    -fx-background-color: #e25a84;
+    -fx-text-fill: white;
+}

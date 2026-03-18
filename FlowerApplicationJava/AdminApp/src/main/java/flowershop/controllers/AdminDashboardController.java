@@ -219,7 +219,7 @@ public class AdminDashboardController {
 
     @FXML
     public void handleOrders(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng Orders đang được phát triển.");
+        switchScene(event, "/fxml/AdminOrders.fxml", "Quản Lý Đơn Hàng");
     }
 
     @FXML
