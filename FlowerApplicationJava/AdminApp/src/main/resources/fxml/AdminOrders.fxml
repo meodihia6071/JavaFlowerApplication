@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox prefHeight="650" prefWidth="1100"
+      stylesheets="@../css/admin-style.css"
+      styleClass="main-bg"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="flowershop.controllers.AdminOrdersController">
+
+    <children>
+
+        <!-- SIDEBAR -->
+        <VBox prefWidth="230" styleClass="sidebar">
+
+            <children>
+
+                <Label text="🌷 Flower Shop" styleClass="logo"/>
+                <Separator prefWidth="180" styleClass="sidebar-separator"/>
+
+                <Button text="🏠 Dashboard" onAction="#goDashboard" styleClass="menu-btn"/>
+                <Button text="🌸 Products" onAction="#goProducts" styleClass="menu-btn"/>
+                <Button text="📂 Categories" onAction="#goCategories" styleClass="menu-btn"/>
+
+                <!-- ACTIVE -->
+                <Button text="📦 Orders"
+                        styleClass="menu-btn"
+                        style="
+                            -fx-background-color:white;
+                            -fx-text-fill:#e25a84;
+                            -fx-font-weight:bold;
+                            -fx-pref-width:230;
+                            -fx-alignment:CENTER_LEFT;
+                            -fx-padding:15 0 15 30;
+                            -fx-border-width:0 0 0 6;
+                            -fx-border-color:#e25a84;
+                        "/>
+
+                <Button text="👤 Customers" onAction="#goCustomers" styleClass="menu-btn"/>
+                <Button text="🚚 Suppliers" onAction="#goSuppliers" styleClass="menu-btn"/>
+                <Button text="📦 Stock" onAction="#goStock" styleClass="menu-btn"/>
+                <Button text="👨‍💼 Employees" onAction="#goEmployees" styleClass="menu-btn"/>
+                <Button text="📈 Reports" onAction="#goReports" styleClass="menu-btn"/>
+
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <HBox alignment="CENTER">
+                    <padding>
+                        <Insets top="20" bottom="20"/>
+                    </padding>
+                    <Button text="⏻ Log Out" onAction="#handleLogout" styleClass="logout-btn"/>
+                </HBox>
+
+            </children>
+
+        </VBox>
+
+        <!-- MAIN -->
+        <HBox spacing="20" HBox.hgrow="ALWAYS">
+
+            <padding>
+                <Insets top="40" left="40" right="40"/>
+            </padding>
+
+            <children>
+
+                <!-- LEFT: ORDERS -->
+                <VBox spacing="15" HBox.hgrow="ALWAYS">
+
+                    <Label text="Orders" styleClass="page-title"/>
+
+                    <TableView fx:id="orderTable" VBox.vgrow="ALWAYS">
+
+                        <columns>
+
+                            <TableColumn fx:id="colOrderId" text="ID" prefWidth="60"/>
+                            <TableColumn fx:id="colCustomer" text="Customer" prefWidth="100"/>
+                            <TableColumn fx:id="colDate" text="Date" prefWidth="180"/>
+                            <TableColumn fx:id="colTotal" text="Total" prefWidth="100"/>
+                            <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+
+                        </columns>
+
+                    </TableView>
+
+                </VBox>
+
+                <!-- RIGHT: ORDER DETAILS -->
+                <VBox spacing="15" prefWidth="400" styleClass="card">
+
+                    <Label text="Order Details" styleClass="page-title"/>
+
+                    <TableView fx:id="detailTable" VBox.vgrow="ALWAYS">
+
+                        <columns>
+
+                            <TableColumn fx:id="colProduct" text="Product" prefWidth="140"/>
+                            <TableColumn fx:id="colQty" text="Qty" prefWidth="60"/>
+                            <TableColumn fx:id="colPrice" text="Price" prefWidth="80"/>
+                            <TableColumn fx:id="colSubTotal" text="Total" prefWidth="100"/>
+
+                        </columns>
+
+                    </TableView>
+
+                </VBox>
+
+            </children>
+
+        </HBox>
+
+    </children>
+
+</HBox>

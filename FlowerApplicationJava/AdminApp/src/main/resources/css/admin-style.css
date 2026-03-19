@@ -1,0 +1,423 @@
+.root{
+    -fx-font-family:"Segoe UI";
+}
+
+/* background */
+
+.main-bg{
+    -fx-background-color: #fff8f9;
+}
+
+/* sidebar */
+
+.sidebar{
+    -fx-background-color:#F6E1E5;
+    -fx-pref-width:220;
+}
+
+/* logo */
+
+.logo{
+    -fx-font-size:28px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#4a2c2c;
+    -fx-padding:25 0 30 25;
+}
+
+/* menu button */
+
+.menu-btn{
+    -fx-background-color:transparent;
+    -fx-text-fill:#4a2c2c;
+    -fx-font-size:18px;
+    -fx-font-weight:bold;
+
+    -fx-padding:15 0 15 30;
+
+    -fx-pref-width:100%;
+    -fx-max-width:Infinity;
+
+    -fx-alignment:CENTER_LEFT;
+}
+/* hover full row */
+
+.menu-btn:hover{
+    -fx-background-color:#f5e3e6;
+}
+
+.menu-item:focused{
+    -fx-background-color:#F6DCE2;
+}
+
+.menu-item:focused .label{
+    -fx-text-fill:#613b41;
+}
+
+/* logout */
+.logo{
+    -fx-font-size:28px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#5a2a2a;
+
+    -fx-alignment:CENTER;
+    -fx-max-width:Infinity;
+    -fx-padding:25 0 25 0;
+}
+
+.logout-btn{
+    -fx-background-color:#f08aa5;
+    -fx-text-fill:white;
+
+    -fx-background-radius:15;
+    -fx-padding:10 28 10 28;
+
+    -fx-font-weight:bold;
+}
+
+.logout-btn:hover{
+    -fx-background-color:#e36b8e;
+}
+
+/* title */
+
+.page-title{
+    -fx-font-size:32px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#c44d6e;
+}
+
+/* tool button */
+
+.tool-btn{
+    -fx-background-color:#f4c7d3;
+    -fx-background-radius:10;
+
+    -fx-font-size:14px;
+    -fx-font-weight:bold;
+
+    -fx-padding:8 16 8 16;
+}
+
+.tool-btn:hover{
+    -fx-background-color:#eaa9bb;
+}
+
+/* table */
+
+.table-view{
+    -fx-background-color:#FFF6F8;
+    -fx-border-color:#f1c9d3;
+}
+
+.table-view .table-cell{
+    -fx-border-color:#e9b7c3;
+    -fx-border-width:0 1 0 0;
+}
+
+.table-row-cell{
+    -fx-background-color:#FFF6F8;
+}
+
+.table-row-cell:odd{
+    -fx-background-color:#FFEFF3;
+}
+
+.table-view .column-header-background{
+    -fx-background-color:#F6DCE2;
+}
+
+.table-view .column-header{
+    -fx-background-color:#F6DCE2;
+    -fx-size:45px;
+    -fx-border-color:#e9b7c3;
+    -fx-border-width:0 1 0 0;
+}
+
+.table-view .column-header .label{
+    -fx-font-size:16px;
+    -fx-font-weight:bold;
+    -fx-alignment:CENTER;
+}
+
+.table-view .label{
+    -fx-font-size:14px;
+    -fx-font-weight:bold;
+}
+
+.table-row-cell:hover{
+    -fx-background-color:#FFE6EC;
+}
+
+.table-row-cell:selected{
+    -fx-background-color:#F6DCE2;
+}
+
+.table-row-cell:selected .text{
+    -fx-fill:#613b41;
+}
+
+/* Thanh cuộn dọc */
+.table-view .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+
+/* Thanh kéo */
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #ff7aa2;
+    -fx-background-radius: 10;
+}
+
+/* Khi hover */
+.table-view .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #ff4d88;
+}
+
+/* Track (nền thanh cuộn) */
+.table-view .scroll-bar:vertical .track {
+    -fx-background-color: #f3f3f3;
+}
+
+.table-view .scroll-bar {
+    -fx-pref-width: 8;
+}
+
+.table-view .scroll-bar .thumb {
+    -fx-background-insets: 2;
+}
+
+.center-column{
+    -fx-alignment:CENTER;
+}
+
+.left-column {
+    -fx-alignment: CENTER-LEFT;
+}
+
+.sidebar-separator{
+    -fx-background-color:#8B3A4A;
+    -fx-pref-height:2px;
+}
+
+.search-box{
+    -fx-background-radius:8;
+    -fx-background-color:#FFF3F6;
+    -fx-border-color:#E7A5B4;
+    -fx-border-radius:8;
+    -fx-font-size:14px;
+}
+
+.report-card{
+    -fx-background-color:#FFEFF3;
+    -fx-background-radius:12;
+    -fx-padding:15;
+    -fx-border-color:#f1c9d3;
+    -fx-border-radius:12;
+}
+
+.chart{
+    -fx-background-color:#FFF6F8;
+    -fx-border-color:#f1c9d3;
+}
+.report-card{
+    -fx-background-color:#FFF6F8;
+    -fx-padding:20;
+    -fx-background-radius:12;
+    -fx-border-color:#f1c9d3;
+    -fx-border-radius:12;
+    -fx-pref-width:180;
+    -fx-alignment:CENTER;
+}
+
+.report-number{
+    -fx-font-size:24px;
+    -fx-font-weight:bold;
+    -fx-text-fill:#c44d6e;
+}
+
+.dialog-pane{
+    -fx-background-color:#fff0f6;
+    -fx-padding:20;
+}
+
+.dialog-pane .label{
+    -fx-font-size:14px;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #ff7aa2;   /* header hồng */
+}
+
+.dialog-pane .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.dialog-pane .button{
+    -fx-background-color:#ff7aa2;
+    -fx-text-fill:white;
+    -fx-font-weight:bold;
+    -fx-background-radius:8;
+    -fx-padding:6 18 6 18;
+}
+
+.dialog-pane .button:hover{
+    -fx-background-color:#ff5c8a;
+}
+
+.dialog-pane .text-field{
+    -fx-background-radius:8;
+    -fx-border-radius:8;
+    -fx-border-color:#ffb6c9;
+    -fx-border-width:1.5;
+    -fx-padding:6 10 6 10;
+}
+
+/* DATE PICKER */
+
+.date-picker {
+    -fx-background-color: #ffefef;
+    -fx-border-color: #ff9bb3;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+}
+
+/* Ô hiển thị ngày */
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-font-size: 13px;
+}
+
+/* Popup calendar */
+.date-picker-popup {
+    -fx-background-color: #fff7fa;
+    -fx-border-radius: 12;
+}
+
+/* Ngày thường */
+.date-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333;
+}
+
+/* Hover */
+.date-cell:hover {
+    -fx-background-color: #ffd6e0;
+}
+
+/* Ngày được chọn */
+.date-cell:selected {
+    -fx-background-color: #ff6f91;
+    -fx-text-fill: white;
+}
+/* ===== HEADER (THÁNG / NĂM) ===== */
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #ff6f91;
+    -fx-padding: 10 15;
+}
+
+/* Text tháng năm */
+.date-picker-popup .month-year-pane .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+/* ===== NÚT CHUYỂN THÁNG ===== */
+
+.date-picker-popup .spinner .button {
+    -fx-background-color: transparent;
+    -fx-padding: 5 10;
+}
+
+/* Hover nút */
+.date-picker-popup .spinner .button:hover {
+    -fx-background-color: #ff8fab;
+    -fx-background-radius: 8;
+}
+
+/* Mũi tên */
+.date-picker-popup .spinner .arrow {
+    -fx-background-color: white;
+}
+
+/* ===== FIX DÍNH NÚT ===== */
+
+.date-picker-popup .spinner {
+    -fx-spacing: 10; /* 👉 tạo khoảng cách */
+}
+
+/* ===== NGÀY TRONG LỊCH ===== */
+
+.date-picker-popup .date-cell {
+    -fx-background-color:#fff0f5;
+    -fx-text-fill: #333;
+    -fx-padding: 6;
+}
+
+/* Hover */
+.date-picker-popup .date-cell:hover {
+    -fx-background-color: #ffd6e0;
+    -fx-background-radius: 8;
+}
+
+/* Selected */
+.date-picker-popup .date-cell:selected {
+    -fx-background-color: #ff6f91;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+
+.combo-box {
+    -fx-background-color: #ffe4ec;
+    -fx-border-color: #e25a84;
+    -fx-border-radius: 6;
+}
+.chart-bar {
+    -fx-bar-fill: #e25a84;
+}
+
+.chart-series-line {
+    -fx-stroke: #e25a84;
+    -fx-stroke-width: 2px;
+}
+
+.chart-line-symbol {
+    -fx-background-color: #e25a84, white;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+/* Refresh button */
+.button.refresh-btn {
+    -fx-background-color: #f8c3d1; /* hồng nhạt */
+    -fx-text-fill: #e25a84;        /* chữ hồng đậm */
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+}
+
+.button.refresh-btn:hover {
+    -fx-background-color: #e25a84;
+    -fx-text-fill: white;
+}
+
+/* Export button */
+.button.export-btn {
+    -fx-background-color: #ffe4ec; /* hồng nhẹ */
+    -fx-text-fill: #e25a84;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 8 20 8 20;
+    -fx-cursor: hand;
+}
+
+.button.export-btn:hover {
+    -fx-background-color: #e25a84;
+    -fx-text-fill: white;
+}
