@@ -10,43 +10,49 @@
 
 /* sidebar */
 
-.sidebar{
-    -fx-background-color:#F6E1E5;
-    -fx-pref-width:220;
+/* sidebar - Nới rộng thành 250px và KHÓA CHẶT 3 vòng không cho co giãn */
+.sidebar {
+    -fx-background-color: #F6E1E5;
+    -fx-pref-width: 250;
+    -fx-min-width: 250;
+    -fx-max-width: 250;
 }
 
-/* logo */
-
-.logo{
-    -fx-font-size:28px;
-    -fx-font-weight:bold;
-    -fx-text-fill:#4a2c2c;
-    -fx-padding:25 0 30 25;
+/* logo - Thu nhỏ font và set lề trái cố định 20px */
+.logo {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4a2c2c;
+    -fx-padding: 30 0 30 20;
 }
 
-/* menu button */
+/* menu button - Đóng đinh lề trái đúng 40px cho TẤT CẢ các nút */
+.menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4a2c2c;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-padding: 15 0 15 40; /* Lề trái 40px */
+    -fx-pref-width: 250;
+    -fx-alignment: CENTER_LEFT;
+}
 
-.menu-btn{
-    -fx-background-color:transparent;
-    -fx-text-fill:#4a2c2c;
-    -fx-font-size:18px;
-    -fx-font-weight:bold;
-
-    -fx-padding:15 0 15 30;
-
-    -fx-pref-width:100%;
-    -fx-max-width:Infinity;
-
-    -fx-alignment:CENTER_LEFT;
+/* hover full row - Giữ nguyên hiệu ứng phóng to */
+.menu-btn:hover {
+    -fx-background-color: #F6DCE2;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    -fx-cursor: hand;
 }
 /* hover full row */
 
-.menu-btn:hover{
-    -fx-background-color:#f5e3e6;
-}
 
+
+/* Nút Active (đang chọn) cũng có thể cho to lên 1 chút cho đồng bộ nếu anh thích */
 .menu-item:focused{
     -fx-background-color:#F6DCE2;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
 }
 
 .menu-item:focused .label{

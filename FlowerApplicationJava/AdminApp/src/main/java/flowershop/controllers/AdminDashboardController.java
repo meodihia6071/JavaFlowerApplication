@@ -3,20 +3,17 @@ package flowershop.controllers;
 import flowershop.models.User;
 import flowershop.models.Customer;
 import flowershop.dao.CustomerDAO;
+import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
-import javafx.animation.FadeTransition;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class AdminDashboardController {
@@ -54,11 +51,9 @@ public class AdminDashboardController {
             // 3. CẦM user_id CHẠY SANG BẢNG CUSTOMERS ĐỂ LẤY EMAIL VÀ TÊN
             try {
                 CustomerDAO customerDAO = new CustomerDAO();
-                // Sửa thành getUserId() cho khớp với DB chuẩn
                 Customer profile = customerDAO.findByUserId(currentUser.getUserId());
 
                 if (profile != null) {
-                    // Nếu tìm thấy -> Đổ dữ liệu thật lên màn hình!
                     txtName.setText(profile.getCustomerName());
                     if (profile.getEmail() != null) {
                         txtEmail.setText(profile.getEmail());
@@ -66,7 +61,6 @@ public class AdminDashboardController {
                         txtEmail.setText("");
                     }
                 } else {
-                    // Đề phòng trường hợp Admin mới tạo bên users mà chưa kịp tạo profile bên customers
                     txtName.setText(currentUser.getUsername());
                     txtEmail.setText("Chưa liên kết hồ sơ");
                 }
@@ -77,7 +71,7 @@ public class AdminDashboardController {
         }
     }
 
-    // HÀM TẠO HIỆU ỨNG PHÓNG TO NÚT 0.3 GIÂY
+    // HÀM TẠO HIỆU ỨNG PHÓNG TO NÚT
     private void addSmoothHoverEffect(Button btn) {
         ScaleTransition scaleIn = new ScaleTransition(Duration.seconds(0.3), btn);
         scaleIn.setToX(1.03);
@@ -100,7 +94,6 @@ public class AdminDashboardController {
 
     // --- CÁC HÀM XỬ LÝ SỰ KIỆN GIAO DIỆN ---
 
-    // Đã thêm tính năng Check Email bằng Regex vào đây
     @FXML
     public void handleUpdateProfile(ActionEvent event) {
         String email = txtEmail.getText();
@@ -111,7 +104,6 @@ public class AdminDashboardController {
             return;
         }
 
-        // Kiểm tra định dạng Email
         String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
         if (!email.matches(emailRegex)) {
             showAlert("Lỗi", "Định dạng email không hợp lệ!\nVui lòng nhập đúng định dạng (Ví dụ: quyenha@gmail.com)");
@@ -124,38 +116,6 @@ public class AdminDashboardController {
         }
 
         showAlert("Thành công", "Dữ liệu hợp lệ! Sẵn sàng gọi code Database để cập nhật.");
-    }
-
-    // =========================================================
-    // NÚT ĐĂNG XUẤT (BAY THẲNG VỀ TRANG LOGIN VỚI FADE-IN)
-    // =========================================================
-    @FXML
-    public void handleLogout(ActionEvent event) {
-        try {
-            // Xóa phiên đăng nhập hiện tại
-            SessionManager.clear();
-
-            // Tải trang Login
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle("Đăng nhập");
-
-            // Ép tàng hình và đổi Root
-            root.setOpacity(0);
-            stage.getScene().setRoot(root);
-
-            // Chạy hiệu ứng Fade-in 0.4s
-            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.4), root);
-            fadeIn.setFromValue(0.0);
-            fadeIn.setToValue(1.0);
-            fadeIn.play();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert("Lỗi", "Không thể tải trang Đăng nhập!");
-        }
     }
 
     @FXML
@@ -178,70 +138,41 @@ public class AdminDashboardController {
     }
 
     // =========================================================
-    // HÀM CHUYỂN TRANG CHỨC NĂNG (ĐÃ TÍCH HỢP FADE-IN 0.4s)
+    // NÚT ĐĂNG XUẤT SẠCH SẼ (GỌI SCENEMANAGER)
     // =========================================================
-    private void switchScene(ActionEvent event, String fxmlPath, String title) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle(title);
-
-            // Ép tàng hình và đổi Root
-            root.setOpacity(0);
-            stage.getScene().setRoot(root);
-
-            // Chạy hiệu ứng Fade-in
-            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.4), root);
-            fadeIn.setFromValue(0.0);
-            fadeIn.setToValue(1.0);
-            fadeIn.play();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert("Lỗi", "Không thể tải file FXML: " + fxmlPath);
-        }
-    }
-
     @FXML
-    public void handleCategories(ActionEvent event) {
-        switchScene(event, "/fxml/AdminCategories.fxml", "Quản Lý Danh Mục");
+    public void handleLogout(ActionEvent event) {
+        SessionManager.clear();
+        SceneManager.switchScene("/fxml/login.fxml", "Đăng nhập");
     }
 
-    @FXML
-    public void handleProducts(ActionEvent event) {
-        switchScene(event, "/fxml/AdminProducts.fxml", "Quản Lý Sản Phẩm");
-    }
+    // =========================================================
+    // BỘ ĐIỀU HƯỚNG MỚI (DÙNG CHO SIDEBAR MENU TRÁI)
+    // =========================================================
+    @FXML public void goDashboard(ActionEvent event) { SceneManager.switchScene("/fxml/AdminDashboard.fxml", "Dashboard"); }
+    @FXML public void goProducts(ActionEvent event) { SceneManager.switchScene("/fxml/AdminProducts.fxml", "Products"); }
+    @FXML public void goCategories(ActionEvent event) { SceneManager.switchScene("/fxml/AdminCategories.fxml", "Categories"); }
+    @FXML public void goOrders(ActionEvent event) { SceneManager.switchScene("/fxml/AdminOrders.fxml", "Orders"); }
+    @FXML public void goCustomers(ActionEvent event) { SceneManager.switchScene("/fxml/AdminCustomers.fxml", "Customers"); }
+    @FXML public void goSuppliers(ActionEvent event) { SceneManager.switchScene("/fxml/AdminSuppliers.fxml", "Suppliers"); }
+    @FXML public void goStock(ActionEvent event) { SceneManager.switchScene("/fxml/AdminStock.fxml", "Stock"); }
+    @FXML public void goReports(ActionEvent event) { SceneManager.switchScene("/fxml/AdminReports.fxml", "Reports"); }
 
-    @FXML
-    public void handleOrders(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng Orders đang được phát triển.");
-    }
+    // Gộp chung Employees và UserManage làm 1 trang để tránh lỗi FXML gọi nhầm
+    @FXML public void goEmployees(ActionEvent event) { SceneManager.switchScene("/fxml/AdminEmployees.fxml", "Employees"); }
+    @FXML public void goUserManage(ActionEvent event) { goEmployees(event); }
 
-    @FXML
-    public void handleCustomers(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng Customers đang được phát triển.");
-    }
-
-    @FXML
-    public void handleStock(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng Stock đang được phát triển.");
-    }
-
-    @FXML
-    public void handleSuppliers(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng Suppliers đang được phát triển.");
-    }
-
-    @FXML
-    public void handleReports(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng Reports đang được phát triển.");
-    }
-
-    @FXML
-    public void handleUserManage(ActionEvent event) {
-        showAlert("Thông báo", "Chức năng User Manage đang được phát triển.");
-    }
+    // =========================================================
+    // BỘ ĐIỀU HƯỚNG CŨ (DÙNG CHO CÁC NÚT TO Ở GIỮA DASHBOARD)
+    // =========================================================
+    @FXML public void handleCategories(ActionEvent event) { goCategories(event); }
+    @FXML public void handleProducts(ActionEvent event) { goProducts(event); }
+    @FXML public void handleOrders(ActionEvent event) { goOrders(event); }
+    @FXML public void handleCustomers(ActionEvent event) { goCustomers(event); }
+    @FXML public void handleStock(ActionEvent event) { goStock(event); }
+    @FXML public void handleSuppliers(ActionEvent event) { goSuppliers(event); }
+    @FXML public void handleUserManage(ActionEvent event) { goEmployees(event); }
+    @FXML public void handleReports(ActionEvent event) { goReports(event); }
 
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
