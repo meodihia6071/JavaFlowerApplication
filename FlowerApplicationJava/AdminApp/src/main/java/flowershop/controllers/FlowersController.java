@@ -237,7 +237,7 @@ public class FlowersController {
         Button addButton = new Button("Add to Cart");
         addButton.setUserData(product.getProductName());
         addButton.setOnAction(this::handleAddToCart);
-        addButton.setStyle(" -fx-text-fill: #b36b6b; -fx-font-size: 15px;");
+        addButton.getStyleClass().add("card-add-button");
 
         applyHoverEffect(card, nameLabel);
 

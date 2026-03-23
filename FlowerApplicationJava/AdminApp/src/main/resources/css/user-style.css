@@ -151,3 +151,27 @@
 .transparent-pane {
     -fx-background-color: transparent;
 }
+
+.card-add-button {
+    -fx-background-color: linear-gradient(to bottom, #f8b7cc, #f39dbd);
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+    -fx-font-weight: 700;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-border-color: transparent;
+    -fx-padding: 8 18 8 18;
+    -fx-cursor: hand;
+}
+
+.card-add-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #f6a8c3, #ee8db3);
+    -fx-scale-x: 1.04;
+    -fx-scale-y: 1.04;
+}
+
+.card-add-button:pressed {
+    -fx-background-color: #e884ad;
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}

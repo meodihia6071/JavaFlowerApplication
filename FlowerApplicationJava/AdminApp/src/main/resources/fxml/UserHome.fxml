@@ -126,7 +126,7 @@
                                                         </ImageView>
                                                         <Label alignment="CENTER" prefWidth="140.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Pink Tulip Box" wrapText="true" />
                                                         <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$28" />
-                                                        <Button onAction="#handleAddToCart" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Pink Tulip Box" />
+                                                        <Button onAction="#handleAddToCart" styleClass="card-add-button" text="Add to Cart" userData="Pink Tulip Box" />
                                                     </children>
                                                 </VBox>
 
@@ -140,7 +140,7 @@
                                                         </ImageView>
                                                         <Label alignment="CENTER" prefWidth="160.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Ivory Peony Bouquet" wrapText="true" />
                                                         <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$48" />
-                                                        <Button onAction="#handleAddToCart" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Ivory Peony Bouquet" />
+                                                        <Button onAction="#handleAddToCart" styleClass="card-add-button" text="Add to Cart" userData="Ivory Peony Bouquet" />
                                                     </children>
                                                 </VBox>
 
@@ -154,7 +154,7 @@
                                                         </ImageView>
                                                         <Label alignment="CENTER" prefWidth="200.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="Ruby Romance Basket" wrapText="true" />
                                                         <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$36" />
-                                                        <Button onAction="#handleAddToCart" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Ruby Romance Basket" />
+                                                        <Button onAction="#handleAddToCart" styleClass="card-add-button" text="Add to Cart" userData="Ruby Romance Basket" />
                                                     </children>
                                                 </VBox>
 
@@ -168,7 +168,7 @@
                                                         </ImageView>
                                                         <Label alignment="CENTER" prefWidth="150.0" style="-fx-text-fill: #9b6666; -fx-font-size: 16px;" text="White Lily Tribute" wrapText="true" />
                                                         <Label style="-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;" text="\$31" />
-                                                        <Button onAction="#handleAddToCart" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="White Lily Tribute" />
+                                                        <Button onAction="#handleAddToCart" styleClass="card-add-button" text="Add to Cart" userData="White Lily Tribute" />
                                                     </children>
                                                 </VBox>
                                             </children>
