@@ -126,7 +126,7 @@
                     </VBox>
 
                     <VBox styleClass="report-card">
-                        <Label text="⚖️ Avg Order"/>
+                        <Label text="🛒 Avg Order"/>
                         <Label fx:id="avgOrderValue" styleClass="report-number"/>
                     </VBox>
 
@@ -137,7 +137,7 @@
                 <HBox spacing="20">
 
                     <!-- BAR CHART -->
-                    <BarChart fx:id="revenueChart" prefWidth="400" prefHeight="300">
+                    <BarChart fx:id="revenueChart" prefWidth="400"  prefHeight="300">
                         <xAxis>
                             <CategoryAxis label="Month"/>
                         </xAxis>
@@ -170,15 +170,15 @@
                     <!-- TOP CUSTOMERS -->
                     <VBox spacing="10" prefWidth="400">
 
-                        <Label text="Top Customers"
+                        <Label text="👑 Top Customers"
                                style="-fx-font-size:16px;-fx-font-weight:bold;"/>
 
                         <TableView fx:id="topCustomersTable" prefHeight="200">
 
                             <columns>
                                 <TableColumn fx:id="colCusName" text="Name" prefWidth="180"/>
-                                <TableColumn fx:id="colCusOrders" text="Orders" prefWidth="100"/>
-                                <TableColumn fx:id="colCusSpent" text="Spent" prefWidth="120"/>
+                                <TableColumn fx:id="colCusOrders" text="Orders" prefWidth="100" styleClass="center-column"/>
+                                <TableColumn fx:id="colCusSpent" text="Spent" prefWidth="120" styleClass="center-column"/>
                             </columns>
 
                         </TableView>
@@ -196,7 +196,7 @@
 
                             <columns>
                                 <TableColumn fx:id="colProductName" text="Product" prefWidth="160"/>
-                                <TableColumn fx:id="colStockQty" text="Qty" prefWidth="80"/>
+                                <TableColumn fx:id="colStockQty" text="Quantity" prefWidth="80" styleClass="center-column"/>
                             </columns>
 
                         </TableView>
@@ -209,7 +209,7 @@
                 <!-- RECENT ORDERS -->
                 <VBox spacing="10">
 
-                    <Label text="Recent Orders"
+                    <Label text="⏳ Recent Orders"
                            style="-fx-font-size:18px;-fx-font-weight:bold;"/>
 
                     <TableView fx:id="recentOrdersTable"
@@ -219,7 +219,7 @@
 
                             <TableColumn fx:id="colOrderId"
                                          text="Order ID"
-                                         prefWidth="100"/>
+                                         prefWidth="100" styleClass="center-column"/>
 
                             <TableColumn fx:id="colCustomer"
                                          text="Customer"
@@ -227,7 +227,7 @@
 
                             <TableColumn fx:id="colDate"
                                          text="Date"
-                                         prefWidth="150"/>
+                                         prefWidth="150" styleClass="center-column"/>
 
                             <TableColumn fx:id="colTotal"
                                          text="Total"

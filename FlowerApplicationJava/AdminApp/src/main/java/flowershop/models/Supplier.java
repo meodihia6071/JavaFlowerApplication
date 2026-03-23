@@ -9,7 +9,7 @@ public class Supplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "supplier_id")
     private int supplierId;
 
     @Column(name = "name", nullable = false)
