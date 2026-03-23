@@ -114,6 +114,10 @@ public class CartController {
 
         BigDecimal lineTotal = item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
         Label priceLabel = new Label("$" + formatMoney(lineTotal));
+        priceLabel.setPrefWidth(140);
+        priceLabel.setMinWidth(140);
+        priceLabel.setMaxWidth(140);
+        priceLabel.setAlignment(Pos.CENTER_LEFT);
         priceLabel.setStyle("-fx-text-fill: #9b6666; -fx-font-size: 28px;");
 
         Button btnMinus = new Button("-");
