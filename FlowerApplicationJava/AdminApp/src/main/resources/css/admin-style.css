@@ -27,25 +27,33 @@
 }
 
 /* menu button - Đóng đinh lề trái đúng 40px cho TẤT CẢ các nút */
+/* menu button - Đóng đinh lề trái đúng 40px cho TẤT CẢ các nút */
 .menu-btn {
     -fx-background-color: transparent;
     -fx-text-fill: #4a2c2c;
     -fx-font-size: 17px;
     -fx-font-weight: bold;
-    -fx-padding: 15 0 15 40; /* Lề trái 40px */
+    -fx-padding: 15 0 15 40; /* Lề trái gốc là 40px */
     -fx-pref-width: 250;
     -fx-alignment: CENTER_LEFT;
 }
 
-/* hover full row - Giữ nguyên hiệu ứng phóng to */
+/* Nút Menu ĐANG CHỌN (Active) - KHÓA CHẶT LỀ CHỐNG LỆCH */
+.menu-active {
+    -fx-background-color: white !important;
+    -fx-text-fill: #e25a84 !important;
+    -fx-border-color: #e25a84 !important;
+    -fx-border-width: 0 0 0 6 !important; /* Thêm viền trái 6px */
+    -fx-padding: 15 0 15 34 !important; /* Lấy 40px gốc trừ đi 6px viền = 34px. Chữ sẽ KHÔNG BAO GIỜ bị đẩy lệch! */
+}
+
+/* hover full row - Giữ nguyên hiệu ứng */
 .menu-btn:hover {
     -fx-background-color: #F6DCE2;
     -fx-scale-x: 1.03;
     -fx-scale-y: 1.03;
     -fx-cursor: hand;
 }
-/* hover full row */
-
 
 
 /* Nút Active (đang chọn) cũng có thể cho to lên 1 chút cho đồng bộ nếu anh thích */

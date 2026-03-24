@@ -10,9 +10,9 @@ import java.util.List;
 public class CustomerDAO {
 
     public Customer findByUserId(int userId){
-        try (var session = HibernateUtil.getSessionFactory().openSession()) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             return session.createQuery(
-                            "FROM Customer c WHERE c.user.userId = :uid",
+                            "FROM Customer c LEFT JOIN FETCH c.user WHERE c.user.userId = :uid",
                             Customer.class
                     )
                     .setParameter("uid", userId)
@@ -22,7 +22,8 @@ public class CustomerDAO {
 
     public List<Customer> getAll() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Customer", Customer.class).list();
+            // Thêm LEFT JOIN FETCH c.user để lấy luôn dữ liệu tài khoản
+            return session.createQuery("SELECT c FROM Customer c LEFT JOIN FETCH c.user", Customer.class).list();
         }
     }
 
@@ -46,6 +47,7 @@ public class CustomerDAO {
             tx.commit();
         } catch (Exception e) {
             if (tx != null) tx.rollback();
+            e.printStackTrace();
         }
     }
 
@@ -55,6 +57,9 @@ public class CustomerDAO {
             tx = session.beginTransaction();
             session.delete(customer);
             tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
         }
     }
 }

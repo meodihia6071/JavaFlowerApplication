@@ -28,7 +28,7 @@
                         <Insets bottom="20.0" />
                     </VBox.margin>
                     <image>
-                        <Image url="@../images/avatar.png" />
+                        <Image url="@../images/F.png" />
                     </image>
                 </ImageView>
 
@@ -98,9 +98,13 @@
                         <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
                     </padding>
                     <children>
-                        <Label text="Welcome to Dashboard !" textFill="#c95b74">
-                            <font><Font name="System Bold" size="24.0" /></font>
+                        <Label text="✨ Welcome back, Admin!"
+                               textFill="#c95b74">
+                            <font>
+                                <Font name="System Bold" size="30.0"/>
+                            </font>
                         </Label>
+
                         <Region HBox.hgrow="ALWAYS" />
                         <Button fx:id="btnLogout" mnemonicParsing="false" onAction="#handleLogout" style="-fx-background-color: #FF99B8; -fx-text-fill: white; -fx-background-radius: 8;" text="Log Out">
                             <font><Font name="System Bold" size="14.0" /></font>
@@ -120,14 +124,14 @@
                         <RowConstraints valignment="CENTER" vgrow="ALWAYS" percentHeight="25.0" />
                     </rowConstraints>
                     <children>
-                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleProducts" text="Products" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleCategories" text="Categories" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleOrders" text="Orders" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleCustomers" text="Customers" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleStock" text="Stock" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleSuppliers" text="Suppliers" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleReports" text="Reports" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleUserManage" text="User Manage" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleProducts" text="🌸 Products" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleCategories" text="📂 Categories" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleOrders" text="📦 Orders" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleCustomers" text="👤 Customers" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleStock" text="📦 Stock" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleSuppliers" text="🚚 Suppliers" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleReports" text="📊 Reports" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Button styleClass="dash-button" maxWidth="Infinity" maxHeight="Infinity" mnemonicParsing="false" onAction="#handleUserManage" text="👨‍💼 Employees" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                     </children>
                     <padding>
                         <Insets bottom="40.0" top="40.0" left="40.0" right="40.0" />

@@ -1,92 +1,218 @@
 package flowershop.controllers;
 
+import flowershop.dao.CategoryDAO;
+import flowershop.models.Category;
 import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
-import javafx.animation.FadeTransition;
-import javafx.event.ActionEvent;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.control.Alert;
-import javafx.stage.Stage;
-import javafx.util.Duration;
+import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
+
+import java.util.List;
 
 public class AdminCategoriesController {
 
-    // =========================================================
-    // XỬ LÝ CHUYỂN TRANG CHO THANH MENU DỌC (SIDEBAR)
-    // =========================================================
+    @FXML private TableView<Category> categoryTable;
+    @FXML private TableColumn<Category, Integer> colId;
+    @FXML private TableColumn<Category, String> colName;
 
-    // Đã thêm việc truyền 'event' vào để lấy thông tin cửa sổ hiện tại
-    @FXML void goDashboard(ActionEvent event) { openSidebarFeature(event, "/fxml/AdminDashboard.fxml", "Admin Dashboard"); }
-    @FXML void goProducts(ActionEvent event) { openSidebarFeature(event, "/fxml/AdminProducts.fxml", "Quản lý Sản phẩm"); }
-    @FXML void goCategories(ActionEvent event) { openSidebarFeature(event, "/fxml/AdminCategories.fxml", "Quản lý Danh mục"); }
-    @FXML void goOrders(ActionEvent event) { openSidebarFeature(event, "/fxml/AdminOrders.fxml", "Quản lý Đơn hàng"); }
-    @FXML void goCustomers(ActionEvent event) { openSidebarFeature(event, "/fxml/AdminCustomers.fxml", "Quản lý Khách hàng"); }
-    @FXML void goSuppliers(ActionEvent event) { openSidebarFeature(event, "/fxml/AdminSuppliers.fxml", "Quản lý Nhà cung cấp"); }
-    @FXML void goStock(ActionEvent event) { openSidebarFeature(event, "/fxml/AdminStock.fxml", "Quản lý Kho"); }
-    @FXML void goReports(ActionEvent event) { openSidebarFeature(event, "/fxml/AdminReports.fxml", "Xem Báo cáo"); }
-    @FXML void goUserManage(ActionEvent event) { openSidebarFeature(event, "/fxml/AdminUserManage.fxml", "Quản lý Tài khoản"); }
+    @FXML private TextField searchField;
+    @FXML private VBox sidebar;
 
-    // Hàm tiện ích chuyển trang có tích hợp HIỆU ỨNG FADE-IN 0.4s
-    private void openSidebarFeature(ActionEvent event, String fxmlPath, String title) {
-        try {
-            // Kiểm tra xem file fxml có tồn tại không
-            if (getClass().getResource(fxmlPath) == null) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Thông báo");
-                alert.setHeaderText(null);
-                alert.setContentText("Tính năng [" + title + "] chưa được thiết kế FXML!");
-                alert.showAndWait();
-            } else {
-                // Tải giao diện mới
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-                Parent root = loader.load();
+    private CategoryDAO categoryDAO = new CategoryDAO();
+    private ObservableList<Category> categoryList;
 
-                // Lấy cửa sổ (Stage) hiện tại
-                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                stage.setTitle(title);
+    // ================= INIT =================
 
-                // Ép giao diện tàng hình (Opacity = 0) và thay đổi Root
-                root.setOpacity(0);
-                stage.getScene().setRoot(root);
+    @FXML
+    public void initialize(){
+        colId.setCellValueFactory(new PropertyValueFactory<>("categoryId"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
 
-                // Chạy hiệu ứng hiện dần lên cực mượt
-                FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.4), root);
-                fadeIn.setFromValue(0.0);
-                fadeIn.setToValue(1.0);
-                fadeIn.play();
+        categoryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        loadCategories();
+        setActiveMenu("Categories");
+    }
+
+    // ================= LOAD =================
+
+    private void loadCategories(){
+        List<Category> list = categoryDAO.getAllCategories();
+        categoryList = FXCollections.observableArrayList(list);
+        categoryTable.setItems(categoryList);
+    }
+
+    // ================= ADD =================
+
+    @FXML
+    public void handleAddCategory(){
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Add Category");
+        dialog.getDialogPane().getStylesheets().add(
+                getClass().getResource("/css/admin-style.css").toExternalForm()
+        );
+        dialog.getDialogPane().getStyleClass().add("dialog-pane");
+
+        TextField nameField = new TextField();
+
+        GridPane grid = new GridPane();
+        grid.setHgap(15);
+        grid.setVgap(10);
+
+        grid.add(new Label("Category Name:"),0,0);
+        grid.add(nameField,1,0);
+
+        dialog.getDialogPane().setContent(grid);
+
+        ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
+
+        if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
+
+            if(nameField.getText().trim().isEmpty()){
+                new Alert(Alert.AlertType.WARNING,"Name cannot be empty!").show();
+                return;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Lỗi chuyển trang: " + e.getMessage());
+
+            Category c = new Category();
+            c.setCategoryName(nameField.getText());
+
+            categoryDAO.save(c);
+            loadCategories();
         }
     }
 
-    // =========================================================
-    // NÚT ĐĂNG XUẤT (CŨNG ĐƯỢC THÊM HIỆU ỨNG LUÔN)
-    // =========================================================
+    // ================= EDIT =================
+
     @FXML
-    void handleLogout(ActionEvent event) {
-        SessionManager.clear();
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login.fxml"));
-            Parent root = loader.load();
+    public void handleEditCategory(){
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setTitle("Đăng nhập");
+        Category selected = categoryTable.getSelectionModel().getSelectedItem();
 
-            root.setOpacity(0);
-            stage.getScene().setRoot(root);
-
-            FadeTransition fadeIn = new FadeTransition(Duration.seconds(0.4), root);
-            fadeIn.setFromValue(0.0);
-            fadeIn.setToValue(1.0);
-            fadeIn.play();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(selected == null){
+            new Alert(Alert.AlertType.WARNING,"Select category first!").show();
+            return;
         }
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Edit Category");
+        dialog.getDialogPane().getStylesheets().add(
+                getClass().getResource("/css/admin-style.css").toExternalForm()
+        );
+        dialog.getDialogPane().getStyleClass().add("dialog-pane");
+
+        TextField nameField = new TextField(selected.getCategoryName());
+
+        GridPane grid = new GridPane();
+        grid.setHgap(15);
+        grid.setVgap(10);
+
+        grid.add(new Label("Category Name:"),0,0);
+        grid.add(nameField,1,0);
+
+        dialog.getDialogPane().setContent(grid);
+
+        ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
+
+        if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
+
+            selected.setCategoryName(nameField.getText());
+
+            categoryDAO.update(selected);
+            loadCategories();
+        }
+    }
+
+    // ================= DELETE =================
+
+    @FXML
+    public void handleDeleteCategory(){
+
+        Category selected = categoryTable.getSelectionModel().getSelectedItem();
+
+        if(selected == null){
+            new Alert(Alert.AlertType.WARNING,"Select category!").show();
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.getDialogPane().getStylesheets().add(
+                getClass().getResource("/css/admin-style.css").toExternalForm()
+        );
+        confirm.getDialogPane().getStyleClass().add("dialog-pane");
+        confirm.setContentText("Delete " + selected.getCategoryName() + "?");
+
+        if(confirm.showAndWait().get() == ButtonType.OK){
+            categoryDAO.delete(selected);
+            loadCategories();
+        }
+    }
+
+    // ================= SEARCH =================
+
+    @FXML
+    public void handleSearch(){
+
+        String keyword = searchField.getText().toLowerCase();
+
+        if(keyword.isEmpty()){
+            categoryTable.setItems(categoryList);
+            return;
+        }
+
+        ObservableList<Category> filtered = FXCollections.observableArrayList();
+
+        for(Category c : categoryList){
+            if(c.getCategoryName().toLowerCase().contains(keyword)){
+                filtered.add(c);
+            }
+        }
+
+        categoryTable.setItems(filtered);
+    }
+
+    // ================= MENU =================
+
+    private void setActiveMenu(String name){
+
+        if(sidebar == null) return;
+
+        for(Node node : sidebar.getChildren()){
+            if(node instanceof Button){
+                Button btn = (Button) node;
+                btn.getStyleClass().remove("menu-active");
+
+                if(btn.getText().toLowerCase().contains(name.toLowerCase())){
+                    btn.getStyleClass().add("menu-active");
+                }
+            }
+        }
+    }
+
+    @FXML public void goDashboard(){ SceneManager.switchScene("/fxml/AdminDashboard.fxml","Dashboard"); }
+    @FXML public void goProducts(){ SceneManager.switchScene("/fxml/AdminProducts.fxml","Products"); }
+    @FXML public void goCategories(){ SceneManager.switchScene("/fxml/AdminCategories.fxml","Categories"); }
+    @FXML public void goOrders(){ SceneManager.switchScene("/fxml/AdminOrders.fxml","Orders"); }
+    @FXML public void goCustomers(){ SceneManager.switchScene("/fxml/AdminCustomers.fxml","Customers"); }
+    @FXML public void goSuppliers(){ SceneManager.switchScene("/fxml/AdminSuppliers.fxml","Suppliers"); }
+    @FXML public void goStock(){ SceneManager.switchScene("/fxml/AdminStock.fxml","Stock"); }
+    @FXML public void goEmployees(){ SceneManager.switchScene("/fxml/AdminEmployees.fxml","Employees");}
+    @FXML public void goReports(){ SceneManager.switchScene("/fxml/AdminReports.fxml","Reports"); }
+
+    @FXML
+    public void handleLogout(){
+        SessionManager.clear();
+        SceneManager.switchScene("/fxml/login.fxml","Login");
     }
 }

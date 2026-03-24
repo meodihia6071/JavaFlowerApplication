@@ -1,7 +1,6 @@
 package flowershop.models;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "suppliers")
@@ -9,53 +8,33 @@ public class Supplier {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "supplier_id")
     private int supplierId;
 
-    @Column(name = "name", nullable = false)
-    private String supplierName;
-
-    @Column(name = "phone")
-    private String phone;
-
-    @Column(name = "email")
-    private String email;
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "address")
     private String address;
 
-    @Column(name = "created_date")
-    private LocalDate createdDate;
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "phone")
+    private String phone;
 
     @Column(name = "status")
     private String status;
 
-    // Constructor rỗng (bắt buộc cho JPA)
+    @Column(name = "created_date")
+    private String createdDate; // Có thể dùng java.sql.Date hoặc String tùy cách anh setup
+
     public Supplier() {
     }
 
-    // Constructor đầy đủ
-    public Supplier(int supplierId, String supplierName, String phone, String email,
-                    String address, LocalDate createdDate, String status) {
-        this.supplierId = supplierId;
-        this.supplierName = supplierName;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-        this.createdDate = createdDate;
-        this.status = status;
-    }
-
-    // Constructor khi thêm mới (không cần id)
-    public Supplier(String supplierName, String phone, String email,
-                    String address, LocalDate createdDate, String status) {
-        this.supplierName = supplierName;
-        this.phone = phone;
-        this.email = email;
-        this.address = address;
-        this.createdDate = createdDate;
-        this.status = status;
-    }
+    // ==========================================
+    // GETTER & SETTER
+    // ==========================================
 
     public int getSupplierId() {
         return supplierId;
@@ -65,28 +44,13 @@ public class Supplier {
         this.supplierId = supplierId;
     }
 
-    public String getSupplierName() {
-        return supplierName;
+    // ĐÂY CHÍNH LÀ HÀM MÀ THẰNG STOCK ĐANG TÌM KIẾM ĐÂY ANH!
+    public String getName() {
+        return name;
     }
 
-    public void setSupplierName(String supplierName) {
-        this.supplierName = supplierName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getAddress() {
@@ -97,12 +61,20 @@ public class Supplier {
         this.address = address;
     }
 
-    public LocalDate getCreatedDate() {
-        return createdDate;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
-        this.createdDate = createdDate;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getStatus() {
@@ -113,8 +85,11 @@ public class Supplier {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return supplierName;
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
     }
 }

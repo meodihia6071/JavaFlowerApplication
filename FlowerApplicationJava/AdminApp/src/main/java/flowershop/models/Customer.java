@@ -17,11 +17,12 @@ public class Customer {
 
     private String phone;
 
+    // KHÔI PHỤC LẠI TRƯỜNG EMAIL CHO KHÁCH VÃNG LAI
     private String email;
 
     private int points;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -30,59 +31,34 @@ public class Customer {
 
     public Customer() {}
 
-    public int getCustomerId() {
-        return customerId;
-    }
+    public int getCustomerId() { return customerId; }
+    public void setCustomerId(int customerId) { this.customerId = customerId; }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
-    }
+    public String getCustomerName() { return customerName; }
+    public void setCustomerName(String customerName) { this.customerName = customerName; }
 
-    public String getCustomerName() {
-        return customerName;
-    }
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
+    // HÀM LẤY EMAIL THÔNG MINH
     public String getEmail() {
-        return email;
+        // Ưu tiên lấy email của tài khoản User (nếu khách này có tài khoản)
+        if (this.user != null && this.user.getEmail() != null && !this.user.getEmail().isEmpty()) {
+            return this.user.getEmail();
+        }
+        // Nếu là khách vãng lai (không có User), trả về email nhập tay
+        return this.email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    // HÀM SET EMAIL MÀ CONTROLLER ĐANG BÁO THIẾU ĐÂY ANH NHÉ
+    public void setEmail(String email) { this.email = email; }
 
-    public int getPoints() {
-        return points;
-    }
+    public int getPoints() { return points; }
+    public void setPoints(int points) { this.points = points; }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
+    public List<Order> getOrders() { return orders; }
+    public void setOrders(List<Order> orders) { this.orders = orders; }
 }

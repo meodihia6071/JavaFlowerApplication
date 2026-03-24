@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -19,7 +20,6 @@ import java.util.Optional;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.control.TableCell;
-
 import javafx.scene.layout.GridPane;
 
 public class AdminSuppliersController {
@@ -41,8 +41,9 @@ public class AdminSuppliersController {
     @FXML
     private TableColumn<Supplier, String> colAddress;
 
+    // Sửa LocalDate thành String cho khớp với Model Supplier
     @FXML
-    private TableColumn<Supplier, LocalDate> colCreatedDate;
+    private TableColumn<Supplier, String> colCreatedDate;
 
     @FXML
     private TableColumn<Supplier, String> colStatus;
@@ -58,14 +59,15 @@ public class AdminSuppliersController {
     public void initialize(){
 
         colId.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("supplierName"));
+        // Sửa "supplierName" thành "name" cho khớp với biến trong Model
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
         colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         colCreatedDate.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
         colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-        colStatus.setCellFactory(column -> new TableCell<Supplier, String>() {
 
+        colStatus.setCellFactory(column -> new TableCell<Supplier, String>() {
             @Override
             protected void updateItem(String status, boolean empty) {
                 super.updateItem(status, empty);
@@ -74,9 +76,7 @@ public class AdminSuppliersController {
                     setText(null);
                     setGraphic(null);
                 } else {
-
                     Circle circle = new Circle(5);
-
                     if (status.equalsIgnoreCase("Active")) {
                         circle.setFill(Color.GREEN);
                         setText(" Active");
@@ -84,13 +84,11 @@ public class AdminSuppliersController {
                         circle.setFill(Color.RED);
                         setText(" Inactive");
                     }
-
                     setGraphic(circle);
                     setContentDisplay(ContentDisplay.LEFT);
                 }
             }
         });
-
 
         supplierTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
@@ -98,71 +96,39 @@ public class AdminSuppliersController {
     }
 
     private void loadSuppliers(){
-
         List<Supplier> list = supplierDAO.getAllSuppliers();
-
         supplierList = FXCollections.observableArrayList(list);
-
         supplierTable.setItems(supplierList);
     }
 
+    // ================= HÀM TIỆN ÍCH BẮT LỖI CSS AN TOÀN =================
+    private void applySafeCss(DialogPane dialogPane) {
+        URL cssUrl = getClass().getResource("/css/admin-style.css");
+        if (cssUrl != null) {
+            dialogPane.getStylesheets().add(cssUrl.toExternalForm());
+        }
+        dialogPane.getStyleClass().add("dialog-pane");
+    }
+
     // ================= NAVIGATION =================
-
-    @FXML
-    void goDashboard(ActionEvent e){
-        SceneManager.switchScene("/fxml/AdminDashboard.fxml","Dashboard");
-    }
-
-    @FXML
-    void goProducts(ActionEvent e){
-        SceneManager.switchScene("/fxml/AdminProducts.fxml","Products");
-    }
-
-    @FXML
-    void goCategories(ActionEvent e){
-        SceneManager.switchScene("/fxml/AdminCategories.fxml","Categories");
-    }
-
-    @FXML
-    void goOrders(ActionEvent e){
-        SceneManager.switchScene("/fxml/AdminOrders.fxml","Orders");
-    }
-
-    @FXML
-    void goCustomers(ActionEvent e){
-        SceneManager.switchScene("/fxml/AdminCustomers.fxml","Customers");
-    }
-
-    @FXML
-    void goStock(ActionEvent e){
-        SceneManager.switchScene("/fxml/AdminStock.fxml","Stock");
-    }
-
+    @FXML void goDashboard(ActionEvent e){ SceneManager.switchScene("/fxml/AdminDashboard.fxml","Dashboard"); }
+    @FXML void goProducts(ActionEvent e){ SceneManager.switchScene("/fxml/AdminProducts.fxml","Products"); }
+    @FXML void goCategories(ActionEvent e){ SceneManager.switchScene("/fxml/AdminCategories.fxml","Categories"); }
+    @FXML void goOrders(ActionEvent e){ SceneManager.switchScene("/fxml/AdminOrders.fxml","Orders"); }
+    @FXML void goCustomers(ActionEvent e){ SceneManager.switchScene("/fxml/AdminCustomers.fxml","Customers"); }
+    @FXML void goStock(ActionEvent e){ SceneManager.switchScene("/fxml/AdminStock.fxml","Stock"); }
     @FXML public void goEmployees(){ SceneManager.switchScene("/fxml/AdminEmployees.fxml","Employees");}
-
-    @FXML
-    void goReports(ActionEvent e){
-        SceneManager.switchScene("/fxml/AdminReports.fxml","Reports");
-    }
-
-    @FXML
-    void handleLogout(ActionEvent e){
-        SessionManager.clear();
-        SceneManager.switchScene("/fxml/login.fxml","Login");
-    }
+    @FXML void goReports(ActionEvent e){ SceneManager.switchScene("/fxml/AdminReports.fxml","Reports"); }
+    @FXML void handleLogout(ActionEvent e){ SessionManager.clear(); SceneManager.switchScene("/fxml/login.fxml","Login"); }
 
     // ================= ADD =================
-
     @FXML
     public void handleAddSupplier(ActionEvent event){
 
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Add Supplier");
 
-        dialog.getDialogPane().getStylesheets().add(
-                getClass().getResource("/css/admin-style.css").toExternalForm()
-        );
-        dialog.getDialogPane().getStyleClass().add("dialog-pane");
+        applySafeCss(dialog.getDialogPane()); // Dùng hàm an toàn
 
         TextField nameField = new TextField();
         TextField phoneField = new TextField();
@@ -177,20 +143,11 @@ public class AdminSuppliersController {
         grid.setVgap(12);
         grid.setStyle("-fx-padding:20;");
 
-        grid.add(new Label("Supplier Name:"),0,0);
-        grid.add(nameField,1,0);
-
-        grid.add(new Label("Phone:"),0,1);
-        grid.add(phoneField,1,1);
-
-        grid.add(new Label("Email:"),0,2);
-        grid.add(emailField,1,2);
-
-        grid.add(new Label("Address:"),0,3);
-        grid.add(addressField,1,3);
-
-        grid.add(new Label("Status:"),0,4);
-        grid.add(statusBox,1,4);
+        grid.add(new Label("Supplier Name:"),0,0); grid.add(nameField,1,0);
+        grid.add(new Label("Phone:"),0,1); grid.add(phoneField,1,1);
+        grid.add(new Label("Email:"),0,2); grid.add(emailField,1,2);
+        grid.add(new Label("Address:"),0,3); grid.add(addressField,1,3);
+        grid.add(new Label("Status:"),0,4); grid.add(statusBox,1,4);
 
         dialog.getDialogPane().setContent(grid);
 
@@ -201,22 +158,19 @@ public class AdminSuppliersController {
 
             Supplier s = new Supplier();
 
-            s.setSupplierName(nameField.getText());
+            s.setName(nameField.getText()); // Đổi setSupplierName -> setName
             s.setPhone(phoneField.getText());
             s.setEmail(emailField.getText());
             s.setAddress(addressField.getText());
             s.setStatus(statusBox.getValue());
-
-            s.setCreatedDate(java.time.LocalDate.now());
+            s.setCreatedDate(LocalDate.now().toString()); // Ép kiểu về String cho chuẩn
 
             supplierDAO.save(s);
-
             loadSuppliers();
         }
     }
 
     // ================= EDIT =================
-
     @FXML
     public void handleEditSupplier(ActionEvent event){
 
@@ -227,13 +181,7 @@ public class AdminSuppliersController {
             alert.setTitle("Warning");
             alert.setHeaderText(null);
             alert.setContentText("Please select supplier first!");
-
-            alert.getDialogPane().getStylesheets().add(
-                    getClass().getResource("/css/admin-style.css").toExternalForm()
-            );
-
-            alert.getDialogPane().getStyleClass().add("dialog-pane");
-
+            applySafeCss(alert.getDialogPane());
             alert.show();
             return;
         }
@@ -241,13 +189,10 @@ public class AdminSuppliersController {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Edit Supplier");
 
-        dialog.getDialogPane().getStylesheets().add(
-                getClass().getResource("/css/admin-style.css").toExternalForm()
-        );
-        dialog.getDialogPane().getStyleClass().add("dialog-pane");
+        applySafeCss(dialog.getDialogPane());
 
         Label nameLabel = new Label("Supplier Name:");
-        TextField nameField = new TextField(selected.getSupplierName());
+        TextField nameField = new TextField(selected.getName()); // Đổi getSupplierName -> getName
 
         Label phoneLabel = new Label("Phone:");
         TextField phoneField = new TextField(selected.getPhone());
@@ -267,20 +212,11 @@ public class AdminSuppliersController {
         grid.setHgap(10);
         grid.setVgap(10);
 
-        grid.add(nameLabel,0,0);
-        grid.add(nameField,1,0);
-
-        grid.add(phoneLabel,0,1);
-        grid.add(phoneField,1,1);
-
-        grid.add(emailLabel,0,2);
-        grid.add(emailField,1,2);
-
-        grid.add(addressLabel,0,3);
-        grid.add(addressField,1,3);
-
-        grid.add(statusLabel,0,4);
-        grid.add(statusBox,1,4);
+        grid.add(nameLabel,0,0); grid.add(nameField,1,0);
+        grid.add(phoneLabel,0,1); grid.add(phoneField,1,1);
+        grid.add(emailLabel,0,2); grid.add(emailField,1,2);
+        grid.add(addressLabel,0,3); grid.add(addressField,1,3);
+        grid.add(statusLabel,0,4); grid.add(statusBox,1,4);
 
         dialog.getDialogPane().setContent(grid);
 
@@ -289,20 +225,18 @@ public class AdminSuppliersController {
 
         if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
 
-            selected.setSupplierName(nameField.getText());
+            selected.setName(nameField.getText()); // Đổi setSupplierName -> setName
             selected.setPhone(phoneField.getText());
             selected.setEmail(emailField.getText());
             selected.setAddress(addressField.getText());
             selected.setStatus(statusBox.getValue());
 
             supplierDAO.update(selected);
-
             loadSuppliers();
         }
     }
 
     // ================= DELETE =================
-
     @FXML
     void handleDeleteSupplier(ActionEvent e){
 
@@ -314,25 +248,19 @@ public class AdminSuppliersController {
         }
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.getDialogPane().getStylesheets().add(
-                getClass().getResource("/css/admin-style.css").toExternalForm()
-        );
-        confirm.getDialogPane().getStyleClass().add("dialog-pane");
+        applySafeCss(confirm.getDialogPane());
         confirm.setHeaderText("Delete Supplier?");
         confirm.setContentText("Are you sure you want to delete this supplier?");
 
         Optional<ButtonType> result = confirm.showAndWait();
 
         if(result.isPresent() && result.get() == ButtonType.OK){
-
             supplierDAO.delete(s);
-
             loadSuppliers();
         }
     }
 
     // ================= SEARCH =================
-
     @FXML
     void handleSearch(ActionEvent e){
 
@@ -345,18 +273,17 @@ public class AdminSuppliersController {
 
         supplierTable.setItems(
                 supplierList.filtered(
-                        s -> s.getSupplierName().toLowerCase().contains(keyword)
+                        s -> s.getName().toLowerCase().contains(keyword) // Đổi getSupplierName -> getName
                 )
         );
     }
 
     // ================= SORT =================
-
     @FXML
     void sortNameAZ(){
         FXCollections.sort(
                 supplierList,
-                Comparator.comparing(Supplier::getSupplierName)
+                Comparator.comparing(Supplier::getName) // Đổi getSupplierName -> getName
         );
     }
 
@@ -364,7 +291,7 @@ public class AdminSuppliersController {
     void sortNameZA(){
         FXCollections.sort(
                 supplierList,
-                Comparator.comparing(Supplier::getSupplierName).reversed()
+                Comparator.comparing(Supplier::getName).reversed() // Đổi getSupplierName -> getName
         );
     }
 
@@ -385,9 +312,7 @@ public class AdminSuppliersController {
     }
 
     // ================= ALERT =================
-
     private void showAlert(String text){
-
         Alert a = new Alert(Alert.AlertType.INFORMATION);
         a.setContentText(text);
         a.showAndWait();
