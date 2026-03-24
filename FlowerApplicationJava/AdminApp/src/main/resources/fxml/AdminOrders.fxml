@@ -12,7 +12,6 @@
       fx:controller="flowershop.controllers.AdminOrdersController">
 
     <children>
-
         <!-- SIDEBAR -->
         <VBox prefWidth="230" styleClass="sidebar">
 
@@ -98,7 +97,7 @@
                         <columns>
 
                             <TableColumn fx:id="colProduct" text="Product" prefWidth="140"/>
-                            <TableColumn fx:id="colQty" text="Quantity" prefWidth="60"/>
+                            <TableColumn fx:id="colQty" text="Qty" prefWidth="60"/>
                             <TableColumn fx:id="colPrice" text="Price" prefWidth="80"/>
                             <TableColumn fx:id="colSubTotal" text="Total" prefWidth="100"/>
 
