@@ -7,7 +7,6 @@ import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
 import flowershop.utils.HibernateUtil;
 
-import javafx.animation.ScaleTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,11 +16,11 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
-import javafx.util.Duration;
 
 import org.hibernate.Session;
 
@@ -36,21 +35,18 @@ import java.util.List;
 public class AdminProductsController {
 
     @FXML private TableView<Product> productTable;
-
     @FXML private TableColumn<Product, Integer> colId;
     @FXML private TableColumn<Product, String> colName;
     @FXML private TableColumn<Product, BigDecimal> colPrice;
     @FXML private TableColumn<Product, Integer> colQuantity;
-    @FXML private TableColumn<Product, String> colImage; // Cột hiển thị hình ảnh
+    @FXML private TableColumn<Product, String> colImage;
     @FXML private TableColumn<Product, String> colCategory;
 
     @FXML private TextField searchField;
-    @FXML private VBox sidebar;
 
     private ProductDAO productDAO = new ProductDAO();
     private ObservableList<Product> productList;
 
-    // ================= INIT =================
     @FXML
     public void initialize(){
 
@@ -67,24 +63,20 @@ public class AdminProductsController {
             @Override
             protected void updateItem(BigDecimal price, boolean empty) {
                 super.updateItem(price, empty);
-                if(empty || price == null){
-                    setText(null);
-                } else {
-                    setText("$" + price.setScale(2, RoundingMode.HALF_UP).toString());
-                }
+                if(empty || price == null) setText(null);
+                else setText("$" + price.setScale(2, RoundingMode.HALF_UP).toString());
             }
         });
 
-        // HƯỚNG DẪN BẢNG HIỂN THỊ ẢNH THẬT
+        // 1. HIỂN THỊ ẢNH TRONG BẢNG (KÍCH THƯỚC 80x80 TO RÕ)
         colImage.setCellValueFactory(new PropertyValueFactory<>("image"));
         colImage.setCellFactory(column -> new TableCell<Product, String>() {
             private final ImageView imageView = new ImageView();
             {
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
+                imageView.setFitWidth(80); // Tăng kích thước
+                imageView.setFitHeight(80);
                 imageView.setPreserveRatio(true);
             }
-
             @Override
             protected void updateItem(String imagePath, boolean empty) {
                 super.updateItem(imagePath, empty);
@@ -103,33 +95,62 @@ public class AdminProductsController {
             }
         });
 
-        productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        // 2. BẮT SỰ KIỆN DOUBLE CLICK VÀO SẢN PHẨM ĐỂ XEM ẢNH ZOOM TO
+        productTable.setOnMouseClicked((MouseEvent event) -> {
+            if (event.getClickCount() == 2) {
+                Product selected = productTable.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    showProductDetails(selected); // Gọi hàm hiển thị
+                }
+            }
+        });
 
         loadProducts();
-        setActiveMenu("Products");
     }
 
-    // ================= LOAD =================
-    private void loadProducts(){
-        List<Product> list = productDAO.getAllProducts();
-        productList = FXCollections.observableArrayList(list);
-        productTable.setItems(productList);
+    // ================= XEM CHI TIẾT SẢN PHẨM (ZOOM ẢNH) =================
+    private void showProductDetails(Product p) {
+        Dialog<Void> dialog = new Dialog<>();
+        dialog.setTitle("Chi tiết: " + p.getProductName());
+        applySafeCss(dialog.getDialogPane());
+
+        ImageView zoomImageView = new ImageView();
+        zoomImageView.setFitWidth(300); // Kích thước khổng lồ 300x300
+        zoomImageView.setFitHeight(300);
+        zoomImageView.setPreserveRatio(true);
+        zoomImageView.setStyle("-fx-border-color: #E25A84; -fx-border-width: 2px; -fx-padding: 5px;");
+
+        // Load ảnh thật
+        if (p.getImage() != null && !p.getImage().isEmpty()) {
+            File imgFile = new File(System.getProperty("user.dir"), p.getImage());
+            if (imgFile.exists()) {
+                zoomImageView.setImage(new Image(imgFile.toURI().toString()));
+            }
+        }
+
+        // Bảng thông tin bên cạnh ảnh
+        VBox infoBox = new VBox(15);
+        infoBox.setAlignment(Pos.CENTER_LEFT);
+        Label lblName = new Label("Tên SP: " + p.getProductName());
+        lblName.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #c44d6e;");
+        Label lblPrice = new Label("Giá bán: $" + p.getPrice());
+        lblPrice.setStyle("-fx-font-size: 16px;");
+        Label lblStock = new Label("Còn lại: " + p.getQuantity() + " sản phẩm");
+        lblStock.setStyle("-fx-font-size: 16px;");
+        Label lblCate = new Label("Danh mục: " + (p.getCategory() != null ? p.getCategory().getCategoryName() : ""));
+        lblCate.setStyle("-fx-font-size: 16px;");
+
+        infoBox.getChildren().addAll(lblName, lblPrice, lblStock, lblCate);
+
+        HBox root = new HBox(30, zoomImageView, infoBox);
+        root.setPadding(new javafx.geometry.Insets(20));
+
+        dialog.getDialogPane().setContent(root);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        dialog.showAndWait();
     }
 
-    private ObservableList<Category> getCategories(){
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        List<Category> list = session.createQuery("FROM Category", Category.class).list();
-        session.close();
-        return FXCollections.observableArrayList(list);
-    }
-
-    private void applySafeCss(DialogPane dialogPane) {
-        URL cssUrl = getClass().getResource("/css/admin-style.css");
-        if (cssUrl != null) dialogPane.getStylesheets().add(cssUrl.toExternalForm());
-        dialogPane.getStyleClass().add("dialog-pane");
-    }
-
-    // ================= XỬ LÝ COPY FILE ẢNH =================
+    // ================= COPY FILE ẢNH VÀO PROJECT AN TOÀN =================
     private String saveImageToProject(File selectedFile) {
         if (selectedFile == null) return null;
         try {
@@ -143,14 +164,33 @@ public class AdminProductsController {
 
             File dest = new File(dir, newFileName);
             Files.copy(selectedFile.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            return "product_images/" + newFileName; // Đường dẫn tương đối lưu vào DB
+            return "product_images/" + newFileName;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    // ================= ADD =================
+    private void loadProducts(){
+        List<Product> list = productDAO.getAllProducts();
+        productList = FXCollections.observableArrayList(list);
+        productTable.setItems(productList);
+    }
+
+    private ObservableList<Category> getCategories(){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        List<Category> list = session.createQuery("FROM Category", Category.class).list();
+        session.close();
+        return FXCollections.observableArrayList(list);
+    }
+
+    private void applySafeCss(DialogPane dp) {
+        URL url = getClass().getResource("/css/admin-style.css");
+        if (url != null) dp.getStylesheets().add(url.toExternalForm());
+        dp.getStyleClass().add("dialog-pane");
+    }
+
+    // ================= ADD PRODUCT (KÈM CHỌN ẢNH) =================
     @FXML
     public void handleAddProduct(){
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -161,25 +201,25 @@ public class AdminProductsController {
         TextField priceField = new TextField();
         TextField qtyField = new TextField();
 
-        // TẠO KHUNG CHỌN ẢNH XỊN XÒ
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(100); imageView.setFitHeight(100);
-        imageView.setPreserveRatio(true);
-        imageView.setStyle("-fx-border-color: #E25A84; -fx-border-width: 1px;");
+        // Khung hiển thị ảnh chọn trước
+        ImageView previewImage = new ImageView();
+        previewImage.setFitWidth(120); previewImage.setFitHeight(120);
+        previewImage.setPreserveRatio(true);
+        previewImage.setStyle("-fx-border-color: #E25A84;");
 
-        final File[] selectedFile = new File[1]; // Dùng mảng để lưu file do bắt sự kiện trong lambda
-        Button btnChoose = new Button("Chọn ảnh");
-        btnChoose.setStyle("-fx-background-color: #f4c7d3; -fx-text-fill: #4a2c2c; -fx-font-weight: bold;");
+        final File[] selectedFile = new File[1];
+        Button btnChoose = new Button("Thêm ảnh từ máy");
+        btnChoose.getStyleClass().add("tool-btn"); // Dùng class tool-btn để có hover xịn xò
         btnChoose.setOnAction(e -> {
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
             File file = fc.showOpenDialog(dialog.getDialogPane().getScene().getWindow());
             if(file != null) {
                 selectedFile[0] = file;
-                imageView.setImage(new Image(file.toURI().toString()));
+                previewImage.setImage(new Image(file.toURI().toString()));
             }
         });
-        VBox imageBox = new VBox(5, imageView, btnChoose);
+        VBox imageBox = new VBox(10, previewImage, btnChoose);
         imageBox.setAlignment(Pos.CENTER);
 
         ComboBox<Category> cbCategory = new ComboBox<>(getCategories());
@@ -197,7 +237,7 @@ public class AdminProductsController {
         });
 
         GridPane grid = new GridPane();
-        grid.setHgap(15); grid.setVgap(10);
+        grid.setHgap(15); grid.setVgap(15);
         grid.add(new Label("Name:"),0,0); grid.add(nameField,1,0);
         grid.add(new Label("Price:"),0,1); grid.add(priceField,1,1);
         grid.add(new Label("Quantity:"),0,2); grid.add(qtyField,1,2);
@@ -216,27 +256,25 @@ public class AdminProductsController {
                 p.setQuantity(Integer.parseInt(qtyField.getText()));
                 p.setCategory(cbCategory.getValue());
 
-                // Xử lý lưu ảnh
                 String savedPath = saveImageToProject(selectedFile[0]);
                 if (savedPath != null) p.setImage(savedPath);
 
                 productDAO.save(p);
                 loadProducts();
             } catch (Exception ex) {
-                Alert a = new Alert(Alert.AlertType.ERROR, "Dữ liệu nhập không hợp lệ!");
+                Alert a = new Alert(Alert.AlertType.ERROR, "Dữ liệu không hợp lệ!");
                 applySafeCss(a.getDialogPane()); a.show();
             }
         }
     }
 
-    // ================= EDIT =================
+    // ================= EDIT PRODUCT =================
     @FXML
     public void handleEditProduct(){
         Product selected = productTable.getSelectionModel().getSelectedItem();
         if(selected == null){
-            Alert a = new Alert(Alert.AlertType.WARNING,"Vui lòng chọn sản phẩm cần sửa!");
-            applySafeCss(a.getDialogPane()); a.show();
-            return;
+            Alert a = new Alert(Alert.AlertType.WARNING,"Chọn sản phẩm cần sửa!");
+            applySafeCss(a.getDialogPane()); a.show(); return;
         }
 
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -247,28 +285,27 @@ public class AdminProductsController {
         TextField priceField = new TextField(selected.getPrice().toString());
         TextField qtyField = new TextField(String.valueOf(selected.getQuantity()));
 
-        // KHUNG CHỌN ẢNH CÓ LOAD SẴN ẢNH CŨ
-        ImageView imageView = new ImageView();
-        imageView.setFitWidth(100); imageView.setFitHeight(100);
-        imageView.setPreserveRatio(true);
+        ImageView previewImage = new ImageView();
+        previewImage.setFitWidth(120); previewImage.setFitHeight(120);
+        previewImage.setPreserveRatio(true);
         if (selected.getImage() != null && !selected.getImage().isEmpty()) {
             File oldFile = new File(System.getProperty("user.dir"), selected.getImage());
-            if (oldFile.exists()) imageView.setImage(new Image(oldFile.toURI().toString()));
+            if (oldFile.exists()) previewImage.setImage(new Image(oldFile.toURI().toString()));
         }
 
         final File[] selectedFile = new File[1];
-        Button btnChoose = new Button("Đổi ảnh mới");
-        btnChoose.setStyle("-fx-background-color: #f4c7d3; -fx-text-fill: #4a2c2c; -fx-font-weight: bold;");
+        Button btnChoose = new Button("Đổi ảnh khác");
+        btnChoose.getStyleClass().add("tool-btn"); // Dùng class tool-btn để có hover xịn xò
         btnChoose.setOnAction(e -> {
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
             File file = fc.showOpenDialog(dialog.getDialogPane().getScene().getWindow());
             if(file != null) {
                 selectedFile[0] = file;
-                imageView.setImage(new Image(file.toURI().toString()));
+                previewImage.setImage(new Image(file.toURI().toString()));
             }
         });
-        VBox imageBox = new VBox(5, imageView, btnChoose);
+        VBox imageBox = new VBox(10, previewImage, btnChoose);
         imageBox.setAlignment(Pos.CENTER);
 
         ComboBox<Category> cbCategory = new ComboBox<>(getCategories());
@@ -289,7 +326,7 @@ public class AdminProductsController {
         });
 
         GridPane grid = new GridPane();
-        grid.setHgap(10); grid.setVgap(10);
+        grid.setHgap(15); grid.setVgap(15);
         grid.add(new Label("Name:"),0,0); grid.add(nameField,1,0);
         grid.add(new Label("Price:"),0,1); grid.add(priceField,1,1);
         grid.add(new Label("Quantity:"),0,2); grid.add(qtyField,1,2);
@@ -307,12 +344,10 @@ public class AdminProductsController {
                 selected.setQuantity(Integer.parseInt(qtyField.getText()));
                 selected.setCategory(cbCategory.getValue());
 
-                // Nếu có chọn ảnh mới thì lưu, không thì giữ đường dẫn ảnh cũ
                 if (selectedFile[0] != null) {
                     String savedPath = saveImageToProject(selectedFile[0]);
                     if (savedPath != null) selected.setImage(savedPath);
                 }
-
                 productDAO.update(selected);
                 loadProducts();
             } catch (Exception ex) {
@@ -322,82 +357,34 @@ public class AdminProductsController {
         }
     }
 
-    // ================= DELETE =================
     @FXML
     public void handleDeleteProduct(){
         Product selected = productTable.getSelectionModel().getSelectedItem();
-        if(selected == null){
-            Alert a = new Alert(Alert.AlertType.WARNING,"Vui lòng chọn sản phẩm để xóa!");
-            applySafeCss(a.getDialogPane()); a.show();
-            return;
-        }
-
+        if(selected == null) return;
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         applySafeCss(confirm.getDialogPane());
         confirm.setContentText("Bạn có chắc chắn muốn xóa " + selected.getProductName() + "?");
-
         if(confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK){
             productDAO.delete(selected);
             loadProducts();
         }
     }
 
-    // ================= SEARCH & SORT =================
-    @FXML
-    public void handleSearch(){
+    @FXML public void handleSearch(){
         String keyword = searchField.getText().toLowerCase();
-        if(keyword.isEmpty()){
-            productTable.setItems(productList);
-            return;
-        }
+        if(keyword.isEmpty()){ productTable.setItems(productList); return; }
         ObservableList<Product> filtered = FXCollections.observableArrayList();
         for(Product p : productList){
-            if(p.getProductName().toLowerCase().contains(keyword)){
-                filtered.add(p);
-            }
+            if(p.getProductName().toLowerCase().contains(keyword)) filtered.add(p);
         }
         productTable.setItems(filtered);
     }
 
     @FXML public void sortNameAZ(){ FXCollections.sort(productList, (a,b)->a.getProductName().compareToIgnoreCase(b.getProductName())); }
-    @FXML public void sortNameZA(){ FXCollections.sort(productList, (a,b)->b.getProductName().compareToIgnoreCase(a.getProductName())); productTable.setItems(productList); }
+    @FXML public void sortNameZA(){ FXCollections.sort(productList, (a,b)->b.getProductName().compareToIgnoreCase(a.getProductName())); }
     @FXML public void sortPriceAsc(){ FXCollections.sort(productList, (a,b)->a.getPrice().compareTo(b.getPrice())); }
-
-    @FXML
-    private void sortPriceDesc() {
-        FXCollections.sort(productList, (a,b)->b.getPrice().compareTo(a.getPrice()));
-    }
-
-    @FXML
-    private void sortNewest() {
-        // Sắp xếp theo ID giảm dần (Sản phẩm mới thêm có ID lớn hơn)
-        FXCollections.sort(productList, (a,b)->Integer.compare(b.getProductId(), a.getProductId()));
-    }
-
-    @FXML public void sortQuantityDesc(){ FXCollections.sort(productList, (a,b)->Integer.compare(b.getQuantity(), a.getQuantity())); }
-
-    // ================= MENU & EFFECTS =================
-    private void addSmoothHoverEffect(Button btn) {
-        ScaleTransition in = new ScaleTransition(Duration.seconds(0.3), btn);
-        in.setToX(1.05); in.setToY(1.05);
-        ScaleTransition out = new ScaleTransition(Duration.seconds(0.3), btn);
-        out.setToX(1.0); out.setToY(1.0);
-        btn.setOnMouseEntered(e -> { out.stop(); in.playFromStart(); });
-        btn.setOnMouseExited(e -> { in.stop(); out.playFromStart(); });
-    }
-
-    private void setActiveMenu(String name){
-        if(sidebar == null) return;
-        for(Node node : sidebar.getChildren()){
-            if(node instanceof Button btn){
-                addSmoothHoverEffect(btn);
-                btn.getStyleClass().remove("menu-active");
-                if(btn.getText().toLowerCase().contains(name.toLowerCase())){
-                    btn.getStyleClass().add("menu-active");
-                }
-            }
-        }
-    }
+    @FXML private void sortPriceDesc() { FXCollections.sort(productList, (a,b)->b.getPrice().compareTo(a.getPrice())); }
+    @FXML private void sortNewest() { FXCollections.sort(productList, (a,b)->Integer.compare(b.getProductId(), a.getProductId())); }
 
     @FXML public void goDashboard(){ SceneManager.switchScene("/fxml/AdminDashboard.fxml","Dashboard"); }
     @FXML public void goProducts(){ SceneManager.switchScene("/fxml/AdminProducts.fxml","Products"); }
