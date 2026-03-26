@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.FlowersController">
+<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.FlowersController">
 
     <top>
         <HBox prefHeight="56.0"
@@ -24,7 +24,7 @@
                 <Insets top="0.0" right="18.0" bottom="0.0" left="18.0"/>
             </padding>
             <children>
-                <Label text="Flower shop" styleClass="brand-label"/>
+                <Label style="-fx-font-weight: 700; -fx-font-size: 25px;" text="Flower shop" styleClass="brand-label"/>
 
                 <Region HBox.hgrow="ALWAYS"/>
 
@@ -43,8 +43,8 @@
 
     <center>
         <VBox spacing="10"
-              style="-fx-background-color: #f8eef1;"
-              prefHeight="Infinity">
+              style="-fx-background-color: #f8eef1;">
+
 
             <!-- SEARCH + FILTER (scroll) -->
             <ScrollPane fitToWidth="true"
@@ -87,11 +87,14 @@
             <HBox alignment="CENTER"
                   spacing="10"
                   styleClass="pagination-box">
+                <padding>
+                    <Insets top="0" right="0" bottom="40" left="0"/>
+                </padding>
 
                 <Button fx:id="btnPrev"
                         text="Prev"
                         onAction="#handlePrevPage"
-                        styleClass="pagination-btn"/>
+                        styleClass="primary-button"/>
 
                 <Label fx:id="lblPage"
                        text="Page 1"
@@ -100,7 +103,7 @@
                 <Button fx:id="btnNext"
                         text="Next"
                         onAction="#handleNextPage"
-                        styleClass="pagination-btn"/>
+                        styleClass="primary-button"/>
 
             </HBox>
 
@@ -125,13 +128,13 @@
                           </children>
                       </VBox>
 
-                                        <VBox spacing="6.0">
+                      <VBox spacing="6.0">
                           <children>
                               <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 14px;" text="Category filter" />
-                              <CheckBox fx:id="chkBirthday" text="Birthday" />
-                              <CheckBox fx:id="chkWedding" text="Wedding" />
-                              <CheckBox fx:id="chkAnniversary" text="Anniversary" />
-                              <CheckBox fx:id="chkSympathy" text="Sympathy" />
+                              <CheckBox fx:id="chkFresh" text="Hoa Tươi" />
+                              <CheckBox fx:id="chkBirthday" text="Hoa Sinh Nhật" />
+                              <CheckBox fx:id="chkWedding" text="Hoa Cưới" />
+                              <CheckBox fx:id="chkFormal" text="Hoa Trang Trọng" />
                           </children>
                       </VBox>
 

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CartService {
 
-    private static final BigDecimal SHIPPING_FEE = BigDecimal.valueOf(5);
+    private static final BigDecimal SHIPPING_FEE = BigDecimal.valueOf(5000);
     private static final BigDecimal POINT_EARN_THRESHOLD = BigDecimal.valueOf(10000);
     private static final BigDecimal POINT_DISCOUNT_VALUE = BigDecimal.valueOf(1000);
 

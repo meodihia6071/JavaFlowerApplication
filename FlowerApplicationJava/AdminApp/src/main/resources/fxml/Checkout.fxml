@@ -22,7 +22,7 @@
             </padding>
 
             <children>
-                <Label styleClass="brand-label" text="Flower shop" />
+                <Label style="-fx-font-weight: 700; -fx-font-size: 25px;" styleClass="brand-label" text="Flower shop" />
                 <Region HBox.hgrow="ALWAYS" />
 
                 <Button onAction="#goHome" styleClass="nav-button" text="Home" />

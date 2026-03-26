@@ -78,7 +78,7 @@ public class ContactController {
         }
 
         int count = cartService.getCartQuantity(customer);
-        btnCart.setText(count > 0 ? "Cart (" + count + ")" : "Cart");
+        btnCart.setText("Cart (" + count + ")");
     }
 
     private void playEntrance(Node node, double fromY, int delayMillis) {

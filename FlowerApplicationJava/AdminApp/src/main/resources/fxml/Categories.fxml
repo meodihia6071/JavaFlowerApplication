@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.CategoryController">
+<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.CategoryController">
 
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" styleClass="top-bar">
@@ -18,88 +18,54 @@
          </padding>
 
          <children>
-            <Label text="Flower shop" styleClass="brand-label" />
+            <Label style="-fx-font-weight: 700; -fx-font-size: 25px;" styleClass="brand-label" text="Flower shop" />
             <Region HBox.hgrow="ALWAYS" />
 
-            <Button text="Home" onAction="#goHome" styleClass="nav-button" />
-            <Button text="Flowers" onAction="#goFlowers" styleClass="nav-button" />
-            <Button text="Categories" onAction="#goCategories" styleClass="nav-button-active" />
-            <Button text="Contact" onAction="#goContact" styleClass="nav-button" />
-            <Button fx:id="btnCart" text="Cart" onAction="#goCart" styleClass="nav-button" />
-            <Button text="Log Out" onAction="#handleLogout"
-                    prefHeight="34.0" prefWidth="94.0"
-                    styleClass="logout-button" />
+            <Button onAction="#goHome" styleClass="nav-button" text="Home" />
+            <Button onAction="#goFlowers" styleClass="nav-button" text="Flowers" />
+            <Button onAction="#goCategories" styleClass="nav-button-active" text="Categories" />
+            <Button onAction="#goContact" styleClass="nav-button" text="Contact" />
+            <Button fx:id="btnCart" onAction="#goCart" styleClass="nav-button" text="Cart" />
+            <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" styleClass="logout-button" text="Log Out" />
          </children>
       </HBox>
    </top>
 
    <center>
-      <ScrollPane fx:id="categoryScroll" fitToWidth="true" hbarPolicy="NEVER">
+      <ScrollPane fx:id="categoryScroll" fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: #f8eef1; -fx-background-color: #f8eef1;" vbarPolicy="AS_NEEDED">
          <content>
-            <VBox alignment="TOP_CENTER" spacing="30.0" fillWidth="true">
+            <VBox alignment="TOP_CENTER" fillWidth="true" spacing="30.0">
                <children>
 
-                  <!-- Birthday -->
+                  <VBox fx:id="freshSection" alignment="TOP_CENTER" spacing="12.0">
+                     <children>
+                        <Label alignment="CENTER" maxWidth="Infinity" style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;" text="Hoa Tươi" />
+                        <HBox fx:id="freshContainer" alignment="CENTER" maxWidth="1200.0" prefWidth="1200.0" spacing="20.0" />
+                     </children>
+                  </VBox>
+
                   <VBox fx:id="birthdaySection" alignment="TOP_CENTER" spacing="12.0">
                      <children>
-                        <Label text="Birthday Flowers"
-                               style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;"
-                               alignment="CENTER"
-                               maxWidth="Infinity"/>
-
-                        <HBox fx:id="birthdayContainer"
-                              alignment="CENTER"
-                              spacing="20.0"
-                              maxWidth="1200.0"
-                              prefWidth="1200.0"/>
+                        <Label alignment="CENTER" maxWidth="Infinity" style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;" text="Hoa Sinh Nhật" />
+                        <HBox fx:id="birthdayContainer" alignment="CENTER" maxWidth="1200.0" prefWidth="1200.0" spacing="20.0" />
                      </children>
                   </VBox>
 
-                  <!-- Wedding -->
                   <VBox fx:id="weddingSection" alignment="TOP_CENTER" spacing="12.0">
                      <children>
-                        <Label text="Wedding Flowers"
-                               style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;"
-                               alignment="CENTER"
-                               maxWidth="Infinity"/>
-
-                        <HBox fx:id="weddingContainer"
-                              alignment="CENTER"
-                              spacing="20.0"
-                              maxWidth="1200.0"
-                              prefWidth="1200.0"/>
+                        <Label alignment="CENTER" maxWidth="Infinity" style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;" text="Hoa Cưới" />
+                        <HBox fx:id="weddingContainer" alignment="CENTER" maxWidth="1200.0" prefWidth="1200.0" spacing="20.0" />
                      </children>
                   </VBox>
 
-                  <!-- Anniversary -->
-                  <VBox fx:id="anniversarySection" alignment="TOP_CENTER" spacing="12.0">
+                  <VBox fx:id="formalSection" alignment="TOP_CENTER" spacing="12.0">
                      <children>
-                        <Label text="Anniversary Flowers"
-                               style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;"
-                               alignment="CENTER"
-                               maxWidth="Infinity"/>
-
-                        <HBox fx:id="anniversaryContainer"
-                              alignment="CENTER"
-                              spacing="20.0"
-                              maxWidth="1200.0"
-                              prefWidth="1200.0"/>
-                     </children>
-                  </VBox>
-
-                  <!-- Sympathy -->
-                  <VBox fx:id="sympathySection" alignment="TOP_CENTER" spacing="12.0">
-                     <children>
-                        <Label text="Sympathy Flowers"
-                               style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;"
-                               alignment="CENTER"
-                               maxWidth="Infinity"/>
-
-                        <HBox fx:id="sympathyContainer"
-                              alignment="CENTER"
-                              spacing="20.0"
-                              maxWidth="1200.0"
-                              prefWidth="1200.0"/>
+                        <Label alignment="CENTER" maxWidth="Infinity" style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;" text="Hoa Trang Trọng">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox fx:id="formalContainer" alignment="CENTER" maxWidth="1200.0" prefWidth="1200.0" spacing="20.0" />
                      </children>
                   </VBox>
 

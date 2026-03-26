@@ -40,16 +40,16 @@ public class FlowersController {
     private ComboBox<String> cboPriceRange;
 
     @FXML
+    private CheckBox chkFresh;
+
+    @FXML
     private CheckBox chkBirthday;
 
     @FXML
     private CheckBox chkWedding;
 
     @FXML
-    private CheckBox chkAnniversary;
-
-    @FXML
-    private CheckBox chkSympathy;
+    private CheckBox chkFormal;
 
     @FXML
     private CheckBox chkInStockOnly;
@@ -96,7 +96,7 @@ public class FlowersController {
         Customer customer = SessionManager.getCurrentCustomer();
         int cartCount = cartService.getCartQuantity(customer);
 
-        btnCart.setText(cartCount > 0 ? "Cart (" + cartCount + ")" : "Cart");
+        btnCart.setText("Cart (" + cartCount + ")");
     }
 
 //    PAGINATION
@@ -147,7 +147,7 @@ public class FlowersController {
                 "100,000 - 450,000VND",
                 "Lớn hơn 450,000VND"
         );
-        cboPriceRange.setValue("All prices");
+        cboPriceRange.setValue("Tất cả giá");
 
         cboSortBy.getItems().addAll(
                 "Default",
@@ -191,7 +191,7 @@ public class FlowersController {
         }
 
         String priceRange = cboPriceRange.getValue();
-        if (priceRange != null && !priceRange.equals("All prices")) {
+        if (priceRange != null && !priceRange.equals("Tất cả giá")) {
             filtered.removeIf(product -> !matchPriceRange(product.getPrice(), priceRange));
         }
 
@@ -218,17 +218,17 @@ public class FlowersController {
     private List<String> getSelectedCategories() {
         List<String> selected = new ArrayList<>();
 
+        if (chkFresh.isSelected()) {
+            selected.add("Hoa Tươi");
+        }
         if (chkBirthday.isSelected()) {
-            selected.add("Birthday Flowers");
+            selected.add("Hoa Sinh Nhật");
         }
         if (chkWedding.isSelected()) {
-            selected.add("Wedding Flowers");
+            selected.add("Hoa Cưới");
         }
-        if (chkAnniversary.isSelected()) {
-            selected.add("Anniversary Flowers");
-        }
-        if (chkSympathy.isSelected()) {
-            selected.add("Sympathy Flowers");
+        if (chkFormal.isSelected()) {
+            selected.add("Hoa Trang Trọng");
         }
 
         return selected;
@@ -283,10 +283,10 @@ public class FlowersController {
     private VBox createProductCard(Product product) {
         VBox card = new VBox();
         card.setAlignment(Pos.CENTER);
-        card.setSpacing(10);
-        card.setPrefWidth(190);
+        card.setSpacing(5);
+        card.setPrefWidth(200);
         card.setPrefHeight(280);
-        card.setStyle("-fx-background-color: #f5dce2; -fx-padding: 12;");
+        card.setStyle("-fx-background-color: #f5dce2; -fx-padding: 10;");
 
         ImageView imageView = new ImageView(loadProductImage(product.getImage()));
         imageView.setFitWidth(150);
@@ -299,7 +299,7 @@ public class FlowersController {
         nameLabel.setMaxWidth(150);
         nameLabel.setAlignment(Pos.CENTER);
 
-        Label priceLabel = new Label("$" + formatMoney(product.getPrice()));
+        Label priceLabel = new Label(formatMoney(product.getPrice()) + " VND");
         priceLabel.setStyle("-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;");
         Label stockLabel = new Label("Stock: " + product.getQuantity());
         stockLabel.setStyle("-fx-text-fill: #b07a7a; -fx-font-size: 13px;");

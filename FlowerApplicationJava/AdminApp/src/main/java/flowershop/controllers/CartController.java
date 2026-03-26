@@ -58,7 +58,7 @@ public class CartController {
         Customer customer = SessionManager.getCurrentCustomer();
         int cartCount = cartService.getCartQuantity(customer);
 
-        btnCart.setText(cartCount > 0 ? "Cart (" + cartCount + ")" : "Cart");
+        btnCart.setText("Cart (" + cartCount + ")");
     }
 
     private void loadCart() {
@@ -113,8 +113,13 @@ public class CartController {
         productCard.getChildren().addAll(imageView, nameLabel);
 
         BigDecimal lineTotal = item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
-        Label priceLabel = new Label("$" + formatMoney(lineTotal));
+        Label priceLabel = new Label( formatMoney(lineTotal) + " VND");
+        priceLabel.setPrefWidth(180);
+        priceLabel.setMinWidth(180);
+        priceLabel.setMaxWidth(180);
+        priceLabel.setAlignment(Pos.CENTER_LEFT);
         priceLabel.setStyle("-fx-text-fill: #9b6666; -fx-font-size: 28px;");
+
 
         Button btnMinus = new Button("-");
         String minusBaseStyle = "-fx-background-color: transparent; "
@@ -303,9 +308,9 @@ public class CartController {
     }
 
     private void updateSummary(BigDecimal subtotal, BigDecimal shipping, BigDecimal total) {
-        lblSubtotal.setText("Subtotal: $" + formatMoney(subtotal));
-        lblShipping.setText("Shipping: $" + formatMoney(shipping));
-        lblTotal.setText("Total: $" + formatMoney(total));
+        lblSubtotal.setText("Subtotal: " + formatMoney(subtotal) + " VND");
+        lblShipping.setText("Shipping: " + formatMoney(shipping) + " VND");
+        lblTotal.setText("Total: " + formatMoney(total) + " VND");
     }
 
     private String formatMoney(BigDecimal amount) {

@@ -17,14 +17,14 @@
                 <Insets bottom="0.0" left="18.0" right="18.0" top="0.0" />
             </padding>
             <children>
-                <Label styleClass="brand-label" text="Flower shop" />
+                <Label style="-fx-font-weight: 700; -fx-font-size: 25px;" styleClass="brand-label" text="Flower shop" />
                 <Region HBox.hgrow="ALWAYS" />
 
                 <Button onAction="#goHome" styleClass="nav-button" text="Home" />
                 <Button onAction="#goFlowers" styleClass="nav-button" text="Flowers" />
                 <Button onAction="#goCategories" styleClass="nav-button" text="Categories" />
                 <Button onAction="#goContact" styleClass="nav-button" text="Contact" />
-                <Button fx:id="btnCart" text="Cart" onAction="#goCart" styleClass="nav-button" />
+                <Button fx:id="btnCart" onAction="#goCart" styleClass="nav-button" text="Cart" />
                 <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" styleClass="logout-button" text="Log Out" />
             </children>
         </HBox>
@@ -33,9 +33,9 @@
     <center>
         <BorderPane>
             <top>
-                <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700; -fx-background-color: #edd6d8; -fx-padding: 8 0 0 16;" text="Shopping Cart" BorderPane.alignment="TOP_LEFT">
+                <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700; -fx-background-color: #edd6d8; -fx-padding: 6 0 0 6;" text="Shopping Cart" BorderPane.alignment="TOP_LEFT">
                     <BorderPane.margin>
-                        <Insets left="6.0" top="6.0" />
+                        <Insets left="50.0" top="6.0" />
                     </BorderPane.margin>
                 </Label>
             </top>
@@ -43,7 +43,10 @@
             <bottom>
                 <HBox alignment="CENTER_LEFT" spacing="180.0" BorderPane.alignment="CENTER">
                     <children>
-                        <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 700;" text="Cart Summary:" />
+                        <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 700;" text="Cart Summary:">
+                     <HBox.margin>
+                        <Insets left="50.0" />
+                     </HBox.margin></Label>
                         <VBox spacing="10.0">
                             <children>
                                 <Label fx:id="lblSubtotal" style="-fx-text-fill: #8e5f5f; -fx-font-size: 22px;" text="Subtotal: $0" />
@@ -65,6 +68,9 @@
                             </padding>
                         </VBox>
                     </content>
+               <BorderPane.margin>
+                  <Insets left="50.0" />
+               </BorderPane.margin>
                 </ScrollPane>
             </center>
         </BorderPane>

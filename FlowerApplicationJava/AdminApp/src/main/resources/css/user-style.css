@@ -169,3 +169,22 @@
 .transparent-pane {
     -fx-background-color: transparent;
 }
+
+.category-text-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 6 0 0 0;
+    -fx-text-fill: #8e5f5f;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.category-text-button:hover {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-text-fill: #cf4f84;
+    -fx-underline: true;
+}

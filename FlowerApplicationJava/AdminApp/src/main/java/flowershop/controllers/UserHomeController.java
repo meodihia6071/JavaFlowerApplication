@@ -166,7 +166,7 @@ public class UserHomeController {
         Customer customer = SessionManager.getCurrentCustomer();
         int cartCount = cartService.getCartQuantity(customer);
 
-        btnCart.setText(cartCount > 0 ? "Cart (" + cartCount + ")" : "Cart");
+        btnCart.setText("Cart (" + cartCount + ")");
     }
 
     private void applyHoverEffectsToContainer(Parent root) {
@@ -213,11 +213,12 @@ public class UserHomeController {
         img.setFitHeight(150);
 
         Label name = new Label(product.getProductName());
-        Label price = new Label("$" + product.getPrice());
+        Label price = new Label(product.getPrice() + " VND");
 
         Button btn = new Button("Add to Cart");
         btn.setUserData(product.getProductName());
         btn.setOnAction(this::handleAddToCart);
+        btn.getStyleClass().add("primary-button");
         if (product.getQuantity() <= 0) {
             btn.setText("Out of stock");
             btn.setDisable(true);
@@ -239,10 +240,14 @@ public class UserHomeController {
         Button btn = new Button(category.getCategoryName());
         btn.setOnAction(this::handleCategoryClick);
 
+        btn.getStyleClass().clear();
+        btn.getStyleClass().add("category-text-button");
+
         card.getChildren().addAll(img, btn);
 
         return card;
     }
+
     private Labeled findTitleNode(Parent parent) {
         List<Labeled> labeledNodes = new ArrayList<>();
         collectLabeledNodes(parent, labeledNodes);
@@ -253,7 +258,7 @@ public class UserHomeController {
 
             String trimmed = text.trim();
             if (trimmed.isBlank()) continue;
-            if (trimmed.startsWith("$")) continue;
+            if (trimmed.endsWith(" VND")) continue;
             if (trimmed.equalsIgnoreCase("Add to Cart")) continue;
 
             return node;

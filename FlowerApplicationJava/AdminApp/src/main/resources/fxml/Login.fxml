@@ -15,61 +15,64 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane style="-fx-background-color: #f2f2f2;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.AuthController">
+<AnchorPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.AuthController">
 
     <children>
-        <StackPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 
-            <HBox maxWidth="1400.0" prefWidth="1100.0" style="-fx-background-color: #f8eef1;">
+            <HBox alignment="CENTER" style="-fx-background-color: #f8eef1;">
 
                 <children>
 
-                    <VBox alignment="CENTER" prefWidth="500.0" spacing="30.0" style="-fx-background-color: #f8eef1;">
+                    <VBox alignment="CENTER" spacing="34.0" style="-fx-background-color: #f8eef1;" translateX="100.0">
                         <children>
 
-                            <VBox alignment="CENTER" spacing="10.0">
+                            <VBox alignment="CENTER" maxWidth="420.0" prefWidth="420.0" spacing="10.0">
                                 <children>
                                     <Label style="-fx-text-fill: #cf4f84; -fx-font-size: 32px; -fx-font-weight: 800;" text="Welcome to Flower Shop!" />
                                     <Label style="-fx-text-fill: #f07ea6; -fx-font-size: 18px; -fx-font-weight: 700;" text="Fresh Flowers For Every Moment" />
                                 </children>
                             </VBox>
 
-                            <GridPane hgap="16.0" maxWidth="360.0" vgap="18.0">
+                            <GridPane hgap="18.0" maxWidth="420.0" prefWidth="420.0" vgap="20.0">
                                 <columnConstraints>
-                                    <ColumnConstraints minWidth="90.0" prefWidth="100.0" />
-                                    <ColumnConstraints hgrow="ALWAYS" minWidth="180.0" />
+                                    <ColumnConstraints minWidth="110.0" prefWidth="110.0" />
+                                    <ColumnConstraints minWidth="260.0" prefWidth="260.0" />
                                 </columnConstraints>
 
-                                <children>
-                                    <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;" text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                    <TextField fx:id="txtLoginUsername" prefHeight="40.0" style="-fx-background-color: #f6d6e0; -fx-background-radius: 0; -fx-border-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                <rowConstraints>
+                                    <RowConstraints />
+                                    <RowConstraints />
+                                </rowConstraints>
 
-                                    <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px;" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                    <PasswordField fx:id="txtLoginPassword" prefHeight="40.0" style="-fx-background-color: #f6d6e0; -fx-background-radius: 0; -fx-border-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 18px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <children>
+                                    <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+
+                                    <TextField fx:id="txtLoginUsername" prefHeight="40.0" prefWidth="260.0" style="-fx-background-color: #f6d6e0; -fx-background-radius: 0; -fx-border-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 17px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                    <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+
+                                    <PasswordField fx:id="txtLoginPassword" prefHeight="40.0" prefWidth="260.0" style="-fx-background-color: #f6d6e0; -fx-background-radius: 0; -fx-border-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 17px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 </children>
-                        <rowConstraints>
-                           <RowConstraints />
-                           <RowConstraints />
-                        </rowConstraints>
                             </GridPane>
 
-                            <VBox alignment="CENTER" spacing="18.0">
+                            <VBox alignment="CENTER" maxWidth="420.0" prefWidth="420.0" spacing="16.0">
                                 <children>
-                                    <Button onAction="#handleLogin" prefHeight="42.0" prefWidth="120.0" style="-fx-font-size: 22px;" styleClass="primary-button" text="Login" />
+                                    <Button onAction="#handleLogin" prefHeight="46.0" prefWidth="130.0" style="-fx-font-size: 20px;" styleClass="primary-button" text="Login" />
 
-                                    <Label onMouseClicked="#goToSignup" style="-fx-text-fill: #8e5f5f;  -fx-font-size: 20px; -fx-underline: true; -fx-cursor: hand;" text="Sign up" />
+                                    <Label onMouseClicked="#goToSignup" style="-fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true; -fx-cursor: hand;" text="Sign up" />
                                 </children>
                             </VBox>
 
                         </children>
-                        <padding>
-                            <Insets bottom="40.0" left="35.0" right="35.0" top="40.0" />
-                        </padding>
+                  <StackPane.margin>
+                     <Insets />
+                  </StackPane.margin>
                     </VBox>
 
                     <StackPane HBox.hgrow="ALWAYS">
                         <children>
-                            <ImageView fitHeight="700.0" fitWidth="570.0" preserveRatio="false" StackPane.alignment="CENTER">
+                            <ImageView fitHeight="1000.0" fitWidth="820.0" preserveRatio="false" StackPane.alignment="CENTER_RIGHT">
                                 <image>
                                     <Image url="@../images/login-bg.jpg" />
                                 </image>

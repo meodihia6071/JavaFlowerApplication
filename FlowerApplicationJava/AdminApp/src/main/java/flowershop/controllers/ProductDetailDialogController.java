@@ -153,7 +153,7 @@ public class ProductDetailDialogController {
         if (product == null) return;
 
         lblName.setText(product.getProductName());
-        lblPrice.setText("$" + formatMoney(product.getPrice()));
+        lblPrice.setText(formatMoney(product.getPrice()) + " VND");
         lblQuantity.setText(String.valueOf(quantity));
         imgProduct.setImage(loadProductImage(product.getImage()));
     }

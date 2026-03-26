@@ -238,7 +238,7 @@ public class OrderController {
             nameLabel.setWrapText(true);
             nameLabel.setStyle("-fx-text-fill: #8e5f5f; -fx-font-size: 16px;");
 
-            Label priceLabel = new Label("$" + formatMoney(lineTotal));
+            Label priceLabel = new Label(formatMoney(lineTotal) + " VND");
             priceLabel.setStyle("-fx-text-fill: #8e5f5f; -fx-font-size: 16px;");
 
             HBox row = new HBox(nameLabel, priceLabel);
@@ -279,11 +279,11 @@ public class OrderController {
     private void refreshPointsArea() {
         int currentPoints = currentCustomer == null ? 0 : currentCustomer.getPoints();
 
-        lblCurrentPoints.setText("Current points: " + currentPoints);
+        lblCurrentPoints.setText("Current points: " + currentPoints + " (max: " + getMaxUsablePoints() + ")");
         lblUsedPoints.setText(String.valueOf(usedPoints));
 
         btnMinusPoint.setDisable(usedPoints <= 0);
-        btnPlusPoint.setDisable(currentCustomer == null || usedPoints >= currentPoints);
+        btnPlusPoint.setDisable(currentCustomer == null || usedPoints >= getMaxUsablePoints());
 
         updatePriceSummary();
     }
@@ -292,7 +292,9 @@ public class OrderController {
     private void handleIncreasePoint() {
         if (currentCustomer == null) return;
 
-        if (usedPoints < currentCustomer.getPoints()) {
+        int maxUsable = getMaxUsablePoints();
+
+        if (usedPoints < maxUsable) {
             usedPoints++;
             refreshPointsArea();
         }
@@ -429,7 +431,7 @@ public class OrderController {
         }
 
         int count = cartService.getCartQuantity(currentCustomer);
-        btnCart.setText(count > 0 ? "Cart (" + count + ")" : "Cart");
+        btnCart.setText("Cart (" + count + ")");
     }
 
     private void playEntrance() {
@@ -483,6 +485,11 @@ public class OrderController {
             scale.setToY(1);
             scale.play();
         });
+    }
+
+    private int getMaxUsablePoints() {
+        int currentPoints = currentCustomer != null ? currentCustomer.getPoints() : 0;
+        return Math.min(20, currentPoints);
     }
 
     private String formatMoney(BigDecimal amount) {
