@@ -18,8 +18,8 @@ import java.util.List;
 public class CartService {
 
     private static final BigDecimal SHIPPING_FEE = BigDecimal.valueOf(5);
-    private static final BigDecimal POINT_DISCOUNT_PERCENT = BigDecimal.valueOf(0.10);
-    private static final BigDecimal POINT_EARN_THRESHOLD = BigDecimal.valueOf(200);
+    private static final BigDecimal POINT_EARN_THRESHOLD = BigDecimal.valueOf(10000);
+    private static final BigDecimal POINT_DISCOUNT_VALUE = BigDecimal.valueOf(1000);
 
     private final OrderDAO orderDAO = new OrderDAO();
     private final OrderDetailDAO orderDetailDAO = new OrderDetailDAO();
@@ -80,6 +80,9 @@ public class CartService {
         updateCartTotal(cartOrder);
     }
 
+    public int getQuantityByProduct(Customer customer, String productName) {
+        return 0; // tạm
+    }
     public List<OrderDetail> getCartItems(Customer customer) {
         if (customer == null) return new ArrayList<>();
 
@@ -296,18 +299,17 @@ public class CartService {
         if (baseTotal == null) {
             return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
         }
-
         if (pointsUsed <= 0) {
             return baseTotal.setScale(2, RoundingMode.HALF_UP);
         }
 
-        BigDecimal discountPerPoint = baseTotal.multiply(BigDecimal.valueOf(0.10));
-        BigDecimal totalDiscount = discountPerPoint.multiply(BigDecimal.valueOf(pointsUsed));
-        BigDecimal result = baseTotal.subtract(totalDiscount);
+        BigDecimal totalDiscount = POINT_DISCOUNT_VALUE.multiply(BigDecimal.valueOf(pointsUsed));
 
-        if (result.compareTo(BigDecimal.ZERO) < 0) {
-            result = BigDecimal.ZERO;
+        if (totalDiscount.compareTo(baseTotal) > 0) {
+            totalDiscount = baseTotal;
         }
+
+        BigDecimal result = baseTotal.subtract(totalDiscount);
 
         return result.setScale(2, RoundingMode.HALF_UP);
     }

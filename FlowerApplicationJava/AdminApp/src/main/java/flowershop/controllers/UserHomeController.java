@@ -1,23 +1,30 @@
 package flowershop.controllers;
 
 import flowershop.dao.ProductDAO;
+import javafx.scene.control.Label;
+import flowershop.models.Category;
 import flowershop.models.Customer;
 import flowershop.models.Product;
 import flowershop.services.CartService;
 import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
+import flowershop.utils.HibernateUtil;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Labeled;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import org.hibernate.Session;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +46,8 @@ public class UserHomeController {
     @FXML
     public void initialize() {
         if (categoryPane != null) {
+            loadRandomProducts();
+            loadRandomCategories();
             categoryPane.widthProperty().addListener((obs, oldVal, newVal) -> {
                 double width = newVal.doubleValue();
                 if (width > 1100) {
@@ -75,7 +84,18 @@ public class UserHomeController {
             refreshCartButtonText();
         });
     }
+    private Image loadImage(String imageName) {
+        try {
+            if (imageName != null && !imageName.isBlank()) {
+                var stream = getClass().getResourceAsStream("/images/" + imageName);
+                if (stream != null) {
+                    return new Image(stream);
+                }
+            }
+        } catch (Exception ignored) {}
 
+        return new Image(getClass().getResourceAsStream("/images/flower-rose.jpg"));
+    }
     private void wireFeaturedProductCards() {
         if (productPane == null) return;
 
@@ -91,6 +111,28 @@ public class UserHomeController {
 
                     openProductDetail(productName, card);
                 });
+            }
+        }
+    }
+    private void loadRandomProducts() {
+        List<Product> products = productDAO.findRandomInStock(5);
+        productPane.getChildren().clear();
+
+        for (Product p : products) {
+            productPane.getChildren().add(createProductCard(p));
+        }
+    }
+    private void loadRandomCategories() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            List<Category> categories = session.createQuery(
+                    "FROM Category ORDER BY rand()",
+                    Category.class
+            ).setMaxResults(5).list();
+
+            categoryPane.getChildren().clear();
+
+            for (Category c : categories) {
+                categoryPane.getChildren().add(createCategoryCard(c));
             }
         }
     }
@@ -157,7 +199,50 @@ public class UserHomeController {
         String style = vbox.getStyle();
         return style != null && style.contains("#f5dce2");
     }
+    private VBox createProductCard(Product product) {
 
+        VBox card = new VBox();
+        card.setAlignment(Pos.CENTER);
+        card.setSpacing(10);
+        card.setPrefWidth(185);
+        card.setPrefHeight(280);
+        card.setStyle("-fx-background-color: #f5dce2; -fx-padding: 12;");
+
+        ImageView img = new ImageView(loadImage(product.getImage()));
+        img.setFitWidth(150);
+        img.setFitHeight(150);
+
+        Label name = new Label(product.getProductName());
+        Label price = new Label("$" + product.getPrice());
+
+        Button btn = new Button("Add to Cart");
+        btn.setUserData(product.getProductName());
+        btn.setOnAction(this::handleAddToCart);
+        if (product.getQuantity() <= 0) {
+            btn.setText("Out of stock");
+            btn.setDisable(true);
+        }
+        card.getChildren().addAll(img, name, price, btn);
+
+        return card;
+    }
+    private VBox createCategoryCard(Category category) {
+        VBox card = new VBox();
+        card.setAlignment(Pos.CENTER);
+        card.setSpacing(10);
+        card.setStyle("-fx-background-color: #f5dce2; -fx-padding: 12;");
+
+        ImageView img = new ImageView(new Image(getClass().getResourceAsStream("/images/category.jpg")));
+        img.setFitWidth(150);
+        img.setFitHeight(150);
+
+        Button btn = new Button(category.getCategoryName());
+        btn.setOnAction(this::handleCategoryClick);
+
+        card.getChildren().addAll(img, btn);
+
+        return card;
+    }
     private Labeled findTitleNode(Parent parent) {
         List<Labeled> labeledNodes = new ArrayList<>();
         collectLabeledNodes(parent, labeledNodes);
@@ -188,6 +273,7 @@ public class UserHomeController {
             }
         }
     }
+
 
     private void applyHoverEffect(VBox card, Labeled titleNode) {
         ScaleTransition scaleUp = new ScaleTransition(Duration.millis(150), card);

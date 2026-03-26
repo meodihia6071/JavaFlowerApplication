@@ -55,6 +55,15 @@ public class FlowersController {
     private CheckBox chkInStockOnly;
 
     @FXML
+    private Label lblPage;
+
+    @FXML
+    private Button btnNext;
+
+    @FXML
+    private Button btnPrev;
+
+    @FXML
     private ComboBox<String> cboSortBy;
 
     @FXML
@@ -66,6 +75,9 @@ public class FlowersController {
     private final ProductDAO productDAO = new ProductDAO();
     private final CartService cartService = new CartService();
     private final DecimalFormat moneyFormat = new DecimalFormat("0.##");
+    private int currentPage = 1;
+    private int itemsPerPage = 10;
+    private List<Product> currentList = new ArrayList<>();
 
     private List<Product> randomizedProducts = new ArrayList<>();
 
@@ -87,13 +99,53 @@ public class FlowersController {
         btnCart.setText(cartCount > 0 ? "Cart (" + cartCount + ")" : "Cart");
     }
 
+//    PAGINATION
+    private void updatePageLabel() {
+        if (lblPage == null) return;
+
+        int totalPages = (currentList == null || currentList.isEmpty())
+                ? 1
+                : (int) Math.ceil((double) currentList.size() / itemsPerPage);
+
+        lblPage.setText("Page " + currentPage + " / " + totalPages);
+
+        if (btnNext != null)
+            btnNext.setDisable(currentPage >= totalPages || currentList.isEmpty());
+
+        if (btnPrev != null)
+            btnPrev.setDisable(currentPage <= 1 || currentList.isEmpty());
+    }
+    @FXML
+    private void handleNextPage() {
+        if (currentList == null || currentList.isEmpty()) return;
+
+        int totalPages = (int) Math.ceil((double) currentList.size() / itemsPerPage);
+
+        if (currentPage < totalPages) {
+            currentPage++;
+            displayProducts(currentList);
+            updatePageLabel();
+        }
+    }
+
+    @FXML
+    private void handlePrevPage() {
+        if (currentList == null || currentList.isEmpty()) return;
+
+        if (currentPage > 1) {
+            currentPage--;
+            displayProducts(currentList);
+            updatePageLabel();
+        }
+    }
+
     private void setupFilterControls() {
         cboPriceRange.getItems().addAll(
-                "All prices",
-                "Under $25",
-                "$25 - $35",
-                "$36 - $45",
-                "Above $45"
+                "Tất cả giá",
+                "Dưới 25,000VND",
+                "25,000 - 100,000VND",
+                "100,000 - 450,000VND",
+                "Lớn hơn 450,000VND"
         );
         cboPriceRange.setValue("All prices");
 
@@ -120,6 +172,7 @@ public class FlowersController {
 
     private void applyFilters() {
         List<Product> filtered = new ArrayList<>(randomizedProducts);
+        currentPage = 1;
 
         String keyword = txtSearch.getText() == null ? "" : txtSearch.getText().trim().toLowerCase(Locale.ROOT);
         if (!keyword.isBlank()) {
@@ -185,31 +238,46 @@ public class FlowersController {
         if (price == null) return false;
 
         return switch (priceRange) {
-            case "Under $25" -> price.compareTo(new BigDecimal("25")) < 0;
-            case "$25 - $35" ->
-                    price.compareTo(new BigDecimal("25")) >= 0 &&
-                            price.compareTo(new BigDecimal("35")) <= 0;
-            case "$36 - $45" ->
-                    price.compareTo(new BigDecimal("36")) >= 0 &&
-                            price.compareTo(new BigDecimal("45")) <= 0;
-            case "Above $45" -> price.compareTo(new BigDecimal("45")) > 0;
+            case "Dưới 25,000VND" -> price.compareTo(new BigDecimal("25000")) < 0;
+            case "25,000 - 100,000VND" ->
+                    price.compareTo(new BigDecimal("25000")) >= 0 &&
+                            price.compareTo(new BigDecimal("100000")) <= 0;
+            case "100,000 - 450,000VND" ->
+                    price.compareTo(new BigDecimal("100000")) >= 0 &&
+                            price.compareTo(new BigDecimal("450000")) <= 0;
+            case "Lớn hơn 450,000VND" -> price.compareTo(new BigDecimal("450000")) > 0;
             default -> true;
         };
     }
 
     private void displayProducts(List<Product> products) {
-        productTilePane.getChildren().clear();
+        int totalPages = (int) Math.ceil((double) products.size() / itemsPerPage);
 
-        if (products.isEmpty()) {
+        if (currentPage > totalPages) {
+            currentPage = totalPages == 0 ? 1 : totalPages;
+        }
+        if (products == null || products.isEmpty()) {
+            productTilePane.getChildren().clear();
+
             Label emptyLabel = new Label("No flowers found.");
             emptyLabel.setStyle("-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700;");
             productTilePane.getChildren().add(emptyLabel);
+
+            currentList = new ArrayList<>();
+            currentPage = 1;
+            updatePageLabel();
             return;
         }
+        productTilePane.getChildren().clear();
+        currentList = products;
 
-        for (Product product : products) {
-            productTilePane.getChildren().add(createProductCard(product));
+        int start = (currentPage - 1) * itemsPerPage;
+        int end = Math.min(start + itemsPerPage, products.size());
+
+        for (int i = start; i < end; i++) {
+            productTilePane.getChildren().add(createProductCard(products.get(i)));
         }
+        updatePageLabel();
     }
 
     private VBox createProductCard(Product product) {
@@ -233,12 +301,17 @@ public class FlowersController {
 
         Label priceLabel = new Label("$" + formatMoney(product.getPrice()));
         priceLabel.setStyle("-fx-text-fill: #a56767; -fx-font-size: 16px; -fx-font-weight: bold;");
+        Label stockLabel = new Label("Stock: " + product.getQuantity());
+        stockLabel.setStyle("-fx-text-fill: #b07a7a; -fx-font-size: 13px;");
 
         Button addButton = new Button("Add to Cart");
         addButton.setUserData(product.getProductName());
         addButton.setOnAction(this::handleAddToCart);
-        addButton.setStyle(" -fx-text-fill: #b36b6b; -fx-font-size: 15px;");
-
+        addButton.getStyleClass().add("primary-button");
+        if (product.getQuantity() <= 0) {
+            addButton.setText("Out of stock");
+            addButton.setDisable(true);
+        }
         applyHoverEffect(card, nameLabel);
 
         card.setOnMouseClicked(event -> {
@@ -250,7 +323,7 @@ public class FlowersController {
             refreshCartButtonText();
         });
 
-        card.getChildren().addAll(imageView, nameLabel, priceLabel, addButton);
+        card.getChildren().addAll(imageView, nameLabel, priceLabel, stockLabel, addButton);
         return card;
     }
 
@@ -313,8 +386,23 @@ public class FlowersController {
             if (productName.isBlank()) {
                 throw new IllegalArgumentException("Không xác định được sản phẩm để thêm vào giỏ.");
             }
+            Product product = productDAO.findByProductName(productName);
+
+            if (product == null) {
+                throw new IllegalArgumentException("Sản phẩm không tồn tại.");
+            }
+            int stock = product.getQuantity();
+
+            int currentInCart = cartService.getQuantityByProduct(customer, productName);
+
+            if (currentInCart + 1 > stock) {
+                showInfo("Thông báo", "Đã đạt giới hạn tồn kho!");
+                return;
+            }
 
             cartService.addToCart(customer, productName);
+            product.setQuantity(stock - 1);
+            applyFilters();
             refreshCartButtonText();
             event.consume();
         } catch (Exception e) {

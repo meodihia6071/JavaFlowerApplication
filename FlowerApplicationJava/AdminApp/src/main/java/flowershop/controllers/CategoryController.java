@@ -1,6 +1,8 @@
 package flowershop.controllers;
 
+import flowershop.dao.CategoryDAO;
 import flowershop.dao.ProductDAO;
+import flowershop.models.Category;
 import flowershop.models.Customer;
 import flowershop.models.Product;
 import flowershop.services.CartService;
@@ -17,6 +19,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -43,18 +46,76 @@ public class CategoryController {
     @FXML
     private Button btnCart;
 
+    @FXML
+    private javafx.scene.layout.HBox birthdayContainer;
+
+    @FXML
+    private javafx.scene.layout.HBox weddingContainer;
+
+    @FXML
+    private javafx.scene.layout.HBox anniversaryContainer;
+
+    @FXML
+    private javafx.scene.layout.HBox sympathyContainer;
+
     private final CartService cartService = new CartService();
     private final ProductDAO productDAO = new ProductDAO();
 
     @FXML
     public void initialize() {
         Platform.runLater(() -> {
-            wireAddToCartButtons();
-            wireProductCardClicks();
-            applyHoverEffectsToContent();
+            loadAllCategories();
+            scrollToSelectedCategory();
+            refreshCartButtonText();
             scrollToSelectedCategory();
             refreshCartButtonText();
         });
+    }
+    private javafx.scene.image.Image loadImage(String imageName) {
+        try {
+            var stream = getClass().getResourceAsStream("/images/" + imageName);
+            if (stream != null) return new javafx.scene.image.Image(stream);
+        } catch (Exception ignored) {}
+
+        return new javafx.scene.image.Image(getClass().getResourceAsStream("/images/flower-rose.jpg"));
+    }
+    private VBox createProductCard(Product product) {
+        VBox card = new VBox();
+        card.setAlignment(javafx.geometry.Pos.CENTER);
+        card.setSpacing(6);
+        card.setPrefSize(185, 280);
+        card.setStyle("-fx-background-color: #f5dce2; -fx-padding: 8;");
+
+        javafx.scene.image.ImageView img = new javafx.scene.image.ImageView(loadImage(product.getImage()));
+        img.setFitWidth(150);
+        img.setFitHeight(150);
+
+        javafx.scene.control.Label name = new javafx.scene.control.Label(product.getProductName());
+        name.setStyle("-fx-font-size: 16px; -fx-text-fill: #9b6666;");
+
+        javafx.scene.control.Label price = new javafx.scene.control.Label("$" + product.getPrice());
+        price.setStyle("-fx-font-size: 16px; -fx-text-fill: #9b6666;");
+
+        Button btn = new Button("Add to Cart");
+        btn.setStyle("-fx-text-fill: #b36b6b; -fx-font-size: 15px;");
+        btn.setUserData(product.getProductName());
+
+        if (product.getQuantity() <= 0) {
+            btn.setText("Out of stock");
+            btn.setDisable(true);
+        }
+
+        btn.setOnAction(e -> handleAddToCart(e));
+
+        card.getChildren().addAll(img, name, price, btn);
+
+        card.setOnMouseClicked(e -> {
+            if (!(e.getTarget() instanceof Button)) {
+                openProductDetail(product.getProductName(), card);
+            }
+        });
+
+        return card;
     }
 
     private void refreshCartButtonText() {
@@ -64,6 +125,25 @@ public class CategoryController {
         int cartCount = cartService.getCartQuantity(customer);
 
         btnCart.setText(cartCount > 0 ? "Cart (" + cartCount + ")" : "Cart");
+    }
+
+    private void loadCategory(int categoryId, HBox container) {
+        List<Product> products = productDAO.findTop5ByCategoryId(categoryId);
+
+        System.out.println("Found: " + products.size());
+
+        container.getChildren().clear();
+
+        for (Product p : products) {
+            container.getChildren().add(createProductCard(p));
+        }
+    }
+
+    private void loadAllCategories() {
+        loadCategory(1, birthdayContainer);
+        loadCategory(2, weddingContainer);
+        loadCategory(3, anniversaryContainer);
+        loadCategory(4, sympathyContainer);
     }
 
     private void wireAddToCartButtons() {

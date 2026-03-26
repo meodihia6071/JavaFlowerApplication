@@ -89,7 +89,7 @@
                                                 <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 20px; -fx-font-weight: 700;" text="Payment Method" />
 
                                                 <CheckBox fx:id="chkCreditCard" onAction="#handlePaymentSelection" text="Credit Card" />
-                                                <CheckBox fx:id="chkPayPal" onAction="#handlePaymentSelection" text="PayPal" />
+                                                <CheckBox fx:id="chkPayPal" onAction="#handlePaymentSelection" text="VNPay" />
                                                 <CheckBox fx:id="chkCashOnDelivery" onAction="#handlePaymentSelection" text="Cash on Delivery" />
                                             </children>
                                         </VBox>
@@ -112,7 +112,7 @@
                                                     </children>
                                                 </HBox>
 
-                                                <Label fx:id="lblPointRule" style="-fx-text-fill: #d06c95; -fx-font-size: 13px; -fx-font-style: italic;" text="1 point = voucher giảm 10%" />
+                                                <Label fx:id="lblPointRule" style="-fx-text-fill: #d06c95; -fx-font-size: 13px; -fx-font-style: italic;" text="1 point = voucher giảm 1,000VND" />
                                             </children>
                                         </VBox>
                                     </children>

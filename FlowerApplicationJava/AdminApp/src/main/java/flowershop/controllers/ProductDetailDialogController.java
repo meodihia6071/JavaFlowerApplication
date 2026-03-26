@@ -37,7 +37,10 @@ public class ProductDetailDialogController {
 
     @FXML
     private StackPane overlayRoot;
+    @FXML
+    private Label lblStock;
 
+    private int stock = 0;
     @FXML
     private BorderPane dialogCard;
 
@@ -127,7 +130,22 @@ public class ProductDetailDialogController {
     }
 
     public void setProduct(Product product) {
+        this.stock = product.getQuantity();
+        lblStock.setText("Stock: " + stock);
         this.product = product;
+        if (stock <= 0) {
+            btnAddToCart.setText("Out of stock");
+            btnAddToCart.setDisable(true);
+
+            btnIncrease.setDisable(true);
+            btnDecrease.setDisable(true);
+        } else {
+            btnAddToCart.setText("Add to Cart");
+            btnAddToCart.setDisable(false);
+
+            btnIncrease.setDisable(false);
+            btnDecrease.setDisable(false);
+        }
         updateUI();
     }
 
@@ -269,17 +287,19 @@ public class ProductDetailDialogController {
 
     @FXML
     private void handleIncrease() {
-        quantity++;
-        animateQuantityChange();
-        lblQuantity.setText(String.valueOf(quantity));
+        int current = Integer.parseInt(lblQuantity.getText());
+
+        if (current < stock) {
+            lblQuantity.setText(String.valueOf(current + 1));
+        }
     }
 
     @FXML
     private void handleDecrease() {
-        if (quantity > 1) {
-            quantity--;
-            animateQuantityChange();
-            lblQuantity.setText(String.valueOf(quantity));
+        int current = Integer.parseInt(lblQuantity.getText());
+
+        if (current > 1) {
+            lblQuantity.setText(String.valueOf(current - 1));
         }
     }
 
@@ -297,8 +317,13 @@ public class ProductDetailDialogController {
     @FXML
     private void handleAddToCart() {
         Customer customer = SessionManager.getCurrentCustomer();
+        int quantity = Integer.parseInt(lblQuantity.getText());
+
 
         try {
+            if (quantity > stock) {
+                return;
+            }
             if (product == null) {
                 throw new IllegalArgumentException("Không xác định được sản phẩm.");
             }

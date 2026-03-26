@@ -31,7 +31,9 @@
                         <VBox alignment="CENTER" prefWidth="360.0" spacing="18.0">
                             <children>
                                 <ImageView fx:id="imgProduct" fitHeight="300.0" fitWidth="300.0" preserveRatio="false" />
-
+                                <Label fx:id="lblStock"
+                                       style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;"
+                                       text="Stock: 0" />
                                 <Label fx:id="lblPrice" style="-fx-text-fill: #cf4f84; -fx-font-size: 34px; -fx-font-weight: 800;" text="\$0" />
                             </children>
                         </VBox>

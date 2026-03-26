@@ -1,6 +1,7 @@
 package flowershop.controllers;
 
 import flowershop.dao.OrderDAO;
+import flowershop.dao.CustomerDAO;
 import flowershop.models.Customer;
 import flowershop.models.OrderDetail;
 import flowershop.services.CartService;
@@ -97,6 +98,8 @@ public class OrderController {
     @FXML
     private Label lblCheckoutTitle;
 
+    private boolean isAutoFilling = false;
+
     private final CartService cartService = new CartService();
     private final DecimalFormat moneyFormat = new DecimalFormat("0.##");
 
@@ -117,6 +120,13 @@ public class OrderController {
         addHoverEffect(btnPlaceOrder);
         addHoverEffect(btnMinusPoint);
         addHoverEffect(btnPlusPoint);
+        txtEmail.textProperty().addListener((obs, oldVal, newVal) -> {
+            autoFillCustomer();
+        });
+
+        txtPhone.textProperty().addListener((obs, oldVal, newVal) -> {
+            autoFillCustomer();
+        });
     }
 
     private void handleVNPayPayment(long amount, int orderId) {
@@ -130,6 +140,33 @@ public class OrderController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void autoFillCustomer() {
+        if (isAutoFilling) return;
+
+        String email = txtEmail.getText().trim();
+        String phone = txtPhone.getText().trim();
+
+        boolean validEmail = email.contains("@") && email.contains(".");
+        boolean validPhone = phone.matches("\\d{10}");
+
+        CustomerDAO dao = new CustomerDAO();
+        Customer found = null;
+
+        if (validEmail) {
+            found = dao.findByEmail(email);
+        } else if (validPhone) {
+            found = dao.findByPhone(phone);
+        }
+
+        if (found != null && currentCustomer != null &&
+                found.getCustomerId() != currentCustomer.getCustomerId()) {
+
+            showInfo("Lỗi", "Email hoặc SĐT đã được sử dụng!");
+            return;
+        }
+
     }
 
     private void setupPhoneValidation() {
@@ -228,10 +265,10 @@ public class OrderController {
     }
 
     private void setMoneyLabels(BigDecimal subtotal, BigDecimal shipping, BigDecimal discount, BigDecimal total) {
-        lblSubtotal.setText("$" + formatMoney(subtotal));
-        lblShipping.setText("$" + formatMoney(shipping));
-        lblDiscount.setText("-$" + formatMoney(discount));
-        lblTotal.setText("$" + formatMoney(total));
+        lblSubtotal.setText(formatMoney(subtotal)+ "VND");
+        lblShipping.setText(formatMoney(shipping)+ "VND");
+        lblDiscount.setText("-" +formatMoney(discount)+ "VND");
+        lblTotal.setText(formatMoney(total)+ "VND");
     }
 
     private void refreshPointsArea() {
@@ -310,7 +347,25 @@ public class OrderController {
             showInfo("Chưa chọn thanh toán", "Vui lòng chọn 1 phương thức thanh toán.");
             return;
         }
+        CustomerDAO dao = new CustomerDAO();
 
+        Customer existingEmail = dao.findByEmail(email);
+        if (existingEmail != null && existingEmail.getCustomerId() != currentCustomer.getCustomerId()) {
+            showInfo("Lỗi", "Email đã tồn tại!");
+            return;
+        }
+
+        Customer existingPhone = dao.findByPhone(phone);
+        if (existingPhone != null && existingPhone.getCustomerId() != currentCustomer.getCustomerId()) {
+            showInfo("Lỗi", "Số điện thoại đã tồn tại!");
+            return;
+        }
+
+        currentCustomer.setCustomerName(fullName);
+        currentCustomer.setEmail(email);
+        currentCustomer.setPhone(phone);
+
+        dao.update(currentCustomer);
         try {
             var order = cartService.placeOrder(
                     currentCustomer,
@@ -322,7 +377,7 @@ public class OrderController {
                     usedPoints
             );
 
-            if (paymentMethod.equals("VNPAY")) {
+            if (paymentMethod.equals("VNPay")) {
                 handleVNPayPayment(order.getTotal().longValue(), order.getOrderId());
                 showInfo("Đang xử lý", "Đang chờ xác nhận thanh toán...");
 
@@ -343,7 +398,7 @@ public class OrderController {
                     }).start();
                 }
             else {
-                showInfo("Cancel", "Đã hủy thanh toán !");
+                showInfo("Thành công", "Thanh toán thành công! ");
             }
 
             SceneManager.switchScene("/fxml/UserHome.fxml", "User Home");
@@ -355,8 +410,8 @@ public class OrderController {
 
     private String getSelectedPaymentMethod() {
         if (chkCreditCard.isSelected()) return "Credit Card";
-        if (chkPayPal.isSelected()) return "VNPAY";
-        if (chkCashOnDelivery.isSelected()) return "Cash on Delivery";
+        if (chkPayPal.isSelected()) return "VNPay";
+        if (chkCashOnDelivery.isSelected()) return "Thanh toán khi nhận hàng";
         return null;
     }
 

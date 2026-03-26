@@ -12,7 +12,7 @@ public class PaymentService {
 
         return "https://img.vietqr.io/image/"
                 + bank + "-" + account + "-compact2.png"
-                + "?amount=" + amount*25000
+                + "?amount=" + amount
                 + "&addInfo=ThanhToanDonHang" + orderId;
     }
 }

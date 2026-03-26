@@ -42,33 +42,70 @@
     </top>
 
     <center>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background: #f8eef1; -fx-background-color: #f8eef1;" vbarPolicy="AS_NEEDED">
-            <content>
-                <VBox alignment="TOP_CENTER" spacing="20.0" style="-fx-background-color: #f8eef1;">
-                    <padding>
-                        <Insets bottom="18.0" left="30.0" right="18.0" top="18.0" />
-                    </padding>
+        <VBox spacing="10"
+              style="-fx-background-color: #f8eef1;"
+              prefHeight="Infinity">
 
-                    <children>
-                        <HBox maxWidth="1280.0" prefWidth="1280.0" spacing="30.0">
-                            <children>
+            <!-- SEARCH + FILTER (scroll) -->
+            <ScrollPane fitToWidth="true"
+                        vbarPolicy="AS_NEEDED"
+                        style="-fx-background: #f8eef1; -fx-background-color: #f8eef1;"
+                        VBox.vgrow="ALWAYS">
 
-                                <VBox alignment="TOP_CENTER" spacing="18.0" HBox.hgrow="ALWAYS">
-                                    <children>
-                                        <TextField fx:id="txtSearch" maxWidth="980.0" prefHeight="42.0" promptText="Search flowers ..." style="-fx-background-color: #ffffff; -fx-background-radius: 18; -fx-prompt-text-fill: #d59b9b; -fx-font-size: 18px;" />
+                <content>
+                    <VBox alignment="TOP_CENTER" spacing="20">
+                        <padding>
+                            <Insets bottom="18" left="30" right="18" top="18"/>
+                        </padding>
 
-                                        <TilePane fx:id="productTilePane" alignment="CENTER" hgap="30.0" prefColumns="4" prefTileHeight="280.0" prefTileWidth="190.0" vgap="28.0" />
-                                    </children>
-                                </VBox>
+                        <HBox maxWidth="1280" spacing="30">
+                            <VBox alignment="TOP_CENTER" spacing="18" HBox.hgrow="ALWAYS">
 
-                            </children>
+                                <TextField fx:id="txtSearch"
+                                           maxWidth="980"
+                                           prefHeight="42"
+                                           promptText="Search flowers ..."
+                                           style="-fx-background-color: #ffffff; -fx-background-radius: 18; -fx-font-size: 18px;" />
+
+                            </VBox>
                         </HBox>
-                    </children>
-                </VBox>
-            </content>
-        </ScrollPane>
-    </center>
 
+                        <!-- PRODUCT -->
+                        <TilePane fx:id="productTilePane"
+                                  alignment="CENTER"
+                                  hgap="30"
+                                  vgap="28"
+                                  prefColumns="4"
+                                  prefTileHeight="280"
+                                  prefTileWidth="190"/>
+
+                    </VBox>
+                </content>
+            </ScrollPane>
+
+            <!-- PAGINATION LUÔN Ở DƯỚI -->
+            <HBox alignment="CENTER"
+                  spacing="10"
+                  styleClass="pagination-box">
+
+                <Button fx:id="btnPrev"
+                        text="Prev"
+                        onAction="#handlePrevPage"
+                        styleClass="pagination-btn"/>
+
+                <Label fx:id="lblPage"
+                       text="Page 1"
+                       styleClass="pagination-label"/>
+
+                <Button fx:id="btnNext"
+                        text="Next"
+                        onAction="#handleNextPage"
+                        styleClass="pagination-btn"/>
+
+            </HBox>
+
+        </VBox>
+    </center>
     <bottom>
         <HBox alignment="CENTER" prefHeight="36.0" style="-fx-background-color: #f7c8d7;">
             <children>
@@ -77,8 +114,7 @@
         </HBox>
     </bottom>
    <left>
-
-                                <VBox prefWidth="230.0" spacing="40.0" style="-fx-background-color: #f3dfe3; -fx-padding: 14;" BorderPane.alignment="CENTER">
+       <VBox prefWidth="230.0" spacing="40.0" style="-fx-background-color: #f3dfe3; -fx-padding: 14;" BorderPane.alignment="CENTER">
                   <children>
                       <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 24px; -fx-font-weight: 700;" text="Flowers" />
 
@@ -113,7 +149,7 @@
                           </children>
                       </VBox>
 
-                                        <Button onAction="#handleShowResults" prefHeight="34.0" prefWidth="120.0" style="-fx-font-size: 14px;" styleClass="primary-button" text="Show results" />
+                      <Button onAction="#handleShowResults" prefHeight="34.0" prefWidth="140.0" style="-fx-font-size: 14px;" styleClass="primary-button" text="Show results" />
                   </children>
               </VBox>
    </left>

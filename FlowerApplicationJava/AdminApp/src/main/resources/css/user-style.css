@@ -59,6 +59,24 @@
 .logout-button:hover, .primary-button:hover {
     -fx-background-color: #ec86ae;
 }
+.primary-button {
+    -fx-background-color: linear-gradient(to right, #ff7eb3, #ff758c);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 10 18;
+}
+
+.primary-button:hover {
+    -fx-background-color: linear-gradient(to right, #ff5c9c, #ff4f7a);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+.primary-button:disabled {
+    -fx-background-color: linear-gradient(to right, #ffb3cc, #ffa3bb);
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+}
 
 .title-main {
     -fx-text-fill: #cf4f84;

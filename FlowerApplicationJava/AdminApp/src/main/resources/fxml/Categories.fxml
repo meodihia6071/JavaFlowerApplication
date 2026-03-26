@@ -4,14 +4,12 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.CategoryController">
+<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.CategoryController">
 
    <top>
       <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" styleClass="top-bar">
@@ -36,467 +34,82 @@
    </top>
 
    <center>
-      <ScrollPane fx:id="categoryScroll">
+      <ScrollPane fx:id="categoryScroll" fitToWidth="true" hbarPolicy="NEVER">
          <content>
-            <VBox alignment="TOP_CENTER" spacing="18.0">
+            <VBox alignment="TOP_CENTER" spacing="30.0" fillWidth="true">
                <children>
 
-                  <VBox fx:id="birthdaySection" alignment="TOP_CENTER" spacing="8.0">
+                  <!-- Birthday -->
+                  <VBox fx:id="birthdaySection" alignment="TOP_CENTER" spacing="12.0">
                      <children>
-                        <HBox alignment="CENTER" fillHeight="false">
-                           <children>
-                              <Label minWidth="1160.0" style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;" text="Birthday Flowers" />
-                           </children>
-                        </HBox>
-                        <ScrollPane fitToHeight="true" hbarPolicy="ALWAYS" pannable="true" prefHeight="300.0" prefWidth="1000.0" vbarPolicy="NEVER">
-                           <content>
-                              <HBox alignment="CENTER" fillHeight="false" spacing="14.0">
-                                 <children>
-                                    <VBox fx:id="birthdayCard1" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Rose Bouquet" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$25" />
-                                          <Button fx:id="btnBirthday1" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Rose Bouquet" />
-                                       </children>
-                                    </VBox>
+                        <Label text="Birthday Flowers"
+                               style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;"
+                               alignment="CENTER"
+                               maxWidth="Infinity"/>
 
-                                    <VBox fx:id="birthdayCard2" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Pink Tulip Box" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$28" />
-                                          <Button fx:id="btnBirthday2" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Pink Tulip Box" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="birthdayCard3" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Sunny Daisy Mix" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$22" />
-                                          <Button fx:id="btnBirthday3" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Sunny Daisy Mix" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="birthdayCard4" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Pastel Carnation Basket" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$24" />
-                                          <Button fx:id="btnBirthday4" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Pastel Carnation Basket" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="birthdayCard5" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Sweet Peony Wrap" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$30" />
-                                          <Button fx:id="btnBirthday5" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Sweet Peony Wrap" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="birthdayCard6" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Garden Celebration Vase" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$32" />
-                                          <Button fx:id="btnBirthday6" mnemonicParsing="false" style="-fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Garden Celebration Vase" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="birthdayCard7" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Baby Breath Bloom" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$20" />
-                                          <Button fx:id="btnBirthday7" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Baby Breath Bloom" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="birthdayCard8" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Colorful Birthday Mix" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$27" />
-                                          <Button fx:id="btnBirthday8" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Colorful Birthday Mix" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </HBox>
-                           </content>
-                           <VBox.margin>
-                              <Insets left="50.0" />
-                           </VBox.margin>
-                        </ScrollPane>
+                        <HBox fx:id="birthdayContainer"
+                              alignment="CENTER"
+                              spacing="20.0"
+                              maxWidth="1200.0"
+                              prefWidth="1200.0"/>
                      </children>
                   </VBox>
 
-                  <VBox fx:id="weddingSection" alignment="TOP_CENTER" spacing="8.0">
+                  <!-- Wedding -->
+                  <VBox fx:id="weddingSection" alignment="TOP_CENTER" spacing="12.0">
                      <children>
-                        <HBox alignment="CENTER" fillHeight="false">
-                           <children>
-                              <Label minWidth="1160.0" style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;" text="Wedding Flowers" />
-                           </children>
-                        </HBox>
-                        <ScrollPane fitToHeight="true" hbarPolicy="ALWAYS" pannable="true" prefHeight="300.0" prefWidth="1000.0" vbarPolicy="NEVER">
-                           <content>
-                              <HBox alignment="CENTER" fillHeight="false" spacing="14.0">
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                                 <children>
-                                    <VBox fx:id="weddingCard1" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="White Rose Bridal Bouquet" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$45" />
-                                          <Button fx:id="btnWedding1" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="White Rose Bridal Bouquet" />
-                                       </children>
-                                    </VBox>
+                        <Label text="Wedding Flowers"
+                               style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;"
+                               alignment="CENTER"
+                               maxWidth="Infinity"/>
 
-                                    <VBox fx:id="weddingCard2" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Ivory Peony Bouquet" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$48" />
-                                          <Button fx:id="btnWedding2" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Ivory Peony Bouquet" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="weddingCard3" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Elegant Orchid Spray" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$52" />
-                                          <Button fx:id="btnWedding3" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Elegant Orchid Spray" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="weddingCard4" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Classic Wedding Mix" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$40" />
-                                          <Button fx:id="btnWedding4" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Classic Wedding Mix" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="weddingCard5" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Blush Bridal Roses" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$46" />
-                                          <Button fx:id="btnWedding5" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Blush Bridal Roses" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="weddingCard6" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Pure Lily Arrangement" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$44" />
-                                          <Button fx:id="btnWedding6" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Pure Lily Arrangement" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="weddingCard7" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Wedding Tulip Bundle" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$42" />
-                                          <Button fx:id="btnWedding7" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Wedding Tulip Bundle" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="weddingCard8" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Romantic White Garden" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$50" />
-                                          <Button fx:id="btnWedding8" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Romantic White Garden" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </content>
-                           <VBox.margin>
-                              <Insets left="50.0" />
-                           </VBox.margin>
-                        </ScrollPane>
+                        <HBox fx:id="weddingContainer"
+                              alignment="CENTER"
+                              spacing="20.0"
+                              maxWidth="1200.0"
+                              prefWidth="1200.0"/>
                      </children>
                   </VBox>
 
-                  <VBox fx:id="anniversarySection" alignment="TOP_CENTER" spacing="8.0">
+                  <!-- Anniversary -->
+                  <VBox fx:id="anniversarySection" alignment="TOP_CENTER" spacing="12.0">
                      <children>
-                        <HBox alignment="CENTER" fillHeight="false">
-                           <children>
-                              <Label minWidth="1160.0" style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;" text="Anniversary Flowers" />
-                           </children>
-                        </HBox>
-                        <ScrollPane fitToHeight="true" hbarPolicy="ALWAYS" pannable="true" prefHeight="300.0" prefWidth="1000.0" vbarPolicy="NEVER">
-                           <content>
-                              <HBox alignment="CENTER" fillHeight="false" spacing="14.0">
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                                 <children>
-                                    <VBox fx:id="anniversaryCard1" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Red Rose Anniversary" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$35" />
-                                          <Button fx:id="btnAnniversary1" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Red Rose Anniversary" />
-                                       </children>
-                                    </VBox>
+                        <Label text="Anniversary Flowers"
+                               style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;"
+                               alignment="CENTER"
+                               maxWidth="Infinity"/>
 
-                                    <VBox fx:id="anniversaryCard2" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Golden Love Bouquet" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$38" />
-                                          <Button fx:id="btnAnniversary2" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Golden Love Bouquet" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="anniversaryCard3" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Sweet Memory Tulips" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$33" />
-                                          <Button fx:id="btnAnniversary3" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Sweet Memory Tulips" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="anniversaryCard4" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Ruby Romance Basket" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$36" />
-                                          <Button fx:id="btnAnniversary4" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Ruby Romance Basket" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="anniversaryCard5" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Classic Love Mix" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$34" />
-                                          <Button fx:id="btnAnniversary5" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Classic Love Mix" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="anniversaryCard6" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Candlelight Peonies" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$39" />
-                                          <Button fx:id="btnAnniversary6" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Candlelight Peonies" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="anniversaryCard7" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Timeless Pink Roses" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$37" />
-                                          <Button fx:id="btnAnniversary7" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Timeless Pink Roses" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="anniversaryCard8" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Forever Love Arrangement" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$41" />
-                                          <Button fx:id="btnAnniversary8" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Forever Love Arrangement" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </content>
-                           <VBox.margin>
-                              <Insets left="50.0" />
-                           </VBox.margin>
-                        </ScrollPane>
+                        <HBox fx:id="anniversaryContainer"
+                              alignment="CENTER"
+                              spacing="20.0"
+                              maxWidth="1200.0"
+                              prefWidth="1200.0"/>
                      </children>
                   </VBox>
 
-                  <VBox fx:id="sympathySection" alignment="TOP_CENTER" spacing="8.0">
+                  <!-- Sympathy -->
+                  <VBox fx:id="sympathySection" alignment="TOP_CENTER" spacing="12.0">
                      <children>
-                        <HBox alignment="CENTER">
-                           <children>
-                              <Label minWidth="1160.0" style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;" text="Sympathy Flowers" />
-                           </children>
-                        </HBox>
-                        <ScrollPane fitToHeight="true" hbarPolicy="ALWAYS" pannable="true" prefHeight="300.0" prefWidth="1000.0" vbarPolicy="NEVER">
-                           <content>
-                              <HBox alignment="CENTER" fillHeight="false" spacing="14.0">
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                                 <children>
-                                    <VBox fx:id="sympathyCard1" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="White Lily Tribute" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$31" />
-                                          <Button fx:id="btnSympathy1" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="White Lily Tribute" />
-                                       </children>
-                                    </VBox>
+                        <Label text="Sympathy Flowers"
+                               style="-fx-text-fill: #9b6666; -fx-font-size: 24px; -fx-font-weight: 700;"
+                               alignment="CENTER"
+                               maxWidth="Infinity"/>
 
-                                    <VBox fx:id="sympathyCard2" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Peaceful White Roses" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$29" />
-                                          <Button fx:id="btnSympathy2" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Peaceful White Roses" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="sympathyCard3" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Gentle Condolence Basket" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$34" />
-                                          <Button fx:id="btnSympathy3" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Gentle Condolence Basket" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="sympathyCard4" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Serenity Orchid Spray" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$36" />
-                                          <Button fx:id="btnSympathy4" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Serenity Orchid Spray" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="sympathyCard5" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Memorial Carnation Mix" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$28" />
-                                          <Button fx:id="btnSympathy5" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Memorial Carnation Mix" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="sympathyCard6" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Soft Sympathy Bouquet" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$30" />
-                                          <Button fx:id="btnSympathy6" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Soft Sympathy Bouquet" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="sympathyCard7" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Remembrance Flowers" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$33" />
-                                          <Button fx:id="btnSympathy7" mnemonicParsing="false" style="-fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Remembrance Flowers" />
-                                       </children>
-                                    </VBox>
-
-                                    <VBox fx:id="sympathyCard8" alignment="CENTER" prefHeight="280.0" prefWidth="185.0" spacing="6.0" style="-fx-background-color: #f5dce2; -fx-padding: 8;">
-                                       <children>
-                                          <ImageView fitHeight="150.0" fitWidth="150.0" preserveRatio="false">
-                                             <image><Image url="@../images/flower-rose.jpg" /></image>
-                                          </ImageView>
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="Graceful Farewell Vase" />
-                                          <Label style="-fx-font-size: 16px; -fx-text-fill: #9b6666;" text="\$35" />
-                                          <Button fx:id="btnSympathy8" mnemonicParsing="false" style=" -fx-text-fill: #b36b6b; -fx-font-size: 15px; -fx-cursor: hand;" text="Add to Cart" userData="Graceful Farewell Vase" />
-                                       </children>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </content>
-                           <VBox.margin>
-                              <Insets left="50.0" />
-                           </VBox.margin>
-                        </ScrollPane>
+                        <HBox fx:id="sympathyContainer"
+                              alignment="CENTER"
+                              spacing="20.0"
+                              maxWidth="1200.0"
+                              prefWidth="1200.0"/>
                      </children>
                   </VBox>
 
                </children>
+
                <padding>
-                  <Insets bottom="20.0" left="50.0" right="20.0" top="20.0" />
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                </padding>
             </VBox>
          </content>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-         <padding>
-            <Insets left="100.0" />
-         </padding>
       </ScrollPane>
    </center>
 
