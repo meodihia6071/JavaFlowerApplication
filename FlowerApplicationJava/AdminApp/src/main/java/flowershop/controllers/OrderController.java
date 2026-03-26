@@ -160,12 +160,6 @@ public class OrderController {
             found = dao.findByPhone(phone);
         }
 
-        if (found != null && currentCustomer != null &&
-                found.getCustomerId() != currentCustomer.getCustomerId()) {
-
-            showInfo("Lỗi", "Email hoặc SĐT đã được sử dụng!");
-            return;
-        }
 
     }
 
@@ -193,6 +187,17 @@ public class OrderController {
         txtFullName.setText(currentCustomer.getCustomerName() == null ? "" : currentCustomer.getCustomerName());
         txtEmail.setText(currentCustomer.getEmail() == null ? "" : currentCustomer.getEmail());
         txtPhone.setText(sanitizePhone(currentCustomer.getPhone()));
+
+        if(currentCustomer.getCustomerName() != null && !currentCustomer.getCustomerName().isBlank()) {
+            txtFullName.setDisable(true);
+        }
+        if (currentCustomer.getEmail() != null && !currentCustomer.getEmail().isBlank()) {
+            txtEmail.setDisable(true);
+        }
+
+        if (currentCustomer.getPhone() != null && !currentCustomer.getPhone().isBlank()) {
+            txtPhone.setDisable(true);
+        }
     }
 
     private String sanitizePhone(String phone) {
