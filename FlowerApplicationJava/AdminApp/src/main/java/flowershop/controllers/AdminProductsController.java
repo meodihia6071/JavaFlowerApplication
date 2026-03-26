@@ -51,7 +51,12 @@ public class AdminProductsController {
     private ObservableList<Product> productList;
 
     // ================= INIT =================
+    @FXML
+    public void initialize(){
 
+        colId.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        colName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
 
         colCategory.setCellValueFactory(cellData ->
@@ -62,16 +67,16 @@ public class AdminProductsController {
             @Override
             protected void updateItem(BigDecimal price, boolean empty) {
                 super.updateItem(price, empty);
-
-
                 if(empty || price == null){
                     setText(null);
                 } else {
-                    setText(price.setScale(2, RoundingMode.HALF_UP).toString());
-
-                if(empty || price == null){
+                    setText("$" + price.setScale(2, RoundingMode.HALF_UP).toString());
+                }
+            }
+        });
 
         // HƯỚNG DẪN BẢNG HIỂN THỊ ẢNH THẬT
+        colImage.setCellValueFactory(new PropertyValueFactory<>("image"));
         colImage.setCellFactory(column -> new TableCell<Product, String>() {
             private final ImageView imageView = new ImageView();
             {
@@ -143,194 +148,6 @@ public class AdminProductsController {
             e.printStackTrace();
             return null;
         }
-
-        Dialog<ButtonType> dialog = new Dialog<>();
-        dialog.setTitle("Edit Product");
-        dialog.getDialogPane().getStylesheets().add(
-                getClass().getResource("/css/admin-style.css").toExternalForm()
-        );
-        dialog.getDialogPane().getStyleClass().add("dialog-pane");
-
-        TextField nameField = new TextField(selected.getProductName());
-        TextField priceField = new TextField(selected.getPrice().toString());
-        TextField qtyField = new TextField(String.valueOf(selected.getQuantity()));
-        TextField imageField = new TextField(selected.getImage());
-
-        ComboBox<Category> cbCategory = new ComboBox<>(getCategories());
-        cbCategory.setValue(selected.getCategory());
-
-        cbCategory.setCellFactory(lv -> new ListCell<>(){
-            @Override
-            protected void updateItem(Category item, boolean empty){
-                super.updateItem(item, empty);
-                setText(empty ? null : item.getCategoryName());
-            }
-        });
-
-        cbCategory.setButtonCell(new ListCell<>(){
-            @Override
-            protected void updateItem(Category item, boolean empty){
-                super.updateItem(item, empty);
-                setText(empty ? null : item.getCategoryName());
-            }
-        });
-
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-
-        grid.add(new Label("Name:"),0,0);
-        grid.add(nameField,1,0);
-
-        grid.add(new Label("Price:"),0,1);
-        grid.add(priceField,1,1);
-
-        grid.add(new Label("Quantity:"),0,2);
-        grid.add(qtyField,1,2);
-
-        grid.add(new Label("Image:"),0,3);
-        grid.add(imageField,1,3);
-
-        grid.add(new Label("Category:"),0,4);
-        grid.add(cbCategory,1,4);
-
-        dialog.getDialogPane().setContent(grid);
-
-        ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
-
-        if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
-
-            selected.setProductName(nameField.getText());
-            selected.setPrice(new BigDecimal(priceField.getText()));
-            selected.setQuantity(Integer.parseInt(qtyField.getText()));
-            selected.setImage(imageField.getText());
-            selected.setCategory(cbCategory.getValue());
-
-            productDAO.update(selected);
-            loadProducts();
-        }
-    }
-
-    // ================= DELETE =================
-
-    @FXML
-    public void handleDeleteProduct(){
-
-        Product selected = productTable.getSelectionModel().getSelectedItem();
-
-        if(selected == null){
-            new Alert(Alert.AlertType.WARNING,"Select product!").show();
-            return;
-        }
-
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.getDialogPane().getStylesheets().add(
-                getClass().getResource("/css/admin-style.css").toExternalForm()
-        );
-        confirm.getDialogPane().getStyleClass().add("dialog-pane");
-        confirm.setContentText("Delete " + selected.getProductName() + "?");
-
-        if(confirm.showAndWait().get() == ButtonType.OK){
-            productDAO.delete(selected);
-            loadProducts();
-        }
-    }
-
-    // ================= SEARCH =================
-
-    @FXML
-    public void handleSearch(){
-
-        String keyword = searchField.getText().toLowerCase();
-
-        if(keyword.isEmpty()){
-            productTable.setItems(productList);
-            return;
-        }
-
-        ObservableList<Product> filtered = FXCollections.observableArrayList();
-
-        for(Product p : productList){
-            if(p.getProductName().toLowerCase().contains(keyword)){
-                filtered.add(p);
-            }
-        }
-
-        productTable.setItems(filtered);
-    }
-
-    // ================= SORT =================
-
-    @FXML
-    public void sortNameAZ(){
-        FXCollections.sort(productList,
-                (a,b)->a.getProductName().compareToIgnoreCase(b.getProductName()));
-    }
-
-    @FXML
-    public void sortNameZA(){
-        FXCollections.sort(productList,
-                (a,b)->b.getProductName().compareToIgnoreCase(a.getProductName())
-        );
-        productTable.setItems(productList);
-    }
-
-    @FXML
-    public void sortPriceAsc(){
-        FXCollections.sort(productList,
-                (a,b)->a.getPrice().compareTo(b.getPrice()));
-    }
-
-    @FXML
-    private void sortPriceDesc() {
-        System.out.println("Sort price DESC");
-        // TODO: viết logic sort
-    }
-
-    @FXML
-    private void sortNewest() {
-        System.out.println("Sort newest");
-    }
-
-    @FXML
-    public void sortQuantityDesc(){
-        FXCollections.sort(productList,
-                (a,b)->Integer.compare(b.getQuantity(), a.getQuantity()));
-    }
-
-    // ================= MENU =================
-
-    private void setActiveMenu(String name){
-
-        if(sidebar == null) return;
-
-        for(Node node : sidebar.getChildren()){
-            if(node instanceof Button){
-                Button btn = (Button) node;
-                btn.getStyleClass().remove("menu-active");
-
-                if(btn.getText().equalsIgnoreCase(name)){
-                    btn.getStyleClass().add("menu-active");
-                }
-            }
-        }
-    }
-
-    @FXML public void goDashboard(){ SceneManager.switchScene("/fxml/AdminDashboard.fxml","Dashboard"); }
-    @FXML public void goProducts(){ SceneManager.switchScene("/fxml/AdminProducts.fxml","Products"); }
-    @FXML public void goCategories(){ SceneManager.switchScene("/fxml/AdminCategories.fxml","Categories"); }
-    @FXML public void goOrders(){ SceneManager.switchScene("/fxml/AdminOrders.fxml","Orders"); }
-    @FXML public void goCustomers(){ SceneManager.switchScene("/fxml/AdminCustomers.fxml","Customers"); }
-    @FXML public void goSuppliers(){ SceneManager.switchScene("/fxml/AdminSuppliers.fxml","Suppliers"); }
-    @FXML public void goStock(){ SceneManager.switchScene("/fxml/AdminStock.fxml","Stock"); }
-    @FXML public void goEmployees(){ SceneManager.switchScene("/fxml/AdminEmployees.fxml","Employees");}
-    @FXML public void goReports(){ SceneManager.switchScene("/fxml/AdminReports.fxml","Reports"); }
-
-    @FXML
-    public void handleLogout(){
-        SessionManager.clear();
-        SceneManager.switchScene("/fxml/login.fxml","Login");
     }
 
     // ================= ADD =================

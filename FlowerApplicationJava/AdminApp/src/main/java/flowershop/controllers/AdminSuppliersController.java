@@ -20,7 +20,9 @@ import java.util.Optional;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.control.TableCell;
+import javafx.scene.layout.GridPane;
 
+public class AdminSuppliersController {
     @FXML
     private TableView<Supplier> supplierTable;
 
@@ -57,11 +59,13 @@ import javafx.scene.control.TableCell;
     public void initialize(){
 
         colId.setCellValueFactory(new PropertyValueFactory<>("supplierId"));
-
         // Sửa "supplierName" thành "name" cho khớp với biến trong Model
         colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colPhone.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
         colCreatedDate.setCellValueFactory(new PropertyValueFactory<>("createdDate"));
+        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         colStatus.setCellFactory(column -> new TableCell<Supplier, String>() {
             @Override
@@ -72,11 +76,12 @@ import javafx.scene.control.TableCell;
                     setText(null);
                     setGraphic(null);
                 } else {
-
-
                     Circle circle = new Circle(5);
-
+                    if (status.equalsIgnoreCase("Active")) {
+                        circle.setFill(Color.GREEN);
+                        setText(" Active");
                     } else {
+                        circle.setFill(Color.RED);
                         setText(" Inactive");
                     }
                     setGraphic(circle);

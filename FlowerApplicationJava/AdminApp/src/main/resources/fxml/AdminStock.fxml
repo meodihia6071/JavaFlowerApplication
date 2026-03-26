@@ -131,7 +131,6 @@
                         <TableColumn fx:id="colProduct" text="Product Name" prefWidth="240" styleClass="left-column"/>
                         <TableColumn fx:id="colSupplier" text="Supplier" prefWidth="180" styleClass="left-column"/>
                         <TableColumn fx:id="colImportPrice" text="Import Price" prefWidth="120" styleClass="center-column"/>
-                        <TableColumn fx:id="colSellPrice" text="Sell Price" prefWidth="120" styleClass="center-column"/>
                         <TableColumn fx:id="colQuantity" text="Quantity" prefWidth="100" styleClass="center-column"/>
                         <TableColumn fx:id="colImportDate" text="Import Date" prefWidth="150" styleClass="center-column"/>
 

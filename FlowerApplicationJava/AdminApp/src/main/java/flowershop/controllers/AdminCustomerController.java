@@ -22,6 +22,9 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.util.List;
 
+public class AdminCustomerController {
+
+    @FXML private TableView<Customer> customerTable;
     @FXML private TableColumn<Customer, Integer> colId;
     @FXML private TableColumn<Customer, Integer> colUserId;
     @FXML private TableColumn<Customer, String> colName;
@@ -32,6 +35,8 @@ import java.util.List;
     @FXML private TextField searchField;
     @FXML private VBox sidebar;
 
+    // Các nút bấm để gắn hiệu ứng (Nếu FXML chưa có fx:id thì cứ kệ nó, code đã bọc null an toàn)
+    @FXML private Button btnAdd, btnEdit, btnDelete, btnSearch, btnLogout;
 
     private CustomerDAO customerDAO = new CustomerDAO();
     private ObservableList<Customer> customerList;

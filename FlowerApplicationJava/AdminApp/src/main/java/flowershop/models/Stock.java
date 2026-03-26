@@ -3,12 +3,12 @@ package flowershop.models;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "stock")
+@Table(name = "stock_imports")
 public class Stock {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "stock_id")
+    @Column(name = "import_id")
     private int stockId;
 
     // 1. NỐI VỚI BẢNG PRODUCTS (Khóa ngoại product_id)
@@ -26,6 +26,11 @@ public class Stock {
 
     @Column(name = "import_price")
     private double importPrice;
+
+    // ĐÃ XÓA CỘT sellPrice ĐỂ CHUẨN HÓA BCNF (Giá bán giờ nằm bên bảng Product)
+
+    @Column(name = "import_date")
+    private String importDate;
 
     public Stock() {}
 

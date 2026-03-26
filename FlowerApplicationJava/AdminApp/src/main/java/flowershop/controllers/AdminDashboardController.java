@@ -8,9 +8,12 @@ import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-
-import java.io.IOException;
 
 public class AdminDashboardController {
 
@@ -114,17 +117,18 @@ public class AdminDashboardController {
         }
     }
 
-
-    // =========================================================
-    // HÀM CHUYỂN TRANG CHỨC NĂNG (ĐÃ TÍCH HỢP FADE-IN 0.4s)
-    // =========================================================
-    private void switchScene(ActionEvent event, String fxmlPath, String title) {
+    private void addSmoothHoverEffect(Button btn) {
+        ScaleTransition scaleIn = new ScaleTransition(Duration.seconds(0.3), btn);
+        scaleIn.setToX(1.03); scaleIn.setToY(1.03);
+        ScaleTransition scaleOut = new ScaleTransition(Duration.seconds(0.3), btn);
+        scaleOut.setToX(1.0); scaleOut.setToY(1.0);
         btn.setOnMouseEntered(e -> { scaleOut.stop(); scaleIn.playFromStart(); });
         btn.setOnMouseExited(e -> { scaleIn.stop(); scaleOut.playFromStart(); });
     }
 
     private void showAlert(String title, String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();

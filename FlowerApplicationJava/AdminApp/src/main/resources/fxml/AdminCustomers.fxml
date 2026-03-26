@@ -23,7 +23,18 @@
                 <Button text="📂 Categories" onAction="#goCategories" styleClass="menu-btn"/>
                 <Button text="📦 Orders" onAction="#goOrders" styleClass="menu-btn"/>
 
-                <Button text="👤 Customers" onAction="#goCustomers" styleClass="menu-btn"/>
+                <Button text="👤 Customers" onAction="#goCustomers" styleClass="menu-btn" style="
+                            -fx-background-color:white;
+                            -fx-text-fill:#e25a84;
+                            -fx-font-weight:bold;
+                            -fx-pref-width:230;
+                            -fx-alignment:CENTER_LEFT;
+                            -fx-padding:15 0 15 30;
+                            -fx-border-width:0 0 0 6;
+                            -fx-border-color:#e25a84;
+                            -fx-background-radius:0;
+                            -fx-border-radius:0;
+                        "/>
 
                 <Button text="🚚 Suppliers" onAction="#goSuppliers" styleClass="menu-btn"/>
                 <Button text="📦 Stock" onAction="#goStock" styleClass="menu-btn"/>
