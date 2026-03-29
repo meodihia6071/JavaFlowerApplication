@@ -83,7 +83,6 @@
 
                     <Region HBox.hgrow="ALWAYS"/>
 
-                    <ComboBox fx:id="filterRange" promptText="Select Range" prefWidth="150"/>
                     <DatePicker fx:id="fromDate"/>
                     <DatePicker fx:id="toDate"/>
 

@@ -6,19 +6,24 @@ import flowershop.services.ReportService;
 
 import javafx.fxml.FXML;
 import javafx.event.ActionEvent;
-
 import javafx.scene.control.*;
 import javafx.scene.chart.*;
-
 import javafx.collections.FXCollections;
 
 import java.util.Map;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.time.LocalDate;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.animation.*;
 import javafx.util.Duration;
+
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class AdminReportsController {
 
@@ -28,6 +33,10 @@ public class AdminReportsController {
     private String formatVND(double amount) {
         return vnFormat.format(amount) + "₫";
     }
+
+    // ================= DATE FILTER =================
+    private LocalDate startDate;
+    private LocalDate endDate;
 
     // ================= LABEL =================
     @FXML private Label totalProducts;
@@ -53,14 +62,10 @@ public class AdminReportsController {
     @FXML private LineChart<String, Number> trendChart;
     @FXML private PieChart topProductsChart;
 
-    @FXML
-    private ImageView assistantImage;
-
-    @FXML
-    private Label assistantText;
+    @FXML private ImageView assistantImage;
+    @FXML private Label assistantText;
 
     // ================= FILTER =================
-    @FXML private ComboBox<String> filterRange;
     @FXML private DatePicker fromDate, toDate;
 
     private final ReportService reportService = new ReportService();
@@ -69,14 +74,21 @@ public class AdminReportsController {
     @FXML
     public void initialize(){
         setupTableColumns();
-        setupFilter();
-        loadDashboardData();
+
+        // Load toàn bộ dashboard (không filter)
+        loadDashboardStaticData();
+
+        // Load riêng phần có filter (3 ô)
+        loadFilteredSummaryOnly();
+
+        // ======= LISTENER DATE PICKERS =======
+        fromDate.valueProperty().addListener((obs, oldVal, newVal) -> updateDateFilter());
+        toDate.valueProperty().addListener((obs, oldVal, newVal) -> updateDateFilter());
     }
 
     // ================= SETUP =================
     private void setupTableColumns(){
 
-        // ===== Top Customers =====
         colCusName.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(
                         (String) data.getValue().get("name"))
@@ -92,20 +104,14 @@ public class AdminReportsController {
                         ((Number) data.getValue().get("spent")).doubleValue())
         );
 
-        // 🔥 FORMAT TIỀN NGAY TRONG TABLE
         colCusSpent.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(Number value, boolean empty) {
                 super.updateItem(value, empty);
-                if (empty || value == null) {
-                    setText(null);
-                } else {
-                    setText(formatVND(value.doubleValue()));
-                }
+                setText(empty || value == null ? null : formatVND(value.doubleValue()));
             }
         });
 
-        // ===== Low Stock =====
         colProductName.setCellValueFactory(data ->
                 new javafx.beans.property.SimpleStringProperty(
                         (String) data.getValue().get("product"))
@@ -120,15 +126,9 @@ public class AdminReportsController {
         lowStockTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
-    private void setupFilter(){
-        filterRange.setItems(FXCollections.observableArrayList(
-                "Today", "This Week", "This Month", "This Year"
-        ));
-    }
-
-    // ================= MAIN LOAD =================
-    private void loadDashboardData(){
-        loadSummary();
+    // ================= LOAD STATIC =================
+    private void loadDashboardStaticData(){
+        loadSummaryStatic();
         loadRevenueChart();
         loadTrendChart();
         loadTopProductsChart();
@@ -137,30 +137,47 @@ public class AdminReportsController {
         updateAssistant();
     }
 
+    private void updateDateFilter(){
+        startDate = fromDate.getValue();
+        endDate = toDate.getValue();
+
+        if(startDate != null && endDate != null){
+            if(startDate.isAfter(endDate)){
+                new Alert(Alert.AlertType.WARNING, "Ngày bắt đầu phải trước ngày kết thúc!").show();
+                return;
+            }
+
+            loadFilteredSummaryOnly();
+        }
+    }
+
     // ================= SUMMARY =================
-    private void loadSummary(){
-
+    private void loadSummaryStatic(){
         int products = reportService.countProducts();
-        int orders = reportService.countOrders();
+        int orders = reportService.countOrders(null, null);
         int customers = reportService.countCustomers();
-
-        double revenue = reportService.getTotalRevenue();
-        double avgOrder = reportService.getAverageOrderValue();
-        double profit = revenue * 0.3;
 
         totalProducts.setText(String.valueOf(products));
         totalOrders.setText(String.valueOf(orders));
         totalCustomers.setText(String.valueOf(customers));
-
-        // 🔥 FORMAT TIỀN VIỆT
-        totalRevenue.setText(formatVND(revenue));
-        avgOrderValue.setText(formatVND((long) avgOrder));
-        totalProfit.setText(formatVND(profit));
     }
 
-    // ================= BAR CHART =================
-    private void loadRevenueChart(){
+    private void loadFilteredSummaryOnly(){
+        double revenue = reportService.getTotalRevenue(startDate, endDate);
+        double cost = reportService.getTotalCost(startDate, endDate);
+        double profit = revenue - cost;
 
+        long avgOrderInt = Math.round(
+                reportService.getAverageOrderValue(startDate, endDate)
+        );
+
+        totalRevenue.setText(formatVND(revenue));
+        totalProfit.setText(formatVND(profit));
+        avgOrderValue.setText(formatVND(avgOrderInt));
+    }
+
+    // ================= CHART =================
+    private void loadRevenueChart() {
         revenueChart.getData().clear();
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
@@ -168,114 +185,89 @@ public class AdminReportsController {
 
         Map<Integer, Double> data = reportService.getRevenueByMonth();
 
-        data.forEach((month, value) -> {
-            series.getData().add(
-                    new XYChart.Data<>(getMonthName(month), value)
-            );
-        });
+        data.entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
+                .forEach(entry ->
+                        series.getData().add(
+                                new XYChart.Data<>(getMonthName(entry.getKey()), entry.getValue())
+                        )
+                );
 
         revenueChart.getData().add(series);
     }
 
-    // ================= LINE CHART =================
     private void loadTrendChart(){
-
         trendChart.getData().clear();
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Orders");
 
-        Map<String, Integer> data = reportService.getOrdersByWeek();
+        Map<String, Integer> data = reportService.getOrdersByLast10Weeks();
 
-        data.forEach((week, value) -> {
-            series.getData().add(
-                    new XYChart.Data<>(week, value)
-            );
-        });
+        data.forEach((week, count) ->
+                series.getData().add(new XYChart.Data<>(week, count))
+        );
 
         trendChart.getData().add(series);
     }
 
-    // ================= PIE =================
     private void loadTopProductsChart(){
-
         topProductsChart.getData().clear();
 
-        Map<String, Integer> data = reportService.getTopProducts();
+        Map<String, Integer> data = reportService.getTopProducts(null, null);
 
-        data.forEach((name, value) -> {
-            topProductsChart.getData().add(
-                    new PieChart.Data(name, value)
-            );
-        });
+        data.forEach((name, value) ->
+                topProductsChart.getData().add(new PieChart.Data(name, value))
+        );
     }
 
     // ================= TABLE =================
     private void loadTopCustomers(){
         topCustomersTable.setItems(
-                FXCollections.observableArrayList(
-                        reportService.getTopCustomers()
-                )
+                FXCollections.observableArrayList(reportService.getTopCustomers())
         );
     }
 
     private void loadLowStock(){
         lowStockTable.setItems(
-                FXCollections.observableArrayList(
-                        reportService.getLowStock()
-                )
+                FXCollections.observableArrayList(reportService.getLowStock())
         );
     }
 
     // ================= UTIL =================
     private String getMonthName(int month){
         return switch (month){
-            case 1 -> "Jan";
-            case 2 -> "Feb";
-            case 3 -> "Mar";
-            case 4 -> "Apr";
-            case 5 -> "May";
-            case 6 -> "Jun";
-            case 7 -> "Jul";
-            case 8 -> "Aug";
-            case 9 -> "Sep";
-            case 10 -> "Oct";
-            case 11 -> "Nov";
-            case 12 -> "Dec";
+            case 1 -> "Jan"; case 2 -> "Feb"; case 3 -> "Mar";
+            case 4 -> "Apr"; case 5 -> "May"; case 6 -> "Jun";
+            case 7 -> "Jul"; case 8 -> "Aug"; case 9 -> "Sep";
+            case 10 -> "Oct"; case 11 -> "Nov"; case 12 -> "Dec";
             default -> "";
         };
     }
+
     private void updateAssistant() {
 
         int lowStockCount = lowStockTable.getItems().size();
 
         if (lowStockCount == 0) {
-            // 🌸 Trạng thái tốt
             assistantImage.setImage(new Image(
                     getClass().getResource("/images/no.gif").toExternalForm()
             ));
-
-            typeText("Hôm nay yên bình 🌿 Kho hàng ổn định!");
-
+            typeText("Kho ổn định 🌿");
         } else if (lowStockCount <= 3) {
-            // ⚠️ Cảnh báo nhẹ
             assistantImage.setImage(new Image(
                     getClass().getResource("/images/happy.gif").toExternalForm()
             ));
-
-            typeText("Có vài hoa sắp hết rồi đó!");
-
+            typeText("Sắp hết hàng rồi!");
         } else {
-            // 🚨 Nguy hiểm
             assistantImage.setImage(new Image(
                     getClass().getResource("/images/sad.gif").toExternalForm()
             ));
-
-            typeText("Toang rồi! Kho đang cạn! Nhập hàng gấp!");
+            typeText("Kho cạn! Nhập gấp!");
         }
     }
-    private void typeText(String text) {
 
+    private void typeText(String text) {
         assistantText.setText("");
 
         Timeline timeline = new Timeline();
@@ -297,12 +289,43 @@ public class AdminReportsController {
     // ================= ACTION =================
     @FXML
     private void handleRefresh() {
-        loadDashboardData();
+        startDate = null;
+        endDate = null;
+
+        fromDate.setValue(null);
+        toDate.setValue(null);
+
+        // load All Time
+        loadFilteredSummaryOnly();
     }
 
     @FXML
     private void handleExport() {
-        System.out.println("Exporting report...");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Report CSV");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("CSV Files", "*.csv")
+        );
+
+        File file = fileChooser.showSaveDialog(null);
+        if (file == null) return;
+
+        try (FileWriter writer = new FileWriter(file)) {
+
+            writer.write("Flower Shop Report\n");
+            writer.write("From: " + startDate + " To: " + endDate + "\n\n");
+
+            writer.write("Revenue," + totalRevenue.getText() + "\n");
+            writer.write("Profit," + totalProfit.getText() + "\n");
+            writer.write("Avg Order," + avgOrderValue.getText() + "\n");
+
+            writer.flush();
+
+            new Alert(Alert.AlertType.INFORMATION, "Export thành công!").show();
+
+        } catch (IOException e) {
+            new Alert(Alert.AlertType.ERROR, "Lỗi export!").show();
+        }
     }
 
     // ================= NAVIGATION =================
