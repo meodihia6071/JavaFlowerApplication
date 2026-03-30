@@ -207,7 +207,6 @@ public class AdminCategoriesController {
     @FXML public void goCustomers(){ SceneManager.switchScene("/fxml/AdminCustomers.fxml","Customers"); }
     @FXML public void goSuppliers(){ SceneManager.switchScene("/fxml/AdminSuppliers.fxml","Suppliers"); }
     @FXML public void goStock(){ SceneManager.switchScene("/fxml/AdminStock.fxml","Stock"); }
-    @FXML public void goEmployees(){ SceneManager.switchScene("/fxml/AdminEmployees.fxml","Employees");}
     @FXML public void goReports(){ SceneManager.switchScene("/fxml/AdminReports.fxml","Reports"); }
 
     @FXML
