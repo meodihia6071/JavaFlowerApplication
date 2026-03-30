@@ -169,9 +169,7 @@ public class ProfileController {
         Label title = new Label("LỊCH SỬ GIAO HÀNG");
         title.setStyle("-fx-text-fill: #8e5f5f; -fx-font-size: 26px; -fx-font-weight: 700;");
 
-        Label line1 = new Label("fill db vào đây-,-");//<------!!!
-
-        box.getChildren().addAll(title, line1);
+        box.getChildren().addAll(title);
         contentArea.getChildren().setAll(box);
     }
 }
