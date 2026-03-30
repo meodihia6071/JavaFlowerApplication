@@ -31,7 +31,7 @@ public class AdminStockController {
     @FXML private TableColumn<Stock, Integer> colQuantity;
     @FXML private TableColumn<Stock, Double> colImportPrice;
     @FXML private TableColumn<Stock, String> colSupplier;
-    @FXML private TableColumn<Stock, String> colImportDate;
+    @FXML private TableColumn<Stock, LocalDate> colImportDate;
 
     @FXML private TextField searchField;
     @FXML private VBox sidebar;
@@ -44,7 +44,9 @@ public class AdminStockController {
     public void initialize(){
         try {
             colId.setCellValueFactory(new PropertyValueFactory<>("stockId"));
-            colProduct.setCellValueFactory(new PropertyValueFactory<>("productName")); // Gọi hàm mẹo getProductName() bên Model Stock
+            colProduct.setCellValueFactory(new PropertyValueFactory<>("productName"));
+            colSupplier.setCellValueFactory(new PropertyValueFactory<>("supplier"));
+            colImportDate.setCellValueFactory(new PropertyValueFactory<>("importDate"));
 
             colQuantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
             colQuantity.setCellFactory(column -> new TableCell<Stock, Integer>() {
@@ -65,9 +67,6 @@ public class AdminStockController {
                 }
             });
 
-            colSupplier.setCellValueFactory(new PropertyValueFactory<>("supplier")); // Gọi hàm mẹo getSupplier() bên Model Stock
-            colImportDate.setCellValueFactory(new PropertyValueFactory<>("importDate"));
-
             colImportPrice.setCellValueFactory(new PropertyValueFactory<>("importPrice"));
             colImportPrice.setCellFactory(col -> new TableCell<>(){
                 @Override
@@ -82,8 +81,7 @@ public class AdminStockController {
                 }
             });
 
-            stockTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
+            stockTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
             loadStock();
             setActiveMenu("Stock");
         } catch (Exception e) {
@@ -112,16 +110,12 @@ public class AdminStockController {
         }
     }
 
-    // ================= HÀM BẮT LỖI CSS AN TOÀN =================
     private void applySafeCss(DialogPane dialogPane) {
         URL cssUrl = getClass().getResource("/css/admin-style.css");
-        if (cssUrl != null) {
-            dialogPane.getStylesheets().add(cssUrl.toExternalForm());
-        }
+        if (cssUrl != null) dialogPane.getStylesheets().add(cssUrl.toExternalForm());
         dialogPane.getStyleClass().add("dialog-pane");
     }
 
-    // ================= ADD STOCK =================
     @FXML
     public void handleAddStock(ActionEvent event){
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -156,8 +150,6 @@ public class AdminStockController {
         if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
             try {
                 Stock stock = new Stock();
-
-                // Vì Stock lưu object Product và Supplier, ta cần tạo 2 object rỗng chỉ có ID
                 Product p = new Product();
                 p.setProductId(Integer.parseInt(productIdField.getText()));
                 stock.setProduct(p);
@@ -168,7 +160,7 @@ public class AdminStockController {
 
                 stock.setQuantity(Integer.parseInt(qtyField.getText()));
                 stock.setImportPrice(Double.parseDouble(importPriceField.getText()));
-                stock.setImportDate(importDatePicker.getValue().toString());
+                stock.setImportDate(importDatePicker.getValue()); // ĐÃ FIX: Lấy trực tiếp Date
 
                 stockDAO.save(stock);
                 loadStock();
@@ -180,7 +172,6 @@ public class AdminStockController {
         }
     }
 
-    // ================= EDIT =================
     @FXML
     public void handleEditStock(ActionEvent event){
         Stock selected = stockTable.getSelectionModel().getSelectedItem();
@@ -196,7 +187,6 @@ public class AdminStockController {
         dialog.setTitle("Edit Stock");
         applySafeCss(dialog.getDialogPane());
 
-        // Lấy ID Product và Supplier ra để điền vào form
         String pId = selected.getProduct() != null ? String.valueOf(selected.getProduct().getProductId()) : "";
         String sId = selected.getSupplierEntity() != null ? String.valueOf(selected.getSupplierEntity().getSupplierId()) : "";
 
@@ -204,7 +194,9 @@ public class AdminStockController {
         TextField supplierIdField = new TextField(sId);
         TextField qtyField = new TextField(String.valueOf(selected.getQuantity()));
         TextField importPriceField = new TextField(String.valueOf(selected.getImportPrice()));
-        TextField importDateField = new TextField(selected.getImportDate());
+
+        // ĐÃ FIX: Dùng bảng chọn lịch thay vì gõ tay
+        DatePicker importDatePicker = new DatePicker(selected.getImportDate());
 
         GridPane grid = new GridPane();
         grid.setHgap(10); grid.setVgap(10);
@@ -213,7 +205,7 @@ public class AdminStockController {
         grid.add(new Label("Supplier ID:"),0,1); grid.add(supplierIdField,1,1);
         grid.add(new Label("Quantity:"),0,2); grid.add(qtyField,1,2);
         grid.add(new Label("Import Price:"),0,3); grid.add(importPriceField,1,3);
-        grid.add(new Label("Import Date:"),0,4); grid.add(importDateField,1,4);
+        grid.add(new Label("Import Date:"),0,4); grid.add(importDatePicker,1,4);
 
         dialog.getDialogPane().setContent(grid);
         ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
@@ -231,7 +223,7 @@ public class AdminStockController {
 
                 selected.setQuantity(Integer.parseInt(qtyField.getText()));
                 selected.setImportPrice(Double.parseDouble(importPriceField.getText()));
-                selected.setImportDate(importDateField.getText());
+                selected.setImportDate(importDatePicker.getValue()); // ĐÃ FIX: Lưu LocalDate
 
                 stockDAO.update(selected);
                 loadStock();
@@ -243,7 +235,6 @@ public class AdminStockController {
         }
     }
 
-    // ================= DELETE =================
     @FXML
     public void handleDeleteStock(ActionEvent event){
         Stock selected = stockTable.getSelectionModel().getSelectedItem();
@@ -266,7 +257,6 @@ public class AdminStockController {
         }
     }
 
-    // ================= SEARCH & SORT =================
     @FXML
     public void handleSearch(ActionEvent event){
         String keyword = searchField.getText();
@@ -277,7 +267,6 @@ public class AdminStockController {
         keyword = keyword.toLowerCase();
         ObservableList<Stock> filtered = FXCollections.observableArrayList();
         for(Stock s : stockList){
-            // Tìm theo tên sản phẩm (bằng cách gọi hàm getProductName)
             if(s.getProductName() != null && s.getProductName().toLowerCase().contains(keyword)){
                 filtered.add(s);
             }
@@ -290,7 +279,7 @@ public class AdminStockController {
     @FXML public void sortQuantityAsc(){ FXCollections.sort(stockList, (a,b)->Integer.compare(a.getQuantity(), b.getQuantity())); stockTable.setItems(stockList); }
     @FXML public void sortQuantityDesc(){ FXCollections.sort(stockList, (a,b)->Integer.compare(b.getQuantity(), a.getQuantity())); stockTable.setItems(stockList); }
     @FXML public void sortNewest(){ FXCollections.sort(stockList, (a,b)->b.getImportDate().compareTo(a.getImportDate())); stockTable.setItems(stockList); }
-    // ================= NAVIGATION =================
+
     @FXML public void goDashboard(ActionEvent event){ SceneManager.switchScene("/fxml/AdminDashboard.fxml","Dashboard"); }
     @FXML public void goProducts(ActionEvent event){ SceneManager.switchScene("/fxml/AdminProducts.fxml","Products"); }
     @FXML public void goCategories(ActionEvent event){ SceneManager.switchScene("/fxml/AdminCategories.fxml","Categories"); }

@@ -33,6 +33,8 @@
         <mapping class="flowershop.models.Customer"/>
         <mapping class="flowershop.models.Order"/>
         <mapping class="flowershop.models.OrderDetail"/>
+        <mapping class="flowershop.models.Stock"/>
+        <mapping class="flowershop.models.Supplier"/>
         <mapping class="flowershop.models.User"/>
 
     </session-factory>
