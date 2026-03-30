@@ -15,18 +15,13 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.AuthController">
-
+<AnchorPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.AuthController">
     <children>
         <StackPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-
             <HBox alignment="CENTER" style="-fx-background-color: #f8eef1;">
-
                 <children>
-
                     <VBox alignment="CENTER" spacing="34.0" style="-fx-background-color: #f8eef1;" translateX="100.0">
                         <children>
-
                             <VBox alignment="CENTER" maxWidth="420.0" prefWidth="420.0" spacing="10.0">
                                 <children>
                                     <Label style="-fx-text-fill: #cf4f84; -fx-font-size: 32px; -fx-font-weight: 800;" text="Welcome to Flower Shop!" />
@@ -36,38 +31,50 @@
 
                             <GridPane hgap="18.0" maxWidth="420.0" prefWidth="420.0" vgap="20.0">
                                 <columnConstraints>
-                                    <ColumnConstraints minWidth="110.0" prefWidth="110.0" />
+                                    <ColumnConstraints minWidth="140.0" prefWidth="140.0" />
                                     <ColumnConstraints minWidth="260.0" prefWidth="260.0" />
                                 </columnConstraints>
-
                                 <rowConstraints>
                                     <RowConstraints />
                                     <RowConstraints />
                                 </rowConstraints>
-
                                 <children>
-                                    <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                    <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="User / Email" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
                                     <TextField fx:id="txtLoginUsername" prefHeight="40.0" prefWidth="260.0" style="-fx-background-color: #f6d6e0; -fx-background-radius: 0; -fx-border-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 17px;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                                     <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 18px;" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
-                                    <PasswordField fx:id="txtLoginPassword" prefHeight="40.0" prefWidth="260.0" style="-fx-background-color: #f6d6e0; -fx-background-radius: 0; -fx-border-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 17px;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="260.0" style="-fx-background-color: #f6d6e0;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <children>
+                                            <StackPane alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                                                <children>
+                                                    <PasswordField fx:id="txtLoginPassword" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 17px;" />
+                                                    <TextField fx:id="txtLoginPasswordVisible" managed="false" style="-fx-background-color: transparent; -fx-text-fill: #8e5f5f; -fx-font-size: 17px;" visible="false" />
+                                                </children>
+                                            </StackPane>
+                                            <Button onAction="#toggleLoginPassword" style="-fx-background-color: transparent; -fx-cursor: hand; -fx-font-size: 16px; -fx-text-fill: #8e5f5f;" text="👁" />
+                                        </children>
+                                    </HBox>
                                 </children>
                             </GridPane>
 
                             <VBox alignment="CENTER" maxWidth="420.0" prefWidth="420.0" spacing="16.0">
                                 <children>
                                     <Button onAction="#handleLogin" prefHeight="46.0" prefWidth="130.0" style="-fx-font-size: 20px;" styleClass="primary-button" text="Login" />
-
-                                    <Label onMouseClicked="#goToSignup" style="-fx-text-fill: #8e5f5f; -fx-font-size: 18px; -fx-underline: true; -fx-cursor: hand;" text="Sign up" />
+                                    <HBox alignment="CENTER" spacing="20.0">
+                                        <children>
+                                            <Label onMouseClicked="#goToSignup" style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px; -fx-underline: true; -fx-cursor: hand;" text="Sign up" />
+                                            <Label style="-fx-text-fill: #8e5f5f; -fx-font-size: 16px;" text="|" />
+                                            <Label onMouseClicked="#showForgotPasswordPopup" style="-fx-text-fill: #cf4f84; -fx-font-size: 16px; -fx-underline: true; -fx-cursor: hand;" text="Forgot Password?" />
+                                        </children>
+                                    </HBox>
                                 </children>
                             </VBox>
-
                         </children>
-                  <StackPane.margin>
-                     <Insets />
-                  </StackPane.margin>
+                        <StackPane.margin>
+                            <Insets />
+                        </StackPane.margin>
                     </VBox>
 
                     <StackPane HBox.hgrow="ALWAYS">
@@ -79,7 +86,6 @@
                             </ImageView>
                         </children>
                     </StackPane>
-
                 </children>
             </HBox>
         </StackPane>

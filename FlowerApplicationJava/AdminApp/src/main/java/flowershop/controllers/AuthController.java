@@ -7,15 +7,25 @@ import flowershop.models.User;
 import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import java.net.URL;
 
-public class AuthController {
+import java.io.IOException;
+import java.util.ResourceBundle;
+
+public class AuthController implements Initializable {
 
     @FXML private TextField txtLoginUsername;
     @FXML private PasswordField txtLoginPassword;
-
+    @FXML private TextField txtLoginPasswordVisible;
     @FXML private TextField txtLastName;
     @FXML private TextField txtFirstName;
     @FXML private TextField txtSignupUsername;
@@ -26,24 +36,51 @@ public class AuthController {
     private final UserDAO userDAO = new UserDAO();
     private final CustomerDAO customerDAO = new CustomerDAO();
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        if (txtLoginPasswordVisible != null && txtLoginPassword != null) {
+            txtLoginPasswordVisible.textProperty().bindBidirectional(txtLoginPassword.textProperty());
+        }
+    }
+
+    @FXML
+    private void toggleLoginPassword() {
+        boolean isVisible = txtLoginPasswordVisible.isVisible();
+
+        txtLoginPasswordVisible.setVisible(!isVisible);
+        txtLoginPasswordVisible.setManaged(!isVisible);
+        txtLoginPassword.setVisible(isVisible);
+        txtLoginPassword.setManaged(isVisible);
+    }
     @FXML
     private void handleLogin() {
-        String username = txtLoginUsername.getText().trim();
+        String loginInput = txtLoginUsername.getText().trim();
         String password = txtLoginPassword.getText().trim();
 
-        if (username.isEmpty() || password.isEmpty()) {
-            showAlert("Lỗi", "Vui lòng nhập đầy đủ username và password.");
+        if (loginInput.isEmpty() || password.isEmpty()) {
+            showAlert("Lỗi", "Vui lòng nhập đầy đủ Username/Email và Password.");
             return;
         }
 
-        User user = userDAO.findCustomerByUsernameAndPassword(username, password);
+        User user = null;
+
+        if (loginInput.contains("@")) {
+            Customer customerCheck = customerDAO.findByEmail(loginInput);
+            if (customerCheck != null && customerCheck.getUser() != null) {
+                String usernameFromEmail = customerCheck.getUser().getUsername();
+                user = userDAO.findCustomerByUsernameAndPassword(usernameFromEmail, password);
+            }
+        }
+        else {
+            user = userDAO.findCustomerByUsernameAndPassword(loginInput, password);
+        }
+
         if (user == null) {
-            showAlert("Đăng nhập thất bại", "Sai tài khoản hoặc mật khẩu.");
+            showAlert("Đăng nhập thất bại", "Sai tài khoản, email hoặc mật khẩu.");
             return;
         }
 
         Customer customer = customerDAO.findByUserId(user.getUserId());
-
         SessionManager.setCurrentUser(user);
         SessionManager.setCurrentCustomer(customer);
 
@@ -120,6 +157,22 @@ public class AuthController {
     public static void logout() {
         SessionManager.clear();
         SceneManager.switchScene("/fxml/Login.fxml", "Login");
+    }
+
+    @FXML
+    private void showForgotPasswordPopup() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ForgotPasswordPopup.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Reset Password");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false); // Khóa resize như bạn yêu cầu
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showAlert(String title, String content) {

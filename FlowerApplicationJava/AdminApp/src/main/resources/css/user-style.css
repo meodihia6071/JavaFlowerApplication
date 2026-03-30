@@ -69,8 +69,8 @@
 
 .primary-button:hover {
     -fx-background-color: linear-gradient(to right, #ff5c9c, #ff4f7a);
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
+    -fx-scale-x: 1.025;
+    -fx-scale-y: 1.025;
 }
 .primary-button:disabled {
     -fx-background-color: linear-gradient(to right, #ffb3cc, #ffa3bb);
