@@ -52,6 +52,12 @@ public class ContactController {
     @FXML
     private Button btnSend;
 
+    @FXML
+    public void goProfile() {
+        SceneManager.switchScene("/fxml/Profile.fxml", "Profile");
+    }
+
+
     private final CartService cartService = new CartService();
 
     @FXML

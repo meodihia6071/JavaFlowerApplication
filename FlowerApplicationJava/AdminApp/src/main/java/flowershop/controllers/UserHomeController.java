@@ -40,6 +40,11 @@ public class UserHomeController {
     @FXML
     private Button btnCart;
 
+    @FXML
+    public void goProfile() {
+        SceneManager.switchScene("/fxml/Profile.fxml", "Profile");
+    }
+
     private final CartService cartService = new CartService();
     private final ProductDAO productDAO = new ProductDAO();
 

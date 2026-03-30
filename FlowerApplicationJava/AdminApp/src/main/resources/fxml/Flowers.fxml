@@ -1,109 +1,79 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.TilePane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.FlowersController">
+<BorderPane style="-fx-background-color: #f8eef1;" stylesheets="@../css/user-style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="flowershop.controllers.FlowersController">
 
     <top>
-        <HBox prefHeight="56.0"
-              alignment="CENTER_LEFT"
-              spacing="22.0"
-              styleClass="top-bar">
+        <HBox alignment="CENTER_LEFT" prefHeight="56.0" spacing="22.0" styleClass="top-bar">
             <padding>
-                <Insets top="0.0" right="18.0" bottom="0.0" left="18.0"/>
+                <Insets bottom="0.0" left="18.0" right="18.0" top="0.0" />
             </padding>
             <children>
-                <Label style="-fx-font-weight: 700; -fx-font-size: 25px;" text="Flower shop" styleClass="brand-label"/>
+                <Label style="-fx-font-weight: 700; -fx-font-size: 27px;" styleClass="brand-label" text="Flower shop" />
 
-                <Region HBox.hgrow="ALWAYS"/>
+                <Region HBox.hgrow="ALWAYS" />
 
-                <Button text="Home" onAction="#goHome" styleClass="nav-button"/>
-                <Button text="Flowers" onAction="#goFlowers" styleClass="nav-button-active"/>
-                <Button text="Categories" onAction="#goCategories" styleClass="nav-button"/>
-                <Button text="Contact" onAction="#goContact" styleClass="nav-button"/>
-                <Button fx:id="btnCart" text="Cart" onAction="#goCart" styleClass="nav-button"/>
+                <Button onAction="#goHome" styleClass="nav-button" text="Home" />
+                <Button onAction="#goFlowers" styleClass="nav-button-active" text="Flowers" />
+                <Button onAction="#goCategories" styleClass="nav-button" text="Categories" />
+                <Button onAction="#goContact" styleClass="nav-button" text="Contact" />
+                <Button fx:id="btnCart" onAction="#goCart" styleClass="nav-button" text="Cart" />
 
-                <Button text="Log Out" onAction="#handleLogout"
-                        prefWidth="94.0" prefHeight="34.0"
-                        styleClass="logout-button"/>
+                <Button fx:id="btnProfile" onAction="#goProfile" prefHeight="42.0" prefWidth="42.0" styleClass="nav-button">
+                    <graphic>
+                        <ImageView fitHeight="22.0" fitWidth="22.0" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/user-icon.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+
+                <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" styleClass="logout-button" text="Log Out" />
             </children>
         </HBox>
     </top>
 
     <center>
-        <VBox spacing="10"
-              style="-fx-background-color: #f8eef1;">
+        <VBox spacing="10" style="-fx-background-color: #f8eef1;">
 
 
-            <!-- SEARCH + FILTER (scroll) -->
-            <ScrollPane fitToWidth="true"
-                        vbarPolicy="AS_NEEDED"
-                        style="-fx-background: #f8eef1; -fx-background-color: #f8eef1;"
-                        VBox.vgrow="ALWAYS">
+            <ScrollPane fitToWidth="true" style="-fx-background: #f8eef1; -fx-background-color: #f8eef1;" vbarPolicy="AS_NEEDED" VBox.vgrow="ALWAYS">
 
                 <content>
                     <VBox alignment="TOP_CENTER" spacing="20">
                         <padding>
-                            <Insets bottom="18" left="30" right="18" top="18"/>
+                            <Insets bottom="18" left="30" right="18" top="18" />
                         </padding>
 
                         <HBox maxWidth="1280" spacing="30">
                             <VBox alignment="TOP_CENTER" spacing="18" HBox.hgrow="ALWAYS">
 
-                                <TextField fx:id="txtSearch"
-                                           maxWidth="980"
-                                           prefHeight="42"
-                                           promptText="Search flowers ..."
-                                           style="-fx-background-color: #ffffff; -fx-background-radius: 18; -fx-font-size: 18px;" />
+                                <TextField fx:id="txtSearch" maxWidth="980" prefHeight="42" promptText="Search flowers ..." style="-fx-background-color: #ffffff; -fx-background-radius: 18; -fx-font-size: 18px;" />
 
                             </VBox>
                         </HBox>
 
-                        <!-- PRODUCT -->
-                        <TilePane fx:id="productTilePane"
-                                  alignment="CENTER"
-                                  hgap="30"
-                                  vgap="28"
-                                  prefColumns="4"
-                                  prefTileHeight="280"
-                                  prefTileWidth="190"/>
+                        <TilePane fx:id="productTilePane" alignment="CENTER" hgap="30" prefColumns="4" prefTileHeight="280" prefTileWidth="190" vgap="28" />
 
                     </VBox>
                 </content>
             </ScrollPane>
 
-            <!-- PAGINATION LUÔN Ở DƯỚI -->
-            <HBox alignment="CENTER"
-                  spacing="10"
-                  styleClass="pagination-box">
+            <HBox alignment="CENTER" spacing="10" styleClass="pagination-box">
                 <padding>
-                    <Insets top="0" right="0" bottom="40" left="0"/>
+                    <Insets bottom="40" left="0" right="0" top="0" />
                 </padding>
 
-                <Button fx:id="btnPrev"
-                        text="Prev"
-                        onAction="#handlePrevPage"
-                        styleClass="primary-button"/>
+                <Button fx:id="btnPrev" onAction="#handlePrevPage" styleClass="primary-button" text="Prev" />
 
-                <Label fx:id="lblPage"
-                       text="Page 1"
-                       styleClass="pagination-label"/>
+                <Label fx:id="lblPage" styleClass="pagination-label" text="Page 1" />
 
-                <Button fx:id="btnNext"
-                        text="Next"
-                        onAction="#handleNextPage"
-                        styleClass="primary-button"/>
+                <Button fx:id="btnNext" onAction="#handleNextPage" styleClass="primary-button" text="Next" />
 
             </HBox>
 

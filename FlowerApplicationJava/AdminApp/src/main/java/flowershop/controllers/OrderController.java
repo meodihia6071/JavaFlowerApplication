@@ -98,6 +98,12 @@ public class OrderController {
     @FXML
     private Label lblCheckoutTitle;
 
+    @FXML
+    public void goProfile() {
+        SceneManager.switchScene("/fxml/Profile.fxml", "Profile");
+    }
+
+
     private boolean isAutoFilling = false;
 
     private final CartService cartService = new CartService();

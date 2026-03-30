@@ -72,6 +72,11 @@ public class FlowersController {
     @FXML
     private Button btnCart;
 
+    @FXML
+    public void goProfile() {
+        SceneManager.switchScene("/fxml/Profile.fxml", "Profile");
+    }
+
     private final ProductDAO productDAO = new ProductDAO();
     private final CartService cartService = new CartService();
     private final DecimalFormat moneyFormat = new DecimalFormat("0.##");
