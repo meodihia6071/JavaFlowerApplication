@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -20,6 +21,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox; // Đã thêm Import HBox
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
@@ -75,14 +78,21 @@ public class AdminProductsController {
             }
         });
 
-        // HƯỚNG DẪN BẢNG HIỂN THỊ ẢNH THẬT
+        // BẢNG HIỂN THỊ ẢNH ĐẸP, VỪA VẶN
         colImage.setCellValueFactory(new PropertyValueFactory<>("image"));
         colImage.setCellFactory(column -> new TableCell<Product, String>() {
             private final ImageView imageView = new ImageView();
+            private final StackPane container = new StackPane(imageView);
+
             {
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
-                imageView.setPreserveRatio(true);
+                // Đặt chiều cao ô cố định để tất cả các ô đều giống nhau
+                productTable.setFixedCellSize(70);
+
+                imageView.setPreserveRatio(true); // Giữ nguyên tỷ lệ để không bị méo mó
+                imageView.setFitHeight(60); // Đặt chiều cao ảnh lấp đầy phần lớn ô
+
+                container.setAlignment(Pos.CENTER);
+                container.setPadding(new Insets(5)); // Thêm đệm để đẹp hơn
             }
 
             @Override
@@ -93,9 +103,14 @@ public class AdminProductsController {
                 } else {
                     File file = new File(System.getProperty("user.dir"), imagePath);
                     if (file.exists()) {
-                        imageView.setImage(new Image(file.toURI().toString()));
-                        setGraphic(imageView);
-                        setAlignment(Pos.CENTER);
+                        try {
+                            imageView.setImage(new Image(file.toURI().toString()));
+                            setGraphic(container);
+                            setAlignment(Pos.CENTER);
+                        } catch (Exception e) {
+                            System.out.println("Lỗi load ảnh: " + e.getMessage());
+                            setGraphic(null);
+                        }
                     } else {
                         setGraphic(null);
                     }
@@ -103,10 +118,81 @@ public class AdminProductsController {
             }
         });
 
-        productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        productTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 
         loadProducts();
         setActiveMenu("Products");
+
+        // ========================================================
+        // ======= PHẦN MỚI: BẮT SỰ KIỆN CLICK DÒNG ĐỂ XEM CHI TIẾT =======
+        // ========================================================
+        productTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                handleViewProductDetails(newSelection);
+                // Bỏ chọn dòng sau khi xem để tránh click lại không ăn
+                javafx.application.Platform.runLater(() -> productTable.getSelectionModel().clearSelection());
+            }
+        });
+    }
+
+    // ========================================================
+    // ======= PHẦN MỚI: HÀM VẼ CỬA SỔ XEM CHI TIẾT XỊN XÒ =======
+    // ========================================================
+    private void handleViewProductDetails(Product selected) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Product Details - " + selected.getProductName());
+        applySafeCss(dialog.getDialogPane());
+
+        // Bên trái: Ảnh to, rõ nét, bất tử tỷ lệ
+        ImageView bigImageView = new ImageView();
+        bigImageView.setFitWidth(250); bigImageView.setFitHeight(250); // Ảnh to hơn
+        bigImageView.setPreserveRatio(true); // Giữ nguyên tỷ lệ
+        bigImageView.setStyle("-fx-border-color: #E25A84; -fx-border-width: 2px; -fx-border-radius: 5px;");
+
+        if (selected.getImage() != null && !selected.getImage().isEmpty()) {
+            File file = new File(System.getProperty("user.dir"), selected.getImage());
+            if (file.exists()) {
+                bigImageView.setImage(new Image(file.toURI().toString()));
+            } else {
+                // Có thể load ảnh default nếu thiếu
+            }
+        }
+        VBox imageBox = new VBox(bigImageView);
+        imageBox.setAlignment(Pos.CENTER);
+        imageBox.setPadding(new Insets(10));
+
+        // Bên phải: Các thông tin chi tiết (GridPane)
+        GridPane grid = new GridPane();
+        grid.setHgap(15); grid.setVgap(10);
+        grid.setPadding(new Insets(10));
+
+        // Dùng hàm tiện ích để thêm các dòng thông tin đẹp mắt
+        addDetailRow(grid, 0, "ID Sản phẩm:", String.valueOf(selected.getProductId()));
+        addDetailRow(grid, 1, "Tên hoa:", selected.getProductName());
+        addDetailRow(grid, 2, "Danh mục:", selected.getCategory() != null ? selected.getCategory().getCategoryName() : "N/A");
+        addDetailRow(grid, 3, "Giá bán:", "$" + selected.getPrice().setScale(2, RoundingMode.HALF_UP).toString());
+        addDetailRow(grid, 4, "Tồn kho:", String.valueOf(selected.getQuantity()) + " cành");
+
+        // Main Layout kết hợp 2 bên
+        HBox mainLayout = new HBox(20, imageBox, grid);
+        mainLayout.setAlignment(Pos.CENTER);
+        mainLayout.setPadding(new Insets(20));
+
+        dialog.getDialogPane().setContent(mainLayout);
+        dialog.getDialogPane().getButtonTypes().add(ButtonType.CLOSE);
+        dialog.showAndWait();
+    }
+
+    // Hàm tiện ích để thêm dòng thông tin dạng Label/Value đẹp mắt
+    private void addDetailRow(GridPane grid, int row, String labelText, String valueText) {
+        Label lblLabel = new Label(labelText);
+        lblLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #4a2c2c; -fx-font-size: 14px;");
+
+        Label lblValue = new Label(valueText);
+        lblValue.setStyle("-fx-font-size: 14px; -fx-text-fill: #e25a84;");
+
+        grid.add(lblLabel, 0, row);
+        grid.add(lblValue, 1, row);
     }
 
     // ================= LOAD =================
