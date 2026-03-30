@@ -1,66 +1,62 @@
 package flowershop.services;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import jakarta.mail.*;
+import jakarta.mail.internet.*;
+import java.util.Properties;
 
 public class EmailService {
 
-    public static void sendEmail(String name, String email, String message) {
-        try {
-            name = name.replace("\"", "'").trim();
-            email = email.replace("\"", "'").trim();
-            message = message.replace("\"", "'")
-                    .replace("\n", " ")
-                    .trim();
+    private static final String FROM_EMAIL = "hakhoa1706@gmail.com";
+    private static final String APP_PASSWORD = "ypld lnev ajsx qsuk";
 
-            String json = """
-                    {
-                      "service_id": "service_as1cg9q",
-                      "template_id": "template_jsqvfke",
-                      "public_key": "1e_zNSn93gQwVehkC",
-                      "template_params": {
-                        "from_name": "%s",
-                        "from_email": "%s",
-                        "message": "%s"
-                      }
+    public static void sendEmail(String name, String userEmail, String messageContent) throws Exception {
+
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(props,
+                new Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(FROM_EMAIL, APP_PASSWORD);
                     }
-                    """.formatted(name, email, message);
+                });
 
-            URL url = new URL("https://api.emailjs.com/api/v1.0/email/send");
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        // 🔥 1. Gửi mail cho shop
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(FROM_EMAIL));
+        message.setRecipients(Message.RecipientType.TO,
+                InternetAddress.parse(FROM_EMAIL));
 
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
+        message.setSubject("🌸 Contact từ FlowerShop");
 
-            // 🔥 BẮT BUỘC
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("origin", "http://localhost");
+        String content =
+                "Tên: " + name +
+                        "\nEmail: " + userEmail +
+                        "\n\nNội dung:\n" + messageContent;
 
-            try (OutputStream os = conn.getOutputStream()) {
-                os.write(json.getBytes("utf-8"));
-            }
+        message.setText(content);
 
-            int responseCode = conn.getResponseCode();
-            System.out.println("Response Code: " + responseCode);
+        Transport.send(message);
 
-            InputStream is = (responseCode == 200)
-                    ? conn.getInputStream()
-                    : conn.getErrorStream();
+        // 🔥 2. Gửi mail phản hồi cho khách
+        Message reply = new MimeMessage(session);
+        reply.setFrom(new InternetAddress(FROM_EMAIL));
+        reply.setRecipients(Message.RecipientType.TO,
+                InternetAddress.parse(userEmail));
 
-            if (is != null) {
-                String response = new String(is.readAllBytes());
-                System.out.println("RESPONSE: " + response);
-            }
+        reply.setSubject("🌸 FlowerShop - Cảm ơn bạn đã liên hệ");
 
-            if (responseCode != 200) {
-                throw new RuntimeException("Send mail failed!");
-            }
+        reply.setContent(
+                "<h2>🌸 FlowerShop</h2>" +
+                        "<p>Xin chào <b>" + name + "</b>,</p>" +
+                        "<p>Cảm ơn bạn đã liên hệ với chúng tôi 💌</p>" +
+                        "<p>Chúng tôi sẽ phản hồi sớm nhất!</p>",
+                "text/html; charset=UTF-8"
+        );
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("Không gửi được email");
-        }
+        Transport.send(reply);
     }
 }

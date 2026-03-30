@@ -24,7 +24,7 @@
                 <Button onAction="#goFlowers" styleClass="nav-button" text="Flowers" />
                 <Button onAction="#goCategories" styleClass="nav-button" text="Categories" />
                 <Button onAction="#goContact" styleClass="nav-button" text="Contact" />
-                <Button fx:id="btnCart" onAction="#goCart" styleClass="nav-button" text="Cart" />
+                <Button fx:id="btnCart" onAction="#goCart" styleClass="nav-button-active" text="Cart" />
                 <Button onAction="#handleLogout" prefHeight="34.0" prefWidth="94.0" styleClass="logout-button" text="Log Out" />
             </children>
         </HBox>

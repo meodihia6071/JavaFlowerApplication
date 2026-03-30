@@ -112,7 +112,7 @@
 
                                         <HBox alignment="CENTER_RIGHT" spacing="12">
                                             <children>
-                                                <Button fx:id="btnClear" onAction="#handleClear" prefHeight="38" prefWidth="100" style="-fx-background-color:#edd6d8; -fx-text-fill:#8e5f5f; -fx-font-size:14px; -fx-font-weight:700; -fx-background-radius:10; -fx-cursor:hand;" text="Clear" />
+<!--                                                <Button fx:id="btnClear" onAction="#handleClear" prefHeight="38" prefWidth="100" style="-fx-background-color:#edd6d8; -fx-text-fill:#8e5f5f; -fx-font-size:14px; -fx-font-weight:700; -fx-background-radius:10; -fx-cursor:hand;" text="Clear" />-->
 
                                                 <Button fx:id="btnSend" onAction="#handleSendMessage" prefHeight="38" prefWidth="150" style="-fx-font-size:15px; -fx-background-radius:10;" styleClass="primary-button" text="Send Message" />
                                             </children>

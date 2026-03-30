@@ -49,6 +49,9 @@ public class ContactController {
     @FXML
     private Button btnCart;
 
+    @FXML
+    private Button btnSend;
+
     private final CartService cartService = new CartService();
 
     @FXML
@@ -66,6 +69,17 @@ public class ContactController {
         addHoverAnimation(emailBox);
 
         refreshCartButtonText();
+        Customer customer = SessionManager.getCurrentCustomer();
+        if (customer != null) {
+            txtName.setText(customer.getCustomerName());
+            txtEmail.setText(customer.getEmail());
+
+            txtMessage.setDisable(false);
+            txtName.setEditable(false);
+            txtEmail.setEditable(false);
+        }else{
+            txtMessage.setDisable(true);
+        }
     }
 
     private void refreshCartButtonText() {
@@ -126,28 +140,47 @@ public class ContactController {
     @FXML
     private void handleSendMessage() {
 
-        String name = txtName.getText().trim();
-        String email = txtEmail.getText().trim();
-        String message = txtMessage.getText().trim();
+        Customer customer = SessionManager.getCurrentCustomer();
 
-        if (name.isEmpty() || email.isEmpty() || message.isEmpty()) {
-            showInfo("Thiếu thông tin", "Vui lòng nhập đầy đủ họ tên, email và nội dung tin nhắn.");
+        if (customer == null) {
+            showInfo("Lỗi", "Bạn chưa đăng nhập!");
             return;
         }
 
-        try {
-            EmailService.sendEmail(name, email, message);
+        String name = customer.getCustomerName();
+        String email = customer.getEmail();
+        String message = txtMessage.getText().trim();
 
-            showInfo("Thành công", "Cảm ơn bạn đã phải hồi !");
-
-            // clear form
-            txtName.clear();
-            txtEmail.clear();
-            txtMessage.clear();
-
-        } catch (Exception e) {
-            showInfo("Lỗi", "Chưa gửi được !");
+        if (message.isEmpty()) {
+            showInfo("Thiếu thông tin", "Vui lòng nhập nội dung.");
+            return;
         }
+
+        btnSend.setDisable(true);
+        btnSend.setText("Đang gửi...");
+
+        new Thread(() -> {
+            try {
+                EmailService.sendEmail(name, email, message);
+
+                javafx.application.Platform.runLater(() -> {
+                    showInfo("Thành công", "Đã gửi mail!");
+                    txtMessage.clear();
+
+                    btnSend.setDisable(false);
+                    btnSend.setText("Send");
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+                javafx.application.Platform.runLater(() -> {
+                    showInfo("Lỗi", "Gửi thất bại!");
+                    btnSend.setDisable(false);
+                    btnSend.setText("Send");
+                });
+            }
+        }).start();
     }
 
     @FXML

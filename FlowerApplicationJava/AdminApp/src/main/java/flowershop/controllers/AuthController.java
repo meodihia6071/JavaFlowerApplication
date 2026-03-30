@@ -21,6 +21,7 @@ public class AuthController {
     @FXML private TextField txtSignupUsername;
     @FXML private PasswordField txtSignupPassword;
     @FXML private PasswordField txtConfirmPassword;
+    @FXML private TextField txtEmail;
 
     private final UserDAO userDAO = new UserDAO();
     private final CustomerDAO customerDAO = new CustomerDAO();
@@ -54,11 +55,28 @@ public class AuthController {
         String lastName = txtLastName.getText().trim();
         String firstName = txtFirstName.getText().trim();
         String username = txtSignupUsername.getText().trim();
+        String email = txtEmail.getText().trim();
         String password = txtSignupPassword.getText().trim();
         String confirm = txtConfirmPassword.getText().trim();
 
-        if (lastName.isEmpty() || firstName.isEmpty() || username.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
+        if (lastName.isEmpty() || firstName.isEmpty() || username.isEmpty()
+                || email.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
             showAlert("Lỗi", "Vui lòng nhập đầy đủ thông tin.");
+            return;
+        }
+
+        if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            showAlert("Lỗi", "Email không hợp lệ.");
+            return;
+        }
+
+        if (customerDAO.findByEmail(email) != null) {
+            showAlert("Lỗi", "Email đã tồn tại.");
+            return;
+        }
+
+        if (!password.matches("^(?=.*[A-Z])(?=.*\\d).{8,}$")) {
+            showAlert("Lỗi", "Mật khẩu phải >= 8 ký tự, có ít nhất 1 chữ hoa và 1 số.");
             return;
         }
 
@@ -80,6 +98,7 @@ public class AuthController {
 
         Customer customer = new Customer();
         customer.setCustomerName(lastName + " " + firstName);
+        customer.setEmail(email);
         customer.setPoints(0);
         customer.setUser(user);
         customerDAO.save(customer);
