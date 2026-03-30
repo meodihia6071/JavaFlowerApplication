@@ -48,65 +48,58 @@ public class AdminOrdersController {
 
     // ================= ORDER TABLE =================
     private void initOrderTable(){
-
         colOrderId.setCellValueFactory(cell ->
-                new SimpleStringProperty(getField(cell.getValue(), "orderId"))
+                new SimpleStringProperty(String.valueOf(cell.getValue().getOrderId()))
         );
 
         colCustomer.setCellValueFactory(cell -> {
-            Object customer = getObject(cell.getValue(), "customer");
-            if(customer == null) return new SimpleStringProperty("N/A");
-
-            return new SimpleStringProperty(getField(customer, "customerName"));
+            if (cell.getValue().getCustomer() != null) {
+                return new SimpleStringProperty(cell.getValue().getCustomer().getCustomerName());
+            }
+            return new SimpleStringProperty("Khách lẻ"); // Tránh lỗi NullPointerException
         });
 
         colDate.setCellValueFactory(cell ->
-                new SimpleStringProperty(getField(cell.getValue(), "orderDate"))
+                new SimpleStringProperty(String.valueOf(cell.getValue().getOrderDate()))
         );
 
         colTotal.setCellValueFactory(cell ->
-                new SimpleStringProperty(getField(cell.getValue(), "total"))
+                new SimpleStringProperty(String.valueOf(cell.getValue().getTotal()))
         );
 
         colStatus.setCellValueFactory(cell ->
-                new SimpleStringProperty(getField(cell.getValue(), "status"))
+                new SimpleStringProperty(cell.getValue().getStatus())
         );
     }
 
     // ================= DETAIL TABLE =================
     private void initDetailTable(){
-
         colProduct.setCellValueFactory(cell -> {
-            Object product = getObject(cell.getValue(), "product");
-            if(product == null) return new SimpleStringProperty("N/A");
-
-            return new SimpleStringProperty(getField(product, "productName"));
+            if (cell.getValue().getProduct() != null) {
+                return new SimpleStringProperty(cell.getValue().getProduct().getProductName());
+            }
+            return new SimpleStringProperty("Sản phẩm đã xóa");
         });
 
         colQty.setCellValueFactory(cell ->
-                new SimpleStringProperty(getField(cell.getValue(), "quantity"))
+                new SimpleStringProperty(String.valueOf(cell.getValue().getQuantity()))
         );
 
         colPrice.setCellValueFactory(cell ->
-                new SimpleStringProperty(getField(cell.getValue(), "price"))
+                new SimpleStringProperty(String.valueOf(cell.getValue().getPrice()))
         );
 
         colSubTotal.setCellValueFactory(cell -> {
             try {
-                Object priceObj = getRaw(cell.getValue(), "price");
-                Object qtyObj = getRaw(cell.getValue(), "quantity");
-
-                double price = Double.parseDouble(priceObj.toString());
-                int qty = Integer.parseInt(qtyObj.toString());
-
+                // Tính trực tiếp Thành tiền = Giá * Số lượng
+                double price = cell.getValue().getPrice().doubleValue(); // Nếu price là BigDecimal
+                int qty = cell.getValue().getQuantity();
                 return new SimpleStringProperty(String.valueOf(price * qty));
-
             } catch (Exception e){
-                return new SimpleStringProperty("Error");
+                return new SimpleStringProperty("0.0");
             }
         });
     }
-
     // ================= LOAD DATA =================
     private void loadOrders(){
         List<Order> list = orderDAO.getAllOrders();

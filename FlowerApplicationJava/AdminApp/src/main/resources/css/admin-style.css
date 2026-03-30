@@ -13,9 +13,9 @@
 /* sidebar - Nới rộng thành 250px và KHÓA CHẶT 3 vòng không cho co giãn */
 .sidebar {
     -fx-background-color: #F6E1E5;
-    -fx-pref-width: 250;
-    -fx-min-width: 250;
-    -fx-max-width: 250;
+    -fx-pref-width: 230;
+    -fx-min-width: 230;
+    -fx-max-width: 230;
 }
 
 /* logo - Thu nhỏ font và set lề trái cố định 20px */
@@ -234,7 +234,8 @@
 }
 .report-card{
     -fx-background-color:#FFF6F8;
-    -fx-padding:20;
+    -fx-min-width: 160px;
+    -fx-padding: 15;
     -fx-background-radius:12;
     -fx-border-color:#f1c9d3;
     -fx-border-radius:12;
@@ -246,6 +247,7 @@
     -fx-font-size:24px;
     -fx-font-weight:bold;
     -fx-text-fill:#c44d6e;
+    -fx-wrap-text: false;
 }
 
 .dialog-pane{
@@ -434,4 +436,24 @@
 .button.export-btn:hover {
     -fx-background-color: #e25a84;
     -fx-text-fill: white;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Ẩn thanh cuộn ngang */
+.scroll-pane .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-height: 0;
+}
+
+/* Ẩn thanh cuộn dọc (cho chắc) */
+.scroll-pane .scroll-bar:vertical {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
 }

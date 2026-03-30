@@ -12,8 +12,7 @@
       fx:controller="flowershop.controllers.AdminProductsController">
 
     <children>
-
-        <VBox prefWidth="250" styleClass="sidebar">
+        <VBox fx:id="sidebar" prefWidth="250" styleClass="sidebar">
             <children>
                 <Label text="🌷 Flower Shop" styleClass="logo"/>
                 <Separator prefWidth="250" styleClass="sidebar-separator"/>

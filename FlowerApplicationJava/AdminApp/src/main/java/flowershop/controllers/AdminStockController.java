@@ -18,6 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class AdminStockController {
 
     @FXML private TextField searchField;
     @FXML private VBox sidebar;
+    private final NumberFormat vnFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
 
     private StockDAO stockDAO = new StockDAO();
     private ObservableList<Stock> stockList;
@@ -66,15 +69,15 @@ public class AdminStockController {
             colImportDate.setCellValueFactory(new PropertyValueFactory<>("importDate"));
 
             colImportPrice.setCellValueFactory(new PropertyValueFactory<>("importPrice"));
-            colImportPrice.setCellFactory(column -> new TableCell<Stock, Double>() {
+            colImportPrice.setCellFactory(col -> new TableCell<>(){
                 @Override
-                protected void updateItem(Double value, boolean empty) {
+                protected void updateItem(Double value, boolean empty){
                     super.updateItem(value, empty);
                     setStyle("-fx-alignment: CENTER-RIGHT;");
-                    if (empty || value == null) {
+                    if(empty || value == null){
                         setText(null);
                     } else {
-                        setText("$" + String.format("%.0f", value));
+                        setText(vnFormat.format(value) + "₫");
                     }
                 }
             });
@@ -287,7 +290,6 @@ public class AdminStockController {
     @FXML public void sortQuantityAsc(){ FXCollections.sort(stockList, (a,b)->Integer.compare(a.getQuantity(), b.getQuantity())); stockTable.setItems(stockList); }
     @FXML public void sortQuantityDesc(){ FXCollections.sort(stockList, (a,b)->Integer.compare(b.getQuantity(), a.getQuantity())); stockTable.setItems(stockList); }
     @FXML public void sortNewest(){ FXCollections.sort(stockList, (a,b)->b.getImportDate().compareTo(a.getImportDate())); stockTable.setItems(stockList); }
-
     // ================= NAVIGATION =================
     @FXML public void goDashboard(ActionEvent event){ SceneManager.switchScene("/fxml/AdminDashboard.fxml","Dashboard"); }
     @FXML public void goProducts(ActionEvent event){ SceneManager.switchScene("/fxml/AdminProducts.fxml","Products"); }

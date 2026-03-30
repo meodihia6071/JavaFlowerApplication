@@ -2,43 +2,59 @@ package flowershop.services;
 
 import flowershop.dao.ReportDAO;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
 public class ReportService {
 
-    private ReportDAO reportDAO = new ReportDAO();
+    private final ReportDAO reportDAO = new ReportDAO();
 
-    public int countProducts(){
-        return reportDAO.countProducts();
+    // ================= BASIC =================
+    public int countOrders(LocalDate start, LocalDate end) {
+        return reportDAO.countOrders(start, end);
     }
 
-    public int countOrders(){
-        return reportDAO.countOrders();
-    }
-
-    public int countCustomers(){
+    public int countCustomers() {
         return reportDAO.countCustomers();
     }
 
-    public double getRevenue(int month){
-        return reportDAO.getRevenueByMonth(month);
+    public int countProducts() {
+        return reportDAO.countProducts();
     }
 
-    // Tổng doanh thu cả năm
-    public double getTotalRevenue(){
-        double total = 0;
-
-        for(int i = 1; i <= 12; i++){
-            total += getRevenue(i);
-        }
-
-        return total;
+    // ================= REVENUE =================
+    public double getTotalRevenue(LocalDate start, LocalDate end){
+        return reportDAO.getTotalRevenue(start, end);
     }
 
-    // Giá trị trung bình mỗi đơn
-    public double getAverageOrderValue(){
-        int orders = countOrders();
+    public double getTotalCost(LocalDate start, LocalDate end){
+        return reportDAO.getTotalCost(start, end);
+    }
 
-        if(orders == 0) return 0;
+    public double getAverageOrderValue(LocalDate start, LocalDate end){
+        return reportDAO.getAverageOrderValue(start, end);
+    }
 
-        return getTotalRevenue() / orders;
+    // ================= CHART =================
+    public Map<Integer, Double> getRevenueByMonth() {
+        return reportDAO.getRevenueLast12Months();
+    }
+
+    public Map<String, Integer> getOrdersByLast10Weeks() {
+        return reportDAO.getOrdersByLast10Weeks();
+    }
+
+    public Map<String, Integer> getTopProducts(LocalDate start, LocalDate end){
+        return reportDAO.getTopProducts(start, end);
+    }
+
+    // ================= TABLE =================
+    public List<Map<String, Object>> getTopCustomers() {
+        return reportDAO.getTopCustomers();
+    }
+
+    public List<Map<String, Object>> getLowStock(){
+        return reportDAO.getLowStockProducts();
     }
 }

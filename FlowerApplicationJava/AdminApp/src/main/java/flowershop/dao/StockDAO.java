@@ -15,7 +15,9 @@ public class StockDAO {
 
             // DÙNG JOIN FETCH: Lấy bảng Stock, tiện tay gom luôn dữ liệu bảng Product và Supplier đi kèm
             // Để lên màn hình có cái mà hiển thị tên Hoa và tên Nhà cung cấp
-            String hql = "SELECT s FROM Stock s LEFT JOIN FETCH s.product LEFT JOIN FETCH s.supplier";
+            String hql = "SELECT s FROM Stock s " +
+                    "LEFT JOIN FETCH s.product " +
+                    "LEFT JOIN FETCH s.supplierEntity";
             return session.createQuery(hql, Stock.class).list();
 
         } catch (Exception e) {
