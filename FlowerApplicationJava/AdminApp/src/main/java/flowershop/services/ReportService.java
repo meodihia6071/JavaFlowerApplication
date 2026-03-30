@@ -15,8 +15,8 @@ public class ReportService {
         return reportDAO.countOrders(start, end);
     }
 
-    public int countCustomers() {
-        return reportDAO.countCustomers();
+    public int countCustomers(LocalDate start, LocalDate end){
+        return reportDAO.countCustomers(start, end);
     }
 
     public int countProducts() {

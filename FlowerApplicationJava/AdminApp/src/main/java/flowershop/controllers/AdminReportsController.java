@@ -146,7 +146,7 @@ public class AdminReportsController {
                 new Alert(Alert.AlertType.WARNING, "Ngày bắt đầu phải trước ngày kết thúc!").show();
                 return;
             }
-
+            loadSummaryStatic();
             loadFilteredSummaryOnly();
         }
     }
@@ -154,8 +154,8 @@ public class AdminReportsController {
     // ================= SUMMARY =================
     private void loadSummaryStatic(){
         int products = reportService.countProducts();
-        int orders = reportService.countOrders(null, null);
-        int customers = reportService.countCustomers();
+        int orders = reportService.countOrders(startDate, endDate);
+        int customers = reportService.countCustomers(startDate, endDate);
 
         totalProducts.setText(String.valueOf(products));
         totalOrders.setText(String.valueOf(orders));

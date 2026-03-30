@@ -39,10 +39,26 @@ public class ReportDAO {
         }
     }
 
-    public int countCustomers(){
+    public int countCustomers(LocalDate start, LocalDate end){
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("select count(c) from Customer c", Long.class)
-                    .getSingleResult().intValue();
+
+            String hql = "SELECT COUNT(DISTINCT c.customerId) " +
+                    "FROM Order o " +
+                    "JOIN o.customer c";
+
+            if (start != null && end != null) {
+                hql += "  WHERE o.orderDate BETWEEN :start AND :end";
+            }
+
+            var query = session.createQuery(hql, Long.class);
+
+            if (start != null && end != null) {
+                query.setParameter("start", start);
+                query.setParameter("end", end);
+            }
+
+            Long count = query.uniqueResult();
+            return count == null ? 0 : count.intValue();
         }
     }
 
