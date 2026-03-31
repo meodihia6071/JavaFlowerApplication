@@ -12,6 +12,7 @@ public class StockDAO {
     public List<Stock> getAllStock() {
         //resources code tự động đóng Session
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
             String hql = "SELECT s FROM Stock s " +
                     "LEFT JOIN FETCH s.product " +
                     "LEFT JOIN FETCH s.supplierEntity";

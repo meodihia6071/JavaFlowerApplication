@@ -106,6 +106,7 @@ public class AdminReportsController {
 
         // Điền rõ kiểu dữ liệu thay vì dùng <>
         colCusSpent.setCellFactory(column -> new TableCell<Map<String, Object>, Number>() {
+
             @Override
             protected void updateItem(Number value, boolean empty) {
                 super.updateItem(value, empty);

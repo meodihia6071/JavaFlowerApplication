@@ -48,7 +48,6 @@
                             -fx-background-radius:0;
                             -fx-border-radius:0;
                             "/>
-                <Button text="👨‍💼 Employees" onAction="#goEmployees" styleClass="menu-btn"/>
                 <Button text="📈 Reports" onAction="#goReports" styleClass="menu-btn"/>
 
                 <Region VBox.vgrow="ALWAYS"/>

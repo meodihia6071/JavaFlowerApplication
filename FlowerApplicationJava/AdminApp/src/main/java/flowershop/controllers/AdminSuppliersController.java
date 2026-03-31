@@ -117,7 +117,6 @@ public class AdminSuppliersController {
     @FXML void goOrders(ActionEvent e){ SceneManager.switchScene("/fxml/AdminOrders.fxml","Orders"); }
     @FXML void goCustomers(ActionEvent e){ SceneManager.switchScene("/fxml/AdminCustomers.fxml","Customers"); }
     @FXML void goStock(ActionEvent e){ SceneManager.switchScene("/fxml/AdminStock.fxml","Stock"); }
-    @FXML public void goEmployees(){ SceneManager.switchScene("/fxml/AdminEmployees.fxml","Employees");}
     @FXML void goReports(ActionEvent e){ SceneManager.switchScene("/fxml/AdminReports.fxml","Reports"); }
     @FXML void handleLogout(ActionEvent e){ SessionManager.clear(); SceneManager.switchScene("/fxml/login.fxml","Login"); }
     @FXML void goSuppliers(ActionEvent e){ SceneManager.switchScene("/fxml/AdminSuppliers.fxml","Suppliers"); }

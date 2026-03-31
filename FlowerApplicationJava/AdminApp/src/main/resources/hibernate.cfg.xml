@@ -36,6 +36,8 @@
         <mapping class="flowershop.models.Stock"/>
         <mapping class="flowershop.models.Supplier"/>
         <mapping class="flowershop.models.User"/>
+        <mapping class="flowershop.models.Supplier"/>
+        <mapping class="flowershop.models.Stock"/>
 
     </session-factory>
 </hibernate-configuration>
