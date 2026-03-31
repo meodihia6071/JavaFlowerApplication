@@ -157,7 +157,9 @@ public class AdminReportsController {
     private void loadSummaryStatic(){
         int products = reportService.countProducts();
         int orders = reportService.countOrders(null, null);
-        int customers = reportService.countCustomers();
+
+        // SỬA DÒNG NÀY: Thêm (null, null) vào trong ngoặc
+        int customers = reportService.countCustomers(null, null);
 
         totalProducts.setText(String.valueOf(products));
         totalOrders.setText(String.valueOf(orders));
