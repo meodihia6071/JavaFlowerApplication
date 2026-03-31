@@ -4,33 +4,26 @@ import flowershop.dao.CategoryDAO;
 import flowershop.models.Category;
 import flowershop.services.SceneManager;
 import flowershop.services.SessionManager;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import javafx.fxml.FXML;
+import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
-
 import java.util.List;
-
 public class AdminCategoriesController {
 
     @FXML private TableView<Category> categoryTable;
     @FXML private TableColumn<Category, Integer> colId;
     @FXML private TableColumn<Category, String> colName;
-
     @FXML private TextField searchField;
     @FXML private VBox sidebar;
 
     private CategoryDAO categoryDAO = new CategoryDAO();
     private ObservableList<Category> categoryList;
-
-    // ================= INIT =================
 
     @FXML
     public void initialize(){
@@ -137,28 +130,42 @@ public class AdminCategoriesController {
     // ================= DELETE =================
 
     @FXML
-    public void handleDeleteCategory(){
-
+    public void handleDeleteCategory(ActionEvent event) {
         Category selected = categoryTable.getSelectionModel().getSelectedItem();
 
-        if(selected == null){
-            new Alert(Alert.AlertType.WARNING,"Select category!").show();
+        // 1. Kiểm tra xem người dùng đã bấm chọn dòng nào chưa
+        if (selected == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Vui lòng chọn danh mục cần xóa!");
+            // applySafeCss(alert.getDialogPane()); // Bật dòng này nếu anh có hàm nhúng CSS
+            alert.show();
             return;
         }
 
-        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.getDialogPane().getStylesheets().add(
-                getClass().getResource("/css/admin-style.css").toExternalForm()
-        );
-        confirm.getDialogPane().getStyleClass().add("dialog-pane");
-        confirm.setContentText("Delete " + selected.getCategoryName() + "?");
+        // 2. BẮT LỖI LOGIC: KHÔNG CHO XÓA NẾU CÒN HOA DÙNG DANH MỤC NÀY
+        // Khai báo đối tượng categoryDAO nếu anh chưa khai báo ở đầu class
+        flowershop.dao.CategoryDAO categoryDAO = new flowershop.dao.CategoryDAO();
 
-        if(confirm.showAndWait().get() == ButtonType.OK){
+        if (categoryDAO.isCategoryUsed(selected.getCategoryId())) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Lỗi Ràng Buộc Dữ Liệu");
+            alert.setHeaderText("Không thể xóa danh mục: " + selected.getCategoryName());
+            alert.setContentText("Đang có sản phẩm sử dụng danh mục này!\nVui lòng xóa các sản phẩm đó, hoặc chuyển chúng sang danh mục khác trước khi xóa.");
+            // applySafeCss(alert.getDialogPane());
+            alert.showAndWait();
+            return; // Đuổi về luôn, từ chối lệnh xóa!
+        }
+
+        // 3. Nếu vượt qua được ải kiểm tra trên (Không có hoa nào dùng), thì mới cho xóa
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Category");
+        confirm.setContentText("Bạn có chắc chắn muốn xóa danh mục '" + selected.getCategoryName() + "' không?");
+        // applySafeCss(confirm.getDialogPane());
+
+        if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             categoryDAO.delete(selected);
-            loadCategories();
+            loadCategories(); // Load lại bảng
         }
     }
-
     // ================= SEARCH =================
 
     @FXML

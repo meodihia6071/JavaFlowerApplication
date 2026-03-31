@@ -11,11 +11,13 @@ public class ReportService {
     private final ReportDAO reportDAO = new ReportDAO();
 
     // ================= BASIC =================
-    public int countOrders(LocalDate start, LocalDate end) {
+    public int countOrders(LocalDate start, LocalDate end)
+    {
         return reportDAO.countOrders(start, end);
     }
 
     public int countCustomers() {
+
         return reportDAO.countCustomers();
     }
 

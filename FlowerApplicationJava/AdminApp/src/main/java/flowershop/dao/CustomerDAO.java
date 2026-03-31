@@ -29,6 +29,7 @@ public class CustomerDAO {
 
     public void save(Customer customer) {
         Transaction tx = null;
+        // ĐÃ XÓA DÒNG LỖI Ở ĐÂY
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             tx = session.beginTransaction();
             session.save(customer);
@@ -38,7 +39,6 @@ public class CustomerDAO {
             e.printStackTrace();
         }
     }
-
     public void update(Customer customer) {
         Transaction tx = null;
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {

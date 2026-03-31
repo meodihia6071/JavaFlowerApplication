@@ -105,6 +105,15 @@ public class AdminCustomerController {
         return HibernateUtil.getSessionFactory().openSession().get(User.class, id);
     }
 
+    private boolean isValidEmail(String email) {
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
+        // Công thức chuẩn để bắt định dạng: ten@mien.com
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return email.matches(emailRegex);
+    }
+
     private void applySafeCss(DialogPane dialogPane) {
         URL cssUrl = getClass().getResource("/css/admin-style.css");
         if (cssUrl != null) {
@@ -121,7 +130,7 @@ public class AdminCustomerController {
 
     // ================= ADD =================
     @FXML
-    public void handleAddCustomer(){
+    public void handleAddCustomer() {
 
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Add Customer");
@@ -137,18 +146,32 @@ public class AdminCustomerController {
         GridPane grid = new GridPane();
         grid.setHgap(10); grid.setVgap(10);
 
-        grid.add(new Label("User ID:"),0,0); grid.add(userIdField,1,0);
-        grid.add(new Label("Name:"),0,1); grid.add(nameField,1,1);
-        grid.add(new Label("Phone:"),0,2); grid.add(phoneField,1,2);
-        grid.add(new Label("Email:"),0,3); grid.add(emailField,1,3);
-        grid.add(new Label("Points:"),0,4); grid.add(pointsField,1,4);
+        grid.add(new Label("User ID:"), 0, 0); grid.add(userIdField, 1, 0);
+        grid.add(new Label("Name:"), 0, 1); grid.add(nameField, 1, 1);
+        grid.add(new Label("Phone:"), 0, 2); grid.add(phoneField, 1, 2);
+        grid.add(new Label("Email:"), 0, 3); grid.add(emailField, 1, 3);
+        grid.add(new Label("Points:"), 0, 4); grid.add(pointsField, 1, 4);
 
         dialog.getDialogPane().setContent(grid);
         ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
 
-        if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
+        if (dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn) {
             try {
+                // ==========================================
+                // 1. LẤY VÀ KIỂM TRA EMAIL TRƯỚC KHI LƯU
+                // ==========================================
+                String emailInput = emailField.getText().trim();
+
+                // Nếu người dùng có nhập email thì phải kiểm tra định dạng
+                if (!emailInput.isEmpty() && !isValidEmail(emailInput)) {
+                    showAlert(Alert.AlertType.WARNING, "Định dạng Email không hợp lệ!\nVui lòng nhập đúng (Ví dụ: quyen@gmail.com).");
+                    return; // Đuổi về, chặn ngay không cho chạy tiếp xuống Database!
+                }
+
+                // ==========================================
+                // 2. NẾU EMAIL CHUẨN RỒI THÌ TIẾN HÀNH LƯU
+                // ==========================================
                 Customer c = new Customer();
 
                 // Xử lý an toàn cho User ID
@@ -156,7 +179,7 @@ public class AdminCustomerController {
                 if (!uIdStr.isEmpty()) {
                     int userId = Integer.parseInt(uIdStr);
                     User user = getUserById(userId);
-                    if(user == null){
+                    if (user == null) {
                         showAlert(Alert.AlertType.ERROR, "Không tìm thấy User ID này trong hệ thống!");
                         return;
                     }
@@ -167,26 +190,27 @@ public class AdminCustomerController {
 
                 c.setCustomerName(nameField.getText());
                 c.setPhone(phoneField.getText());
-                c.setEmail(emailField.getText());
-                c.setPoints(Integer.parseInt(pointsField.getText()));
+                c.setEmail(emailInput); // Dùng luôn cái biến emailInput đã được kiểm tra ở trên
+                c.setPoints(Integer.parseInt(pointsField.getText().trim()));
 
                 customerDAO.save(c);
                 loadCustomers();
+
+                showAlert(Alert.AlertType.INFORMATION, "Thêm khách hàng thành công!");
+
             } catch (NumberFormatException ex) {
                 showAlert(Alert.AlertType.ERROR, "ID hoặc Điểm phải là số!");
-            } catch (Exception e){
+            } catch (Exception e) {
                 showAlert(Alert.AlertType.ERROR, "Lỗi hệ thống: " + e.getMessage());
             }
         }
     }
-
     // ================= EDIT =================
     @FXML
-    public void handleEditCustomer(){
-
+    public void handleEditCustomer() {
+        // Lấy khách hàng đang được chọn trên bảng
         Customer selected = customerTable.getSelectionModel().getSelectedItem();
-
-        if(selected == null){
+        if (selected == null) {
             showAlert(Alert.AlertType.WARNING, "Vui lòng chọn khách hàng cần sửa!");
             return;
         }
@@ -195,56 +219,74 @@ public class AdminCustomerController {
         dialog.setTitle("Edit Customer");
         applySafeCss(dialog.getDialogPane());
 
+        // Đổ dữ liệu cũ lên form
         TextField userIdField = new TextField(selected.getUser() != null ? String.valueOf(selected.getUser().getUserId()) : "");
+        userIdField.setPromptText("Để trống nếu là khách vãng lai");
         TextField nameField = new TextField(selected.getCustomerName());
         TextField phoneField = new TextField(selected.getPhone());
-        TextField emailField = new TextField(selected.getEmail());
+        TextField emailField = new TextField(selected.getEmail() != null ? selected.getEmail() : "");
         TextField pointsField = new TextField(String.valueOf(selected.getPoints()));
 
         GridPane grid = new GridPane();
         grid.setHgap(10); grid.setVgap(10);
 
-        grid.add(new Label("User ID:"),0,0); grid.add(userIdField,1,0);
-        grid.add(new Label("Name:"),0,1); grid.add(nameField,1,1);
-        grid.add(new Label("Phone:"),0,2); grid.add(phoneField,1,2);
-        grid.add(new Label("Email:"),0,3); grid.add(emailField,1,3);
-        grid.add(new Label("Points:"),0,4); grid.add(pointsField,1,4);
+        grid.add(new Label("User ID:"), 0, 0); grid.add(userIdField, 1, 0);
+        grid.add(new Label("Name:"), 0, 1); grid.add(nameField, 1, 1);
+        grid.add(new Label("Phone:"), 0, 2); grid.add(phoneField, 1, 2);
+        grid.add(new Label("Email:"), 0, 3); grid.add(emailField, 1, 3);
+        grid.add(new Label("Points:"), 0, 4); grid.add(pointsField, 1, 4);
 
         dialog.getDialogPane().setContent(grid);
-
         ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
 
-        if(dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn){
+        if (dialog.showAndWait().orElse(ButtonType.CANCEL) == saveBtn) {
             try {
+                // ==========================================
+                // 1. BẮT LỖI EMAIL LÚC SỬA Ở ĐÂY NÀY ANH QUYỀN
+                // ==========================================
+                String emailInput = emailField.getText().trim();
+
+                // Nếu có nhập email thì phải đúng định dạng
+                if (!emailInput.isEmpty() && !isValidEmail(emailInput)) {
+                    showAlert(Alert.AlertType.WARNING, "Định dạng Email không hợp lệ!\nVui lòng nhập đúng (Ví dụ: quyen@gmail.com).");
+                    return; // Sai một ly là đuổi về luôn, không cho chạy lệnh update!
+                }
+
+                // ==========================================
+                // 2. NẾU MỌI THỨ NGON LÀNH THÌ MỚI UPDATE
+                // ==========================================
                 String uIdStr = userIdField.getText().trim();
                 if (!uIdStr.isEmpty()) {
                     int userId = Integer.parseInt(uIdStr);
                     User user = getUserById(userId);
-                    if(user == null){
+                    if (user == null) {
                         showAlert(Alert.AlertType.ERROR, "Không tìm thấy User ID này trong hệ thống!");
                         return;
                     }
                     selected.setUser(user);
                 } else {
-                    selected.setUser(null);
+                    selected.setUser(null); // Trở về khách vãng lai
                 }
 
                 selected.setCustomerName(nameField.getText());
                 selected.setPhone(phoneField.getText());
-                selected.setEmail(emailField.getText());
-                selected.setPoints(Integer.parseInt(pointsField.getText()));
+                selected.setEmail(emailInput); // Cập nhật email đã qua vòng kiểm duyệt
+                selected.setPoints(Integer.parseInt(pointsField.getText().trim()));
 
+                // Gọi DAO để cất xuống Database
                 customerDAO.update(selected);
-                loadCustomers();
+                loadCustomers(); // Tải lại bảng để thấy sự thay đổi
+
+                showAlert(Alert.AlertType.INFORMATION, "Cập nhật khách hàng thành công!");
+
             } catch (NumberFormatException ex) {
                 showAlert(Alert.AlertType.ERROR, "ID hoặc Điểm phải là số!");
-            } catch (Exception e){
+            } catch (Exception e) {
                 showAlert(Alert.AlertType.ERROR, "Lỗi hệ thống: " + e.getMessage());
             }
         }
     }
-
     // ================= DELETE =================
     @FXML
     public void handleDeleteCustomer(){

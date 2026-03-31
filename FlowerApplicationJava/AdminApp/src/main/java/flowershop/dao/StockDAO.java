@@ -10,11 +10,8 @@ import java.util.List;
 public class StockDAO {
 
     public List<Stock> getAllStock() {
-        // Dùng try-with-resources để code tự động đóng Session dù có lỗi hay không
+        //resources code tự động đóng Session
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-
-            // DÙNG JOIN FETCH: Lấy bảng Stock, tiện tay gom luôn dữ liệu bảng Product và Supplier đi kèm
-            // Để lên màn hình có cái mà hiển thị tên Hoa và tên Nhà cung cấp
             String hql = "SELECT s FROM Stock s " +
                     "LEFT JOIN FETCH s.product " +
                     "LEFT JOIN FETCH s.supplierEntity";
@@ -34,7 +31,7 @@ public class StockDAO {
             session.save(stock);
             tx.commit();
         } catch (Exception e) {
-            if (tx != null) tx.rollback(); // Bị lỗi thì hoàn tác (Rollback) không cho lưu bậy
+            if (tx != null) tx.rollback();
             e.printStackTrace();
         }
     }

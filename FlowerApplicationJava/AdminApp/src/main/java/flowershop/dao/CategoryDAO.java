@@ -41,6 +41,19 @@ public class CategoryDAO {
     }
 
     // DELETE
+    public boolean isCategoryUsed(int categoryId) {
+        try (org.hibernate.Session session = flowershop.utils.HibernateUtil.getSessionFactory().openSession()) {
+            String hql = "SELECT COUNT(p) FROM Product p WHERE p.category.categoryId = :catId";
+            Long count = session.createQuery(hql, Long.class)
+                    .setParameter("catId", categoryId)
+                    .uniqueResult();
+
+            return count != null && count > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return true;
+        }
+    }
     public void delete(Category category){
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction tx = session.beginTransaction();

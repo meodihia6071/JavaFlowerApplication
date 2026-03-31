@@ -21,7 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox; // Đã thêm Import HBox
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -44,7 +44,7 @@ public class AdminProductsController {
     @FXML private TableColumn<Product, String> colName;
     @FXML private TableColumn<Product, BigDecimal> colPrice;
     @FXML private TableColumn<Product, Integer> colQuantity;
-    @FXML private TableColumn<Product, String> colImage; // Cột hiển thị hình ảnh
+    @FXML private TableColumn<Product, String> colImage;
     @FXML private TableColumn<Product, String> colCategory;
 
     @FXML private TextField searchField;
@@ -85,14 +85,12 @@ public class AdminProductsController {
             private final StackPane container = new StackPane(imageView);
 
             {
-                // Đặt chiều cao ô cố định để tất cả các ô đều giống nhau
                 productTable.setFixedCellSize(70);
-
-                imageView.setPreserveRatio(true); // Giữ nguyên tỷ lệ để không bị méo mó
-                imageView.setFitHeight(60); // Đặt chiều cao ảnh lấp đầy phần lớn ô
+                imageView.setPreserveRatio(true);
+                imageView.setFitHeight(60);
 
                 container.setAlignment(Pos.CENTER);
-                container.setPadding(new Insets(5)); // Thêm đệm để đẹp hơn
+                container.setPadding(new Insets(5));
             }
 
             @Override
@@ -124,56 +122,54 @@ public class AdminProductsController {
         setActiveMenu("Products");
 
         // ========================================================
-        // ======= PHẦN MỚI: BẮT SỰ KIỆN CLICK DÒNG ĐỂ XEM CHI TIẾT =======
+        // ======= ĐÃ FIX: SỰ KIỆN DOUBLE CLICK ĐỂ XEM CHI TIẾT ===
         // ========================================================
-        productTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            if (newSelection != null) {
-                handleViewProductDetails(newSelection);
-                // Bỏ chọn dòng sau khi xem để tránh click lại không ăn
-                javafx.application.Platform.runLater(() -> productTable.getSelectionModel().clearSelection());
-            }
+        productTable.setRowFactory(tv -> {
+            TableRow<Product> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    Product selected = row.getItem();
+                    handleViewProductDetails(selected);
+                    javafx.application.Platform.runLater(() -> productTable.getSelectionModel().clearSelection());
+                }
+            });
+            return row;
         });
     }
 
     // ========================================================
-    // ======= PHẦN MỚI: HÀM VẼ CỬA SỔ XEM CHI TIẾT XỊN XÒ =======
+    // ======= HÀM VẼ CỬA SỔ XEM CHI TIẾT XỊN XÒ =======
     // ========================================================
     private void handleViewProductDetails(Product selected) {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.setTitle("Product Details - " + selected.getProductName());
         applySafeCss(dialog.getDialogPane());
 
-        // Bên trái: Ảnh to, rõ nét, bất tử tỷ lệ
         ImageView bigImageView = new ImageView();
-        bigImageView.setFitWidth(250); bigImageView.setFitHeight(250); // Ảnh to hơn
-        bigImageView.setPreserveRatio(true); // Giữ nguyên tỷ lệ
+        bigImageView.setFitWidth(250); bigImageView.setFitHeight(250);
+        bigImageView.setPreserveRatio(true);
         bigImageView.setStyle("-fx-border-color: #E25A84; -fx-border-width: 2px; -fx-border-radius: 5px;");
 
         if (selected.getImage() != null && !selected.getImage().isEmpty()) {
             File file = new File(System.getProperty("user.dir"), selected.getImage());
             if (file.exists()) {
                 bigImageView.setImage(new Image(file.toURI().toString()));
-            } else {
-                // Có thể load ảnh default nếu thiếu
             }
         }
         VBox imageBox = new VBox(bigImageView);
         imageBox.setAlignment(Pos.CENTER);
         imageBox.setPadding(new Insets(10));
 
-        // Bên phải: Các thông tin chi tiết (GridPane)
         GridPane grid = new GridPane();
         grid.setHgap(15); grid.setVgap(10);
         grid.setPadding(new Insets(10));
 
-        // Dùng hàm tiện ích để thêm các dòng thông tin đẹp mắt
         addDetailRow(grid, 0, "ID Sản phẩm:", String.valueOf(selected.getProductId()));
         addDetailRow(grid, 1, "Tên hoa:", selected.getProductName());
         addDetailRow(grid, 2, "Danh mục:", selected.getCategory() != null ? selected.getCategory().getCategoryName() : "N/A");
         addDetailRow(grid, 3, "Giá bán:", "$" + selected.getPrice().setScale(2, RoundingMode.HALF_UP).toString());
         addDetailRow(grid, 4, "Tồn kho:", String.valueOf(selected.getQuantity()) + " cành");
 
-        // Main Layout kết hợp 2 bên
         HBox mainLayout = new HBox(20, imageBox, grid);
         mainLayout.setAlignment(Pos.CENTER);
         mainLayout.setPadding(new Insets(20));
@@ -183,7 +179,6 @@ public class AdminProductsController {
         dialog.showAndWait();
     }
 
-    // Hàm tiện ích để thêm dòng thông tin dạng Label/Value đẹp mắt
     private void addDetailRow(GridPane grid, int row, String labelText, String valueText) {
         Label lblLabel = new Label(labelText);
         lblLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #4a2c2c; -fx-font-size: 14px;");
@@ -229,7 +224,7 @@ public class AdminProductsController {
 
             File dest = new File(dir, newFileName);
             Files.copy(selectedFile.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            return "product_images/" + newFileName; // Đường dẫn tương đối lưu vào DB
+            return "product_images/" + newFileName;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -247,19 +242,17 @@ public class AdminProductsController {
         TextField priceField = new TextField();
         TextField qtyField = new TextField();
 
-        // TẠO KHUNG CHỌN ẢNH XỊN XÒ
         ImageView imageView = new ImageView();
         imageView.setFitWidth(100); imageView.setFitHeight(100);
         imageView.setPreserveRatio(true);
         imageView.setStyle("-fx-border-color: #E25A84; -fx-border-width: 1px;");
 
-        final File[] selectedFile = new File[1]; // Dùng mảng để lưu file do bắt sự kiện trong lambda
+        final File[] selectedFile = new File[1];
         Button btnChoose = new Button("Chọn ảnh");
         btnChoose.setStyle("-fx-background-color: #f4c7d3; -fx-text-fill: #4a2c2c; -fx-font-weight: bold;");
         btnChoose.setOnAction(e -> {
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
-            // Lấy cửa sổ an toàn từ cái bảng chính
             File file = fc.showOpenDialog(productTable.getScene().getWindow());
             if(file != null) {
                 selectedFile[0] = file;
@@ -303,7 +296,6 @@ public class AdminProductsController {
                 p.setQuantity(Integer.parseInt(qtyField.getText()));
                 p.setCategory(cbCategory.getValue());
 
-                // Xử lý lưu ảnh
                 if (selectedFile[0] != null) {
                     String savedPath = saveImageToProject(selectedFile[0]);
                     if (savedPath != null) p.setImage(savedPath);
@@ -336,7 +328,6 @@ public class AdminProductsController {
         TextField priceField = new TextField(selected.getPrice().toString());
         TextField qtyField = new TextField(String.valueOf(selected.getQuantity()));
 
-        // KHUNG CHỌN ẢNH CÓ LOAD SẴN ẢNH CŨ
         ImageView imageView = new ImageView();
         imageView.setFitWidth(100); imageView.setFitHeight(100);
         imageView.setPreserveRatio(true);
@@ -351,7 +342,6 @@ public class AdminProductsController {
         btnChoose.setOnAction(e -> {
             FileChooser fc = new FileChooser();
             fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
-            // Lấy cửa sổ an toàn từ cái bảng chính
             File file = fc.showOpenDialog(productTable.getScene().getWindow());
             if(file != null) {
                 selectedFile[0] = file;
@@ -397,7 +387,6 @@ public class AdminProductsController {
                 selected.setQuantity(Integer.parseInt(qtyField.getText()));
                 selected.setCategory(cbCategory.getValue());
 
-                // Nếu có chọn ảnh mới thì lưu, không thì giữ đường dẫn ảnh cũ
                 if (selectedFile[0] != null) {
                     String savedPath = saveImageToProject(selectedFile[0]);
                     if (savedPath != null) selected.setImage(savedPath);
@@ -460,7 +449,6 @@ public class AdminProductsController {
 
     @FXML
     private void sortNewest() {
-        // Sắp xếp theo ID giảm dần (Sản phẩm mới thêm có ID lớn hơn)
         FXCollections.sort(productList, (a,b)->Integer.compare(b.getProductId(), a.getProductId()));
     }
 

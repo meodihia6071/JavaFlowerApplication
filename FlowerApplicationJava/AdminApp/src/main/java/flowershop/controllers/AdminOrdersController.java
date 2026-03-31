@@ -56,7 +56,7 @@ public class AdminOrdersController {
             if (cell.getValue().getCustomer() != null) {
                 return new SimpleStringProperty(cell.getValue().getCustomer().getCustomerName());
             }
-            return new SimpleStringProperty("Khách lẻ"); // Tránh lỗi NullPointerException
+            return new SimpleStringProperty("Khách lẻ");
         });
 
         colDate.setCellValueFactory(cell ->
@@ -157,7 +157,6 @@ public class AdminOrdersController {
             return null;
         }
     }
-
     @FXML public void goDashboard(){ SceneManager.switchScene("/fxml/AdminDashboard.fxml","Dashboard"); }
     @FXML public void goProducts(){ SceneManager.switchScene("/fxml/AdminProducts.fxml","Products"); }
     @FXML public void goCategories(){ SceneManager.switchScene("/fxml/AdminCategories.fxml","Categories"); }

@@ -19,20 +19,12 @@ public class OrderDetail {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-
     private int quantity;
-
     private BigDecimal price;
 
     @Column(name = "note")
     private String note;
-
     public OrderDetail() {}
-
-    // ========================================================
-    // BỘ HÀM GETTER VÀ SETTER
-    // ========================================================
-
     public int getOrderDetailId() { return orderDetailId; }
     public void setOrderDetailId(int orderDetailId) { this.orderDetailId = orderDetailId; }
 
