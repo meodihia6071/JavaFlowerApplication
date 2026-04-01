@@ -73,7 +73,7 @@ public class AdminProductsController {
                 if(empty || price == null){
                     setText(null);
                 } else {
-                    setText("$" + price.setScale(2, RoundingMode.HALF_UP).toString());
+                    setText(price.setScale(2, RoundingMode.HALF_UP).toString() + "VND");
                 }
             }
         });
@@ -167,7 +167,7 @@ public class AdminProductsController {
         addDetailRow(grid, 0, "ID Sản phẩm:", String.valueOf(selected.getProductId()));
         addDetailRow(grid, 1, "Tên hoa:", selected.getProductName());
         addDetailRow(grid, 2, "Danh mục:", selected.getCategory() != null ? selected.getCategory().getCategoryName() : "N/A");
-        addDetailRow(grid, 3, "Giá bán:", "$" + selected.getPrice().setScale(2, RoundingMode.HALF_UP).toString());
+        addDetailRow(grid, 3, "Giá bán:", selected.getPrice().setScale(2, RoundingMode.HALF_UP).toString() + "VND");
         addDetailRow(grid, 4, "Tồn kho:", String.valueOf(selected.getQuantity()) + " cành");
 
         HBox mainLayout = new HBox(20, imageBox, grid);
