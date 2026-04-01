@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2e87cc5b-e851-4659-a3ec-9db949ee6f36" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/java/flowershop/controllers/AdminProductsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/java/flowershop/controllers/AdminProductsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/resources/hibernate.cfg.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -125,6 +125,7 @@
       <updated>1773125997321</updated>
       <workItem from="1773126002300" duration="385000" />
       <workItem from="1775051926861" duration="1426000" />
+      <workItem from="1775057076660" duration="373000" />
     </task>
     <servers />
   </component>
