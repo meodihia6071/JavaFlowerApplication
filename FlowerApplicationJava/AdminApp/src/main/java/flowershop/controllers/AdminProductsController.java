@@ -78,7 +78,7 @@ public class AdminProductsController {
             }
         });
 
-        // BẢNG HIỂN THỊ ẢNH ĐẸP, VỪA VẶN
+        // BẢNG HIỂN THỊ ẢNH ĐỒNG BỘ RESOURCES
         colImage.setCellValueFactory(new PropertyValueFactory<>("image"));
         colImage.setCellFactory(column -> new TableCell<Product, String>() {
             private final ImageView imageView = new ImageView();
@@ -99,17 +99,22 @@ public class AdminProductsController {
                 if (empty || imagePath == null || imagePath.isEmpty()) {
                     setGraphic(null);
                 } else {
-                    File file = new File(System.getProperty("user.dir"), imagePath);
-                    if (file.exists()) {
-                        try {
-                            imageView.setImage(new Image(file.toURI().toString()));
-                            setGraphic(container);
-                            setAlignment(Pos.CENTER);
-                        } catch (Exception e) {
-                            System.out.println("Lỗi load ảnh: " + e.getMessage());
-                            setGraphic(null);
+                    try {
+                        // Ưu tiên load từ resource chuẩn
+                        URL url = getClass().getResource(imagePath);
+                        if (url != null) {
+                            imageView.setImage(new Image(url.toExternalForm()));
+                        } else {
+                            // Backup: Load từ ổ cứng nếu IDE chưa kịp copy sang thư mục target
+                            File absoluteFile = new File(System.getProperty("user.dir") + "/src/main/resources" + imagePath);
+                            if (absoluteFile.exists()) {
+                                imageView.setImage(new Image(absoluteFile.toURI().toString()));
+                            }
                         }
-                    } else {
+                        setGraphic(container);
+                        setAlignment(Pos.CENTER);
+                    } catch (Exception e) {
+                        System.out.println("Lỗi load ảnh: " + e.getMessage());
                         setGraphic(null);
                     }
                 }
@@ -150,12 +155,17 @@ public class AdminProductsController {
         bigImageView.setPreserveRatio(true);
         bigImageView.setStyle("-fx-border-color: #E25A84; -fx-border-width: 2px; -fx-border-radius: 5px;");
 
+        // Load ảnh chi tiết đồng bộ resources
         if (selected.getImage() != null && !selected.getImage().isEmpty()) {
-            File file = new File(System.getProperty("user.dir"), selected.getImage());
-            if (file.exists()) {
-                bigImageView.setImage(new Image(file.toURI().toString()));
+            URL url = getClass().getResource(selected.getImage());
+            if (url != null) {
+                bigImageView.setImage(new Image(url.toExternalForm()));
+            } else {
+                File absoluteFile = new File(System.getProperty("user.dir") + "/src/main/resources" + selected.getImage());
+                if (absoluteFile.exists()) bigImageView.setImage(new Image(absoluteFile.toURI().toString()));
             }
         }
+
         VBox imageBox = new VBox(bigImageView);
         imageBox.setAlignment(Pos.CENTER);
         imageBox.setPadding(new Insets(10));
@@ -210,11 +220,12 @@ public class AdminProductsController {
         dialogPane.getStyleClass().add("dialog-pane");
     }
 
-    // ================= XỬ LÝ COPY FILE ẢNH =================
+    // ================= XỬ LÝ COPY FILE ẢNH ĐỒNG BỘ RESOURCES =================
     private String saveImageToProject(File selectedFile) {
         if (selectedFile == null) return null;
         try {
-            String dir = System.getProperty("user.dir") + "/product_images/";
+            // Chuyển hướng lưu vào chung kho resources/images của dự án
+            String dir = System.getProperty("user.dir") + "/src/main/resources/images/";
             File dirFile = new File(dir);
             if(!dirFile.exists()) dirFile.mkdirs();
 
@@ -224,7 +235,9 @@ public class AdminProductsController {
 
             File dest = new File(dir, newFileName);
             Files.copy(selectedFile.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            return "product_images/" + newFileName;
+
+            // Trả về định dạng "/images/..." để đồng bộ Database
+            return "/images/" + newFileName;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -331,9 +344,16 @@ public class AdminProductsController {
         ImageView imageView = new ImageView();
         imageView.setFitWidth(100); imageView.setFitHeight(100);
         imageView.setPreserveRatio(true);
+
+        // Load ảnh preview khi edit đồng bộ resources
         if (selected.getImage() != null && !selected.getImage().isEmpty()) {
-            File oldFile = new File(System.getProperty("user.dir"), selected.getImage());
-            if (oldFile.exists()) imageView.setImage(new Image(oldFile.toURI().toString()));
+            URL url = getClass().getResource(selected.getImage());
+            if (url != null) {
+                imageView.setImage(new Image(url.toExternalForm()));
+            } else {
+                File absoluteFile = new File(System.getProperty("user.dir") + "/src/main/resources" + selected.getImage());
+                if (absoluteFile.exists()) imageView.setImage(new Image(absoluteFile.toURI().toString()));
+            }
         }
 
         final File[] selectedFile = new File[1];
