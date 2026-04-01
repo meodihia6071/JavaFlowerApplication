@@ -116,9 +116,17 @@ public class CartService {
     }
 
     public BigDecimal getShipping(Customer customer) {
-        return getCartItems(customer).isEmpty()
-                ? BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP)
-                : SHIPPING_FEE.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal subtotal = getSubtotal(customer);
+
+        if (subtotal.compareTo(BigDecimal.ZERO) <= 0) {
+            return BigDecimal.ZERO;
+        }
+
+        if (subtotal.compareTo(new BigDecimal("500000")) >= 0) {
+            return BigDecimal.ZERO;
+        }
+
+        return new BigDecimal("30000");
     }
 
     public BigDecimal getTotal(Customer customer) {
@@ -281,35 +289,32 @@ public class CartService {
     }
 
     private void updateCartTotal(Order order) {
-        if (order == null) return;
+        if (order == null || order.getCustomer() == null) return;
 
-        List<OrderDetail> items = orderDetailDAO.findByOrderId(order.getOrderId());
-        BigDecimal subtotal = BigDecimal.ZERO;
+        BigDecimal subtotal = getSubtotal(order.getCustomer());
+        BigDecimal shipping = getShipping(order.getCustomer());
 
-        for (OrderDetail item : items) {
-            subtotal = subtotal.add(item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity())));
-        }
+        BigDecimal total = subtotal.add(shipping);
 
-        BigDecimal total = items.isEmpty() ? BigDecimal.ZERO : subtotal.add(SHIPPING_FEE);
         order.setTotal(total.setScale(2, RoundingMode.HALF_UP));
         orderDAO.update(order);
     }
 
     private BigDecimal applyPointDiscount(BigDecimal baseTotal, int pointsUsed) {
-        if (baseTotal == null) {
+        if (baseTotal == null || baseTotal.compareTo(BigDecimal.ZERO) <= 0) {
             return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
         }
         if (pointsUsed <= 0) {
             return baseTotal.setScale(2, RoundingMode.HALF_UP);
         }
 
-        BigDecimal totalDiscount = POINT_DISCOUNT_VALUE.multiply(BigDecimal.valueOf(pointsUsed));
+        BigDecimal requestedDiscount = POINT_DISCOUNT_VALUE.multiply(BigDecimal.valueOf(pointsUsed));
 
-        if (totalDiscount.compareTo(baseTotal) > 0) {
-            totalDiscount = baseTotal;
-        }
+        BigDecimal maxDiscountAllowed = baseTotal.multiply(new BigDecimal("0.20"));
 
-        BigDecimal result = baseTotal.subtract(totalDiscount);
+        BigDecimal actualDiscount = requestedDiscount.min(maxDiscountAllowed);
+
+        BigDecimal result = baseTotal.subtract(actualDiscount);
 
         return result.setScale(2, RoundingMode.HALF_UP);
     }

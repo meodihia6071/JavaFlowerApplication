@@ -75,7 +75,7 @@ public class OrderController {
     private Label lblCurrentPoints;
 
     @FXML
-    private Label lblUsedPoints;
+    private TextField txtUsedPoints;
 
     @FXML
     private Button btnMinusPoint;
@@ -103,7 +103,6 @@ public class OrderController {
         SceneManager.switchScene("/fxml/Profile.fxml", "Profile");
     }
 
-
     private boolean isAutoFilling = false;
 
     private final CartService cartService = new CartService();
@@ -126,12 +125,55 @@ public class OrderController {
         addHoverEffect(btnPlaceOrder);
         addHoverEffect(btnMinusPoint);
         addHoverEffect(btnPlusPoint);
+
         txtEmail.textProperty().addListener((obs, oldVal, newVal) -> {
             autoFillCustomer();
         });
 
         txtPhone.textProperty().addListener((obs, oldVal, newVal) -> {
             autoFillCustomer();
+        });
+        
+        txtUsedPoints.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*")) {
+                txtUsedPoints.setText(newVal.replaceAll("[^\\d]", ""));
+                return;
+            }
+
+            int maxUsable = getMaxUsablePoints();
+
+
+            if (newVal.isEmpty()) {
+                usedPoints = 0;
+                updatePriceSummary();
+                btnMinusPoint.setDisable(true);
+                btnPlusPoint.setDisable(currentCustomer == null || usedPoints >= maxUsable);
+                return;
+            }
+
+            try {
+                int inputPoints = Integer.parseInt(newVal);
+
+                if (inputPoints > maxUsable) {
+                    usedPoints = maxUsable;
+                    javafx.application.Platform.runLater(() -> {
+                        txtUsedPoints.setText(String.valueOf(usedPoints));
+                        txtUsedPoints.positionCaret(txtUsedPoints.getText().length());
+                    });
+                } else {
+                    usedPoints = inputPoints;
+                }
+            } catch (NumberFormatException e) {
+                usedPoints = maxUsable;
+                javafx.application.Platform.runLater(() -> {
+                    txtUsedPoints.setText(String.valueOf(usedPoints));
+                    txtUsedPoints.positionCaret(txtUsedPoints.getText().length());
+                });
+            }
+
+            updatePriceSummary();
+            btnMinusPoint.setDisable(usedPoints <= 0);
+            btnPlusPoint.setDisable(currentCustomer == null || usedPoints >= maxUsable);
         });
     }
 
@@ -165,8 +207,6 @@ public class OrderController {
         } else if (validPhone) {
             found = dao.findByPhone(phone);
         }
-
-
     }
 
     private void setupPhoneValidation() {
@@ -286,7 +326,7 @@ public class OrderController {
         int currentPoints = currentCustomer == null ? 0 : currentCustomer.getPoints();
 
         lblCurrentPoints.setText("Current points: " + currentPoints + " (max: " + getMaxUsablePoints() + ")");
-        lblUsedPoints.setText(String.valueOf(usedPoints));
+        txtUsedPoints.setText(String.valueOf(usedPoints));
 
         btnMinusPoint.setDisable(usedPoints <= 0);
         btnPlusPoint.setDisable(currentCustomer == null || usedPoints >= getMaxUsablePoints());
@@ -407,9 +447,9 @@ public class OrderController {
 
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                        }
-                    }).start();
-                }
+                    }
+                }).start();
+            }
             else {
                 showInfo("Thành công", "Thanh toán thành công! ");
             }
@@ -494,8 +534,14 @@ public class OrderController {
     }
 
     private int getMaxUsablePoints() {
-        int currentPoints = currentCustomer != null ? currentCustomer.getPoints() : 0;
-        return Math.min(20, currentPoints);
+        if (currentCustomer == null) return 0;
+
+        BigDecimal subtotal = cartService.getSubtotal(currentCustomer);
+
+        BigDecimal maxDiscountAllowed = subtotal.multiply(new BigDecimal("0.20"));
+
+        int maxPointsByOrderValue = maxDiscountAllowed.divide(new BigDecimal("1000"), 0, java.math.RoundingMode.DOWN).intValue();
+        return Math.min(currentCustomer.getPoints(), maxPointsByOrderValue);
     }
 
     private String formatMoney(BigDecimal amount) {
