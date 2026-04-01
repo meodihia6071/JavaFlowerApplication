@@ -27,14 +27,12 @@ import java.io.IOException;
 
 public class AdminReportsController {
 
-    // ================= FORMAT =================
     private final NumberFormat vnFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
 
     private String formatVND(double amount) {
         return vnFormat.format(amount) + "₫";
     }
 
-    // ================= DATE FILTER =================
     private LocalDate startDate;
     private LocalDate endDate;
 
@@ -67,21 +65,15 @@ public class AdminReportsController {
 
     // ================= FILTER =================
     @FXML private DatePicker fromDate, toDate;
-
     private final ReportService reportService = new ReportService();
 
     // ================= INIT =================
     @FXML
     public void initialize(){
         setupTableColumns();
-
-        // Load toàn bộ dashboard (không filter)
         loadDashboardStaticData();
-
-        // Load riêng phần có filter (3 ô)
         loadFilteredSummaryOnly();
 
-        // ======= LISTENER DATE PICKERS =======
         fromDate.valueProperty().addListener((obs, oldVal, newVal) -> updateDateFilter());
         toDate.valueProperty().addListener((obs, oldVal, newVal) -> updateDateFilter());
     }
@@ -157,8 +149,6 @@ public class AdminReportsController {
     private void loadSummaryStatic(){
         int products = reportService.countProducts();
         int orders = reportService.countOrders(null, null);
-
-        // SỬA DÒNG NÀY: Thêm (null, null) vào trong ngoặc
         int customers = reportService.countCustomers(null, null);
 
         totalProducts.setText(String.valueOf(products));
@@ -174,6 +164,12 @@ public class AdminReportsController {
         long avgOrderInt = Math.round(
                 reportService.getAverageOrderValue(startDate, endDate)
         );
+        int orders = reportService.countOrders(startDate, endDate);
+        int customers = reportService.countCustomers(startDate, endDate);
+
+
+        totalOrders.setText(String.valueOf(orders));
+        totalCustomers.setText(String.valueOf(customers));
 
         totalRevenue.setText(formatVND(revenue));
         totalProfit.setText(formatVND(profit));

@@ -100,13 +100,19 @@ public class AdminProductsController {
                     setGraphic(null);
                 } else {
                     try {
+                        // === ĐÃ SỬA: Tự động ghép /images/ nếu SQL chỉ lưu tên file (VD: flower-rose.jpg) ===
+                        String finalPath = imagePath;
+                        if (!finalPath.startsWith("/images/")) {
+                            finalPath = "/images/" + finalPath;
+                        }
+
                         // Ưu tiên load từ resource chuẩn
-                        URL url = getClass().getResource(imagePath);
+                        URL url = getClass().getResource(finalPath);
                         if (url != null) {
                             imageView.setImage(new Image(url.toExternalForm()));
                         } else {
                             // Backup: Load từ ổ cứng nếu IDE chưa kịp copy sang thư mục target
-                            File absoluteFile = new File(System.getProperty("user.dir") + "/src/main/resources" + imagePath);
+                            File absoluteFile = new File(System.getProperty("user.dir") + "/src/main/resources" + finalPath);
                             if (absoluteFile.exists()) {
                                 imageView.setImage(new Image(absoluteFile.toURI().toString()));
                             }
@@ -126,9 +132,7 @@ public class AdminProductsController {
         loadProducts();
         setActiveMenu("Products");
 
-        // ========================================================
         // ======= ĐÃ FIX: SỰ KIỆN DOUBLE CLICK ĐỂ XEM CHI TIẾT ===
-        // ========================================================
         productTable.setRowFactory(tv -> {
             TableRow<Product> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
@@ -155,13 +159,18 @@ public class AdminProductsController {
         bigImageView.setPreserveRatio(true);
         bigImageView.setStyle("-fx-border-color: #E25A84; -fx-border-width: 2px; -fx-border-radius: 5px;");
 
-        // Load ảnh chi tiết đồng bộ resources
+        // === ĐÃ SỬA: Load ảnh chi tiết tự động ghép /images/ ===
         if (selected.getImage() != null && !selected.getImage().isEmpty()) {
-            URL url = getClass().getResource(selected.getImage());
+            String finalPath = selected.getImage();
+            if (!finalPath.startsWith("/images/")) {
+                finalPath = "/images/" + finalPath;
+            }
+
+            URL url = getClass().getResource(finalPath);
             if (url != null) {
                 bigImageView.setImage(new Image(url.toExternalForm()));
             } else {
-                File absoluteFile = new File(System.getProperty("user.dir") + "/src/main/resources" + selected.getImage());
+                File absoluteFile = new File(System.getProperty("user.dir") + "/src/main/resources" + finalPath);
                 if (absoluteFile.exists()) bigImageView.setImage(new Image(absoluteFile.toURI().toString()));
             }
         }
@@ -224,7 +233,6 @@ public class AdminProductsController {
     private String saveImageToProject(File selectedFile) {
         if (selectedFile == null) return null;
         try {
-            // Chuyển hướng lưu vào chung kho resources/images của dự án
             String dir = System.getProperty("user.dir") + "/src/main/resources/images/";
             File dirFile = new File(dir);
             if(!dirFile.exists()) dirFile.mkdirs();
@@ -236,8 +244,8 @@ public class AdminProductsController {
             File dest = new File(dir, newFileName);
             Files.copy(selectedFile.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-            // Trả về định dạng "/images/..." để đồng bộ Database
-            return "/images/" + newFileName;
+            // === ĐÃ SỬA: Chỉ trả về TÊN FILE để lưu vào SQL y chang bên User ===
+            return newFileName;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -345,13 +353,18 @@ public class AdminProductsController {
         imageView.setFitWidth(100); imageView.setFitHeight(100);
         imageView.setPreserveRatio(true);
 
-        // Load ảnh preview khi edit đồng bộ resources
+        // === ĐÃ SỬA: Load ảnh preview khi edit tự động ghép /images/ ===
         if (selected.getImage() != null && !selected.getImage().isEmpty()) {
-            URL url = getClass().getResource(selected.getImage());
+            String finalPath = selected.getImage();
+            if (!finalPath.startsWith("/images/")) {
+                finalPath = "/images/" + finalPath;
+            }
+
+            URL url = getClass().getResource(finalPath);
             if (url != null) {
                 imageView.setImage(new Image(url.toExternalForm()));
             } else {
-                File absoluteFile = new File(System.getProperty("user.dir") + "/src/main/resources" + selected.getImage());
+                File absoluteFile = new File(System.getProperty("user.dir") + "/src/main/resources" + finalPath);
                 if (absoluteFile.exists()) imageView.setImage(new Image(absoluteFile.toURI().toString()));
             }
         }

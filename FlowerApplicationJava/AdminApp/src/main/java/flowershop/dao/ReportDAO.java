@@ -17,36 +17,39 @@ public class ReportDAO {
         }
     }
 
+    // ================= COUNT ORDERS =================
     public int countOrders(LocalDate start, LocalDate end) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            Long count;
+
+            String hql = "select count(o) from Order o";
 
             if (start != null && end != null) {
-                // Có filter theo ngày
-                String hql = "select count(o) from Order o where o.orderDate between :start and :end";
-                count = session.createQuery(hql, Long.class)
-                        .setParameter("start", start)
-                        .setParameter("end", end)
-                        .getSingleResult();
-            } else {
-                // All Time: không lọc theo ngày
-                String hql = "select count(o) from Order o";
-                count = session.createQuery(hql, Long.class)
-                        .getSingleResult();
+                hql += " where DATE(o.orderDate) between :start and :end";
             }
 
-            return count.intValue();
+            var query = session.createQuery(hql, Long.class);
+
+            if (start != null && end != null) {
+                query.setParameter("start", start);
+                query.setParameter("end", end);
+            }
+
+            Long count = query.uniqueResult();
+            return count == null ? 0 : count.intValue();
         }
     }
+
     public int countCustomers(LocalDate start, LocalDate end){
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
-            String hql = "SELECT COUNT(DISTINCT c.customerId) " +
-                    "FROM Order o " +
-                    "JOIN o.customer c";
+            String hql = """
+            SELECT COUNT(DISTINCT c.customerId)
+            FROM Order o
+            JOIN o.customer c
+        """;
 
             if (start != null && end != null) {
-                hql += "  WHERE o.orderDate BETWEEN :start AND :end";
+                hql += " WHERE DATE(o.orderDate) BETWEEN :start AND :end";
             }
 
             var query = session.createQuery(hql, Long.class);
@@ -64,20 +67,21 @@ public class ReportDAO {
     // ================= REVENUE =================
     public double getTotalRevenue(LocalDate start, LocalDate end) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            BigDecimal total;
+
+            String hql = "select sum(o.total) from Order o";
 
             if (start != null && end != null) {
-                String hql = "select sum(o.total) from Order o where o.orderDate between :start and :end";
-                total = session.createQuery(hql, BigDecimal.class)
-                        .setParameter("start", start)
-                        .setParameter("end", end)
-                        .uniqueResult();
-            } else {
-                String hql = "select sum(o.total) from Order o";
-                total = session.createQuery(hql, BigDecimal.class)
-                        .uniqueResult();
+                hql += " where DATE(o.orderDate) between :start and :end";
             }
 
+            var query = session.createQuery(hql, BigDecimal.class);
+
+            if (start != null && end != null) {
+                query.setParameter("start", start);
+                query.setParameter("end", end);
+            }
+
+            BigDecimal total = query.uniqueResult();
             return total == null ? 0 : total.doubleValue();
         }
     }
@@ -99,7 +103,7 @@ public class ReportDAO {
         """;
 
             if (start != null && end != null) {
-                hql += " AND o.orderDate BETWEEN :start AND :end";
+                hql += " AND DATE(o.orderDate) BETWEEN :start AND :end";
             }
 
             var query = session.createQuery(hql, Double.class);
@@ -121,20 +125,22 @@ public class ReportDAO {
     public double getAverageOrderValue(LocalDate start, LocalDate end) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
-            Long count;
+            String hql = "select count(o) from Order o";
+
             if (start != null && end != null) {
-                String hql = "select count(o) from Order o where o.orderDate between :start and :end";
-                count = session.createQuery(hql, Long.class)
-                        .setParameter("start", start)
-                        .setParameter("end", end)
-                        .uniqueResult();
-            } else {
-                String hql = "select count(o) from Order o";
-                count = session.createQuery(hql, Long.class)
-                        .uniqueResult();
+                hql += " where DATE(o.orderDate) between :start and :end";
             }
 
-            if (count == 0) return 0;
+            var query = session.createQuery(hql, Long.class);
+
+            if (start != null && end != null) {
+                query.setParameter("start", start);
+                query.setParameter("end", end);
+            }
+
+            Long count = query.uniqueResult();
+            if (count == null || count == 0) return 0;
+
             double totalRevenue = getTotalRevenue(start, end);
             return totalRevenue / count;
         }
