@@ -38,7 +38,7 @@ public class ReportService {
     }
 
     // ================= CHART =================
-    public Map<Integer, Double> getRevenueByMonth() {
+    public Map<String, Double> getRevenueByMonth() {
         return reportDAO.getRevenueLast12Months();
     }
 

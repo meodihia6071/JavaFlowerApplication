@@ -147,19 +147,20 @@ public class ReportDAO {
     }
 
     // ================= BAR CHART =================
-    public Map<Integer, Double> getRevenueLast12Months() {
-        Map<Integer, Double> result = new LinkedHashMap<>();
+    public Map<String, Double> getRevenueLast12Months() {
+        Map<String, Double> result = new LinkedHashMap<>();
 
         LocalDate end = LocalDate.now();
-        LocalDate start = end.minusYears(1).plusMonths(1); // từ tháng này năm ngoái + 1 tháng đến tháng này năm nay
+        LocalDate start = end.minusYears(1).plusMonths(1);
 
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
             String hql = """
-            SELECT MONTH(o.orderDate), SUM(o.total)
-            FROM Order o
-            WHERE o.orderDate BETWEEN :start AND :end
-            GROUP BY MONTH(o.orderDate)
+        SELECT YEAR(o.orderDate), MONTH(o.orderDate), SUM(o.total)
+        FROM Order o
+        WHERE o.orderDate BETWEEN :start AND :end
+        GROUP BY YEAR(o.orderDate), MONTH(o.orderDate)
+        ORDER BY YEAR(o.orderDate), MONTH(o.orderDate)
         """;
 
             List<Object[]> list = session.createQuery(hql)
@@ -167,24 +168,25 @@ public class ReportDAO {
                     .setParameter("end", end)
                     .list();
 
-            // Khởi tạo 12 tháng với giá trị 0
             LocalDate iter = start;
             for(int i = 0; i < 12; i++){
-                result.put(iter.getMonthValue(), 0.0);
+                String key = String.format("%02d/%d", iter.getMonthValue(), iter.getYear());
+                result.put(key, 0.0);
                 iter = iter.plusMonths(1);
             }
 
             for(Object[] row : list){
-                int month = ((Number) row[0]).intValue();
-                double revenue = ((Number) row[1]).doubleValue();
-                result.put(month, revenue);
+                int year = ((Number) row[0]).intValue();
+                int month = ((Number) row[1]).intValue();
+                double revenue = ((Number) row[2]).doubleValue();
+
+                String key = String.format("%02d/%d", month, year);
+                result.put(key, revenue);
             }
         }
 
         return result;
-    }
-
-    // ================= LINE CHART =================
+    }    // ================= LINE CHART =================
     public Map<String, Integer> getOrdersByLast10Weeks() {
         Map<String, Integer> result = new LinkedHashMap<>();
 

@@ -183,15 +183,11 @@ public class AdminReportsController {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Revenue");
 
-        Map<Integer, Double> data = reportService.getRevenueByMonth();
+        Map<String, Double> data = reportService.getRevenueByMonth();
 
-        data.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(entry ->
-                        series.getData().add(
-                                new XYChart.Data<>(getMonthName(entry.getKey()), entry.getValue())
-                        )
-                );
+        data.forEach((key, value) -> {
+            series.getData().add(new XYChart.Data<>(key, value));
+        });
 
         revenueChart.getData().add(series);
     }

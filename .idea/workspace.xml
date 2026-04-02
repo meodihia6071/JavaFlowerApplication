@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2e87cc5b-e851-4659-a3ec-9db949ee6f36" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/resources/hibernate.cfg.xml" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/resources/hibernate.cfg.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/java/flowershop/controllers/AdminReportsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/java/flowershop/controllers/AdminReportsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/java/flowershop/dao/ReportDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/java/flowershop/dao/ReportDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/java/flowershop/services/ReportService.java" beforeDir="false" afterPath="$PROJECT_DIR$/FlowerApplicationJava/AdminApp/src/main/java/flowershop/services/ReportService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
